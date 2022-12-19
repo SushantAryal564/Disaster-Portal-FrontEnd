@@ -1,11 +1,6 @@
 import React from "react";
-
-/**
- * @author
- * @function HOme
- **/
-
+import NavigationBar from "../Layout/NavBar";
 const Home = (props) => {
-  return <div>Home</div>;
+  return <NavigationBar />;
 };
 export default Home;
