@@ -1,6 +1,7 @@
 import React, { Fragment, useState } from "react";
 import { NavLink } from "react-router-dom";
 import { Button } from "../UI/Button";
+import FormInputValidationHook from "../../hooks/formValidationHook";
 const NavigationBar = (props) => {
   let Links = [
     { name: "Home", links: "/" },
@@ -24,8 +25,8 @@ const NavigationBar = (props) => {
           <ion-icon name={open ? "close" : "menu"}></ion-icon>
         </div>
         <div
-          className={`lg:bg-white md:flex md:items-center md:pb-0 pb-12 absolute md:static bg-white md:z-auto z-[-1] left-0 w-full md:w-auto md:pl-0 pl-9 transition-all duration-250 ease-in ${
-            open ? "top-20 bg-gray-400" : "top-[-490px]	"
+          className={`lg:bg-white md:flex md:items-center md:pb-0 pb-12 absolute md:static bg-white md:z-auto z-[1] left-0 w-full md:w-auto md:pl-0 pl-9 ${
+            open ? "top-20 bg-gray-400 bg-opacity-90" : "top-[-490px]	"
           }`}
         >
           {Links.map((link) => (
