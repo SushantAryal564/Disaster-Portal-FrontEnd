@@ -1,5 +1,10 @@
 import React from "react";
+import Layout from "../Layout/Layout";
 const AboutUs = (props) => {
-  return <div>AboutUs</div>;
+  return (
+    <Layout>
+      <div>About Us Page</div>
+    </Layout>
+  );
 };
 export default AboutUs;
