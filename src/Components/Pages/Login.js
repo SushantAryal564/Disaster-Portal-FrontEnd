@@ -8,7 +8,7 @@ const Login = (props) => {
     value: enteredEmail,
     isValid: enteredEmailIsValid,
     hasError: emailInputHasError,
-    valueInputHanlder: emailChangedHandler,
+    valueInputHandler: emailChangedHandler,
     rest: resetEmailInput,
     BlurHandler: emailBlurHandler,
   } = useInput((value) => value.includes("@"));
@@ -57,6 +57,11 @@ const Login = (props) => {
                     onChange={emailChangedHandler}
                     onBlur={emailBlurHandler}
                   />
+                  {emailInputHasError && (
+                    <p className="text-red-600">
+                      Email is not valid must contain @
+                    </p>
+                  )}
                 </div>
 
                 <div className="mb-6">
@@ -68,6 +73,9 @@ const Login = (props) => {
                     onChange={passwordInputHandler}
                     onBlur={passwordBlurHandler}
                   />
+                  {passwordInputHasError && (
+                    <p className="text-red-600">Password must not be empty</p>
+                  )}
                 </div>
 
                 <div className="flex justify-between items-center mb-6">
@@ -90,8 +98,12 @@ const Login = (props) => {
 
                 <div className="text-center lg:text-left">
                   <button
-                    type="button"
-                    className="inline-block px-7 py-3 bg-red-600 text-white font-medium text-sm leading-snug uppercase rounded shadow-md hover:bg-red-700 hover:shadow-lg focus:bg-red-700 focus:shadow-lg focus:outline-none focus:ring-0 active:bg-red-800 active:shadow-lg transition duration-150 ease-in-out"
+                    disabled={!formIsValid}
+                    className={
+                      formIsValid
+                        ? "formIsVainline-block px-7 py-3 bg-red-600 text-white font-medium text-sm leading-snug uppercase rounded shadow-md hover:bg-red-700 hover:shadow-lg focus:bg-red-700 focus:shadow-lg focus:outline-none focus:ring-0 active:bg-red-800 active:shadow-lg transition duration-150 ease-in-out"
+                        : "cursor-not-allowed formIsVainline-block px-7 py-3 bg-gray-600 text-white font-medium text-sm leading-snug uppercase rounded shadow-md"
+                    }
                   >
                     Login
                   </button>
