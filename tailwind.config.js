@@ -7,7 +7,11 @@ module.exports = {
   ],
 
   theme: {
-    extend: {},
+    extend: {
+      height: {
+        fitinthis: "90%",
+      },
+    },
   },
   plugins: [],
 };
