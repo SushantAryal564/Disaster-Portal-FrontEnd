@@ -2,8 +2,11 @@ import React from "react";
 import Layout from "../Layout/Layout";
 import image from "./../../assests/image.jpg";
 import useInput from "../../hooks/formValidationHook";
-
+import { useState } from "react";
+import Register from "./RegisterPage";
+import SignupForm from "./RegisterPage";
 const Login = (props) => {
+  const [registerVisibility, setRegisterVisiblity] = useState(false);
   const {
     value: enteredEmail,
     isValid: enteredEmailIsValid,
@@ -34,13 +37,17 @@ const Login = (props) => {
     resetEmailInput();
     resetPasswordInput();
   };
+  const registrationVisiblityHandler = () => {
+    setRegisterVisiblity(true);
+    console.log(registerVisibility);
+  };
   return (
     <Layout>
       <section className="h-fit">
         <div className="px-6 h-full text-gray-800">
           <div className="flex xl:justify-center lg:justify-between justify-center items-center flex-wrap h-full g-6">
             <div className=" pt-5 grow-0 shrink-1 md:shrink-0 basis-auto xl:w-6/12 lg:w-6/12 md:w-9/12 mb-12 md:mb-0">
-              <img src={image} className="w-full " alt="Sample image" />
+              <img src={image} className="w-full" alt="Image of disaster" />
             </div>
             <div className="xl:ml-20 xl:w-5/12 lg:w-5/12 md:w-8/12 mb-12 md:mb-0">
               <form onSubmit={formSubmissionHandler}>
@@ -108,14 +115,14 @@ const Login = (props) => {
                     Login
                   </button>
                   <p className="text-sm font-semibold mt-2 pt-1 mb-0">
-                    Don't have an account?
-                    <a
-                      href="#!"
-                      className="text-red-600 hover:text-red-700 focus:text-red-700 transition duration-200 ease-in-out"
+                    Don't have an account?&nbsp;&nbsp;
+                    <button
+                      onClick={registrationVisiblityHandler}
+                      className=" text-red-600 hover:text-red-700 focus:text-red-700 transition duration-200 ease-in-out text-sm font-semibold mb-0 inline cursor-pointer"
                     >
                       {" "}
                       Register
-                    </a>
+                    </button>
                   </p>
                 </div>
               </form>
@@ -123,6 +130,7 @@ const Login = (props) => {
           </div>
         </div>
       </section>
+      <SignupForm />
     </Layout>
   );
 };
