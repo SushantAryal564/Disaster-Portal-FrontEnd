@@ -1,5 +1,5 @@
 import React, { Fragment, useState } from "react";
-import { NavLink } from "react-router-dom";
+import { NavLink, Link } from "react-router-dom";
 import { Button } from "../UI/Button";
 import FormInputValidationHook from "../../hooks/formValidationHook";
 const NavigationBar = (props) => {
@@ -39,7 +39,12 @@ const NavigationBar = (props) => {
               </NavLink>
             </div>
           ))}
-          <Button>Login</Button>
+          <Link
+            className="bg-red-600 text-xl text-white font-[Poppins] font-bold py-2 px-6 rounded md:ml-8 hover:shadow-xl duration-500"
+            to="/login"
+          >
+            Log In
+          </Link>
         </div>
       </div>
     </div>
