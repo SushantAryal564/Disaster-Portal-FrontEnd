@@ -4,7 +4,7 @@ import Home from "./Components/Pages/Home";
 import LoginSignUp from "./Components/Pages/LoginSignup";
 import AboutUs from "./Components/Pages/AboutUs";
 import Portal from "./Components/Pages/Portal";
-
+import "leaflet/dist/leaflet.css";
 function App() {
   return (
     <Routes>

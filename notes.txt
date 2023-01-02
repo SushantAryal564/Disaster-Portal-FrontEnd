@@ -1,0 +1,9 @@
+React Leaflet
+  Provide binding between react and leaflet.
+What is GeoJson?
+  consistent format
+  Multiple geometric types in one file
+  Used widely. For example supported by:ArcGIS, QGIS, Geoserver, Mapserver,ArcGIS Server can be served from any web server as JSON.
+  Leaflet JS has built in support.
+  GeoJSON supports many geometry.
+  
