@@ -9,6 +9,7 @@ const NavigationBar = (props) => {
     { name: "About Us", links: "/aboutus" },
   ];
   let [open, setopen] = useState(false);
+  let key = 0;
   return (
     <div className="shadow-md w-full">
       <div className="md:flex bg-white items-center justify-between py-4 md:px-10 px-7">
@@ -30,7 +31,7 @@ const NavigationBar = (props) => {
           }`}
         >
           {Links.map((link) => (
-            <div className="md:ml-8 text-xl md:my-0 my-7">
+            <div className="md:ml-8 text-xl md:my-0 my-7" key={key++}>
               <NavLink
                 className="text-gray-800 hover:text-gray-400 duration-500"
                 to={link.links}

@@ -1,24 +1,10 @@
 import React from "react";
 import Layout from "../Layout/Layout";
-import { MapContainer, Marker, Popup, TileLayer } from "react-leaflet";
-import { defaultIcon } from "../../assests/icons/defaulticon";
+import { MapContainer, TileLayer } from "react-leaflet";
 import { incident } from "./../../Data/incident";
-const MarkerLayer = ({ data }) => {
-  return data.features.map((feature) => {
-    const { coordinates } = feature.geometry;
-    return (
-      <Marker
-        key={String(coordinates)}
-        position={[coordinates[1], coordinates[0]]}
-        icon={defaultIcon}
-      >
-        <Popup>
-          This is where I live. <br /> Pretty ugly place to live.
-        </Popup>
-      </Marker>
-    );
-  });
-};
+import MarkerLayer from "../../Layers/Marker_Layer";
+import { mountains } from "../../Data/highest_points";
+import MarkerLayerWithToolTip from "../../Layers/Marker_Layer_with_tooltip.js";
 export const Portal = () => {
   const position = [27.6492, 85.3195];
   const scrollWheelZoom = true;
@@ -31,6 +17,7 @@ export const Portal = () => {
       >
         <TileLayer url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png" />
         <MarkerLayer data={incident} />
+        <MarkerLayerWithToolTip data={mountains} />
       </MapContainer>
     </Layout>
   );
