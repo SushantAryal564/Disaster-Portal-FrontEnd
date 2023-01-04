@@ -11,6 +11,9 @@ module.exports = {
       height: {
         fitinthis: "90%",
       },
+      colors: {
+        "light-white": "rgba(255,255,255,0.17)",
+      },
     },
   },
   plugins: [],
