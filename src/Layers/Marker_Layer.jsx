@@ -1,7 +1,7 @@
 import { Marker, Popup } from "react-leaflet";
 import { defaultIcon } from "../icons/defaulticon";
 import { Card } from "antd";
-const PopuupStatistics = () => {
+const PopuupStatistics = ({ feature }) => {
   return (
     <Card type="inner" title="Inner Card title">
       Inner Card content
