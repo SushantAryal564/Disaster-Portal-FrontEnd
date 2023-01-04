@@ -1,11 +1,12 @@
 import React from "react";
 import Layout from "../Layout/Layout";
-import { MapContainer, TileLayer } from "react-leaflet";
-import { incident } from "../../Data/incident";
-import MarkerLayer from "../../Layers/Marker_Layer";
-import { mountains } from "../../Data/highest_points";
-import MarkerLayerWithToolTip from "../../Layers/Marker_Layer_with_tooltip.jsx";
-import { SideBar } from "../Layout/Sidebar";
+import { LayersControl, MapContainer, TileLayer } from "react-leaflet";
+import { SideBar } from "../Layout/SidebarNav";
+import { Lalitpur } from "./../../Data/Lalitpur";
+import { LalitpurAdmin } from "./../../Data/LalitpurLocal";
+import { LalitpurOda as LalitpurWard } from "./../../Data/LalitpurOda";
+import { GeoJSONLayer } from "../Map Layer/GeoJSONLayer";
+
 export const Portal = () => {
   const position = [27.6492, 85.3195];
   const scrollWheelZoom = true;
@@ -19,8 +20,15 @@ export const Portal = () => {
           className="mt-1"
         >
           <TileLayer url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png" />
-          <MarkerLayer data={incident} />
-          <MarkerLayerWithToolTip data={mountains} />
+          <GeoJSONLayer data={Lalitpur} name="Lalitpur" />
+          <LayersControl position="topright">
+            <GeoJSONLayer data={Lalitpur} name="Lalitpur" />
+            <GeoJSONLayer
+              data={LalitpurAdmin}
+              name="Lalitpur Adminstrative Boundary"
+            />
+            <GeoJSONLayer data={LalitpurWard} name="Lalitpur Ward Boundary" />
+          </LayersControl>
         </MapContainer>
         <SideBar />
       </div>
