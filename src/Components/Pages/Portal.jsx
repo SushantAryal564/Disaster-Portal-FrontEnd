@@ -10,13 +10,15 @@ import ResetViewControl from "@20tab/react-leaflet-resetview";
 import NavigateNextIcon from "@mui/icons-material/NavigateNext";
 import NavigateBeforeIcon from "@mui/icons-material/NavigateBefore";
 export const Portal = () => {
-  const [open, setOpen] = useState(true);
+  const [open, setOpen] = useState(false);
   const position = [27.568061, 85.378218];
   const scrollWheelZoom = true;
   return (
     <Layout>
       <div className="flex">
-        <div className={`${open ? "w-72" : "w-0"} h-screen relative`}>
+        <div
+          className={`${open ? "w-2/4" : "w-0"} duration-300 h-[90vh] relative`}
+        >
           <NavigateNextIcon
             style={{
               maxWidth: "30px",
@@ -25,7 +27,10 @@ export const Portal = () => {
               minHeight: "50px",
             }}
             className={`
-              bg-red-100 absolute cursor-pointer -right-6 top-1/2 w-7 border-2 z-50 rounded-r-lg`}
+              bg-white absolute cursor-pointer -right-[30px] top-1/2 w-7 border-2 z-50  ${
+                open ? "rotate-180 rounded-l-lg" : "rounded-r-lg"
+              }`}
+            onClick={() => setOpen(!open)}
           />
         </div>
         <MapContainer

@@ -6,7 +6,7 @@ import ReportIcon from "@mui/icons-material/Report";
 import InfoIcon from "@mui/icons-material/Info";
 export const SideBar = () => {
   return (
-    <div className="flex flex-col  justify-around gap-4">
+    <div className="flex flex-col  justify-around gap-4 px-1">
       <div className="text-xs self-center pt-2 pb-2 font-semibold  text-slate-600 cursor-pointer hover:text-[#e35163]">
         <div className="text-center">
           <HomeIcon sx={{ fontSize: 30 }} />
