@@ -8,7 +8,6 @@ import { LalitpurOda as LalitpurWard } from "./../../Data/LalitpurOda";
 import { GeoJSONLayer } from "../Map Layer/GeoJSONLayer";
 import ResetViewControl from "@20tab/react-leaflet-resetview";
 import NavigateNextIcon from "@mui/icons-material/NavigateNext";
-import NavigateBeforeIcon from "@mui/icons-material/NavigateBefore";
 export const Portal = () => {
   const [open, setOpen] = useState(false);
   const position = [27.568061, 85.378218];
