@@ -3,7 +3,14 @@ import Layout from "../Layout/Layout";
 import image from "./../../assests/image.jpg";
 import Login from "../Form/loginForm";
 import SignupForm from "../Form/RegistrationForm";
+import { useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
+
 const LoginSignUp = (props) => {
+  const dispatch = useDispatch();
+  const LoggedInState = useSelector((state) => {
+    console.log(state);
+  });
   const [signin, changesign] = useState(true);
   const changesinghandler = () => {
     changesign(!signin);
