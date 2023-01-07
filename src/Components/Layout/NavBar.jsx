@@ -1,8 +1,15 @@
-import React, { Fragment, useState } from "react";
+import React, { useState } from "react";
 import { NavLink, Link } from "react-router-dom";
-import { Button } from "../UI/Button";
-import FormInputValidationHook from "../../hooks/formValidationHook";
-const NavigationBar = (props) => {
+import { useDispatch } from "react-redux";
+import { useSelector } from "react-redux";
+import AccountCircleIcon from "@mui/icons-material/AccountCircle";
+import { authAction } from "../../store/authenticaltionSlice";
+const NavigationBar = () => {
+  const dispatch = useDispatch();
+  const { isLogged_In } = useSelector((state) => {
+    return state.auth;
+  });
+
   let Links = [
     { name: "Home", links: "/" },
     { name: "Portal", links: "/portal" },
@@ -10,6 +17,9 @@ const NavigationBar = (props) => {
   ];
   let [open, setopen] = useState(false);
   let key = 0;
+  const loginHandler = () => {
+    dispatch(authAction.LoggedOut());
+  };
   return (
     <div className="shadow-md w-full">
       <div className="md:flex	 items-center justify-between py-0.5 md:px-10 px-15">
@@ -40,12 +50,20 @@ const NavigationBar = (props) => {
               </NavLink>
             </div>
           ))}
-          <Link
-            className="bg-red-600 text-xl text-white font-[Aerial] font-bold py-0.5 px-2 rounded md:ml-8 hover:shadow-xl duration-500"
-            to="/login"
-          >
-            Log In
-          </Link>
+          {isLogged_In ? (
+            <AccountCircleIcon
+              onClick={loginHandler}
+              style={{ fontSize: 45 }}
+              className="bg-red-600 text-xl text-white font-[Aerial] font-bold py-0.5 px-2 rounded md:ml-8 hover:shadow-xl duration-500"
+            />
+          ) : (
+            <Link
+              className="bg-red-600 text-xl text-white font-[Aerial] font-bold py-0.5 px-2 rounded md:ml-8 hover:shadow-xl duration-500"
+              to="/login"
+            >
+              Log In
+            </Link>
+          )}
         </div>
       </div>
     </div>

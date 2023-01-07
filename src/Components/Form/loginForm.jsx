@@ -1,7 +1,11 @@
 import React, { Fragment } from "react";
 import useInput from "../../hooks/formValidationHook";
 import { Button } from "../UI/Button";
+import { useDispatch } from "react-redux";
+import { authAction } from "../../store/authenticaltionSlice";
 export const Login = (props) => {
+  const dispatch = useDispatch();
+
   const {
     value: enteredEmail,
     isValid: enteredEmailIsValid,
@@ -26,6 +30,7 @@ export const Login = (props) => {
   }
   const formSubmissionHandler = (event) => {
     event.preventDefault();
+    dispatch(authAction.LoggedIn());
     if (!formIsValid) {
       return;
     }
@@ -84,21 +89,21 @@ export const Login = (props) => {
             Forgot password?
           </a>
         </div>
+        <div className="text-center lg:text-left pb-4">
+          <Button formvalid={formIsValid}>sign in</Button>
+          <p className="text-sm font-semibold mt-2 pt-1 mb-0">
+            Don't have an account?&nbsp;&nbsp;
+            <button
+              type="submit"
+              onClick={props.change}
+              className=" text-red-600 hover:text-red-700 focus:text-red-700 transition duration-200 ease-in-out text-sm font-semibold mb-0 inline cursor-pointer"
+            >
+              {" "}
+              Register
+            </button>
+          </p>
+        </div>
       </form>
-      <div className="text-center lg:text-left pb-4">
-        <Button formvalid={formIsValid}>sign in</Button>
-        <p className="text-sm font-semibold mt-2 pt-1 mb-0">
-          Don't have an account?&nbsp;&nbsp;
-          <button
-            type="submit"
-            onClick={props.change}
-            className=" text-red-600 hover:text-red-700 focus:text-red-700 transition duration-200 ease-in-out text-sm font-semibold mb-0 inline cursor-pointer"
-          >
-            {" "}
-            Register
-          </button>
-        </p>
-      </div>
     </Fragment>
   );
 };
