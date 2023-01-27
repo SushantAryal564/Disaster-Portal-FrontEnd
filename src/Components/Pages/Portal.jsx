@@ -1,19 +1,23 @@
 import React, { useEffect, useState } from "react";
 import Layout from "../Layout/Layout";
 import { LayersControl, MapContainer, Marker, TileLayer } from "react-leaflet";
-import { SideBar } from "../Layout/SidebarNav";
-import { LalitpurOda as LalitpurWard } from "./../../Data/LalitpurOda";
 import { GeoJSONLayer } from "../Map Layer/GeoJSONLayer";
+import { SideBar } from "../Layout/SidebarNav";
 import ResetViewControl from "@20tab/react-leaflet-resetview";
 import NavigateNextIcon from "@mui/icons-material/NavigateNext";
 import { useDispatch, useSelector } from "react-redux";
 import { disasterAsyncGETThunk } from "../../store/Slices/disasterSlice";
+import { slidebarAction } from "../../store/Slices/uiSlice";
 import Markers from "../UI/Marker";
+import Dashboard from "../../Sidebar/dashboard";
 export const Portal = () => {
   const dispatch = useDispatch();
   var [jsonLalitpurMetro, setJsonLalitpurMetro] = useState("");
   var [jsonWard, setJsonWard] = useState("");
   const postStatus = useSelector((state) => state.disaster.status);
+  const slidebarState = useSelector((state) => {
+    return state.slidebar.slidebarState;
+  });
   useEffect(() => {
     if (postStatus === "idle") {
       dispatch(disasterAsyncGETThunk());
@@ -31,21 +35,26 @@ export const Portal = () => {
     let datajson = await data.json();
     setJsonWard(datajson);
   };
+  const changeSlidebarState = () => {
+    dispatch(slidebarAction.changeSlidebarState());
+  };
   useEffect(() => {
     metroJSON();
     wardJSON();
   }, []);
-  console.log(jsonLalitpurMetro);
   const data = useSelector((state) => state.disaster.data);
-  const [open, setOpen] = useState(false);
+  const [slidercontent, changeSlidebarContent] = useState(<Dashboard />);
   const position = [27.67571580617923, 85.3183283194577];
   const scrollWheelZoom = true;
   return (
     <Layout>
       <div className="flex">
         <div
-          className={`${open ? "w-2/4" : "w-0"} duration-300 h-[90vh] relative`}
+          className={`${
+            slidebarState ? "w-2/4" : "w-0"
+          } duration-300 h-[90vh] relative`}
         >
+          {slidercontent}
           <NavigateNextIcon
             style={{
               maxWidth: "30px",
@@ -55,9 +64,9 @@ export const Portal = () => {
             }}
             className={`
               bg-white absolute cursor-pointer -right-[30px] top-1/2 w-7 border-2 z-50  ${
-                open ? "rotate-180 rounded-l-lg" : "rounded-r-lg"
+                slidebarState ? "rotate-180 rounded-l-lg" : "rounded-r-lg"
               }`}
-            onClick={() => setOpen(!open)}
+            onClick={changeSlidebarState}
           />
         </div>
         <MapContainer
@@ -99,7 +108,7 @@ export const Portal = () => {
             <Markers disaster={event} key={event.id} />
           ))}
         </MapContainer>
-        <SideBar />
+        <SideBar changeSlidebarContent={changeSlidebarContent} />
       </div>
     </Layout>
   );
