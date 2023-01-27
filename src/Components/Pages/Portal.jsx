@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Layout from "../Layout/Layout";
 import { LayersControl, MapContainer, TileLayer } from "react-leaflet";
 import { SideBar } from "../Layout/SidebarNav";
@@ -8,7 +8,18 @@ import { LalitpurOda as LalitpurWard } from "./../../Data/LalitpurOda";
 import { GeoJSONLayer } from "../Map Layer/GeoJSONLayer";
 import ResetViewControl from "@20tab/react-leaflet-resetview";
 import NavigateNextIcon from "@mui/icons-material/NavigateNext";
+import { useDispatch, useSelector } from "react-redux";
+import { disasterAsyncGETThunk } from "../../store/Slices/disasterSlice";
 export const Portal = () => {
+  const dispatch = useDispatch();
+  useEffect(() => {
+    dispatch(disasterAsyncGETThunk());
+  }, []);
+
+  const data = useSelector((state) => {
+    console.log(state);
+  });
+
   const [open, setOpen] = useState(false);
   const position = [27.568061, 85.378218];
   const scrollWheelZoom = true;

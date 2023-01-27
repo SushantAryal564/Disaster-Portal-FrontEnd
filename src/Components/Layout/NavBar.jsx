@@ -5,11 +5,6 @@ import { useSelector } from "react-redux";
 import AccountCircleIcon from "@mui/icons-material/AccountCircle";
 import { authAction } from "../../store/authenticaltionSlice";
 const NavigationBar = () => {
-  const dispatch = useDispatch();
-  const { isLogged_In } = useSelector((state) => {
-    return state.auth;
-  });
-
   let Links = [
     { name: "Home", links: "/" },
     { name: "Portal", links: "/portal" },
@@ -17,9 +12,6 @@ const NavigationBar = () => {
   ];
   let [open, setopen] = useState(false);
   let key = 0;
-  const loginHandler = () => {
-    dispatch(authAction.LoggedOut());
-  };
   return (
     <div className="shadow-md w-full">
       <div className="md:flex	 items-center justify-between py-0.5 md:px-10 px-15">
@@ -50,7 +42,7 @@ const NavigationBar = () => {
               </NavLink>
             </div>
           ))}
-          {isLogged_In ? (
+          {/*{isLogged_In ? (
             <AccountCircleIcon
               onClick={loginHandler}
               style={{ fontSize: 45 }}
@@ -63,7 +55,7 @@ const NavigationBar = () => {
             >
               Log In
             </Link>
-          )}
+          )}*/}
         </div>
       </div>
     </div>
