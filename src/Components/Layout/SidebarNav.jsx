@@ -9,44 +9,45 @@ import ArticleIcon from "@mui/icons-material/Article";
 import AssignmentIcon from "@mui/icons-material/Assignment";
 import FeedbackIcon from "@mui/icons-material/Feedback";
 import AccessTimeIcon from "@mui/icons-material/AccessTime";
-import Dashboard from "../../Sidebar/dashboard";
-import Incident from "../../Sidebar/incident";
-import DamageLoss from "../../Sidebar/damageLoss";
-import RiskInfo from "../../Sidebar/riskinfo";
-import { LiveData } from "../../Sidebar/realtime";
-import ReportAnAncident from "../../Sidebar/reportIncident";
-import DataArchieve from "../../Sidebar/dataArchive";
-import Situation from "../../Sidebar/situation";
-import Feedback from "@mui/icons-material/Feedback";
-
-export const SideBar = ({ changeSlidebarContent }) => {
+// import Dashboard from "../../Sidebar/dashboard";
+// import Incident from "../../Sidebar/incident";
+// import DamageLoss from "../../Sidebar/damageLoss";
+// import RiskInfo from "../../Sidebar/riskinfo";
+// import { LiveData } from "../../Sidebar/realtime";
+// import ReportAnAncident from "../../Sidebar/reportIncident";
+// import DataArchieve from "../../Sidebar/dataArchive";
+// import Situation from "../../Sidebar/situation";
+// import Feedback from "@mui/icons-material/Feedback";
+import { useDispatch } from "react-redux";
+import { setComponent } from "../../store/Slices/hope";
+export const SideBar = () => {
+  const dispatch = useDispatch();
   const handletoggleDashboard = (event) => {
-    changeSlidebarContent(<Dashboard />);
+    dispatch(setComponent("Dashboard"));
   };
   const handletoggleIncident = (event) => {
-    changeSlidebarContent(<Incident />);
+    dispatch(setComponent("Incident"));
   };
-
   const handletoggleDamageLoss = (event) => {
-    changeSlidebarContent(<DamageLoss />);
+    dispatch(setComponent("DamageLoss"));
   };
   const handletoggleRiskInfo = (event) => {
-    changeSlidebarContent(<RiskInfo />);
+    dispatch(setComponent("RiskInfo"));
   };
   const handletoggleRealTime = (event) => {
-    changeSlidebarContent(<LiveData />);
+    dispatch(setComponent("RealTime"));
   };
   const handletoggleReportAnAncident = (event) => {
-    changeSlidebarContent(<ReportAnAncident />);
+    dispatch(setComponent("Report"));
   };
   const handletoggleDataArchieve = (event) => {
-    changeSlidebarContent(<DataArchieve />);
+    dispatch(setComponent("DataArchieve"));
   };
   const handletoggleSituation = (event) => {
-    changeSlidebarContent(<Situation />);
+    dispatch(setComponent("Situation"));
   };
   const handletoggleDataFeedback = (event) => {
-    changeSlidebarContent(<Feedback />);
+    dispatch(setComponent("Feedback"));
   };
   const buttonInfo = [
     {

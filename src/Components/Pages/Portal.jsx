@@ -10,6 +10,14 @@ import { disasterAsyncGETThunk } from "../../store/Slices/disasterSlice";
 import { slidebarAction } from "../../store/Slices/uiSlice";
 import Markers from "../UI/Marker";
 import Dashboard from "../../Sidebar/dashboard";
+import Incident from "../../Sidebar/incident";
+import DamageLoss from "../../Sidebar/damageLoss";
+import RiskInfo from "../../Sidebar/riskinfo";
+import { LiveData } from "../../Sidebar/realtime";
+import ReportAnAncident from "../../Sidebar/reportIncident";
+import DataArchieve from "../../Sidebar/dataArchive";
+import Situation from "../../Sidebar/situation";
+import Feedback from "@mui/icons-material/Feedback";
 export const Portal = () => {
   const dispatch = useDispatch();
   var [jsonLalitpurMetro, setJsonLalitpurMetro] = useState("");
@@ -23,6 +31,34 @@ export const Portal = () => {
       dispatch(disasterAsyncGETThunk());
     }
   }, [postStatus, dispatch]);
+  const component = useSelector((state) => {
+    return state.component;
+  });
+  const changeComponent = (compName) => {
+    switch (compName) {
+      case "Dashboard":
+        return <Dashboard />;
+      case "Incident":
+        return <Incident />;
+      case "DamageLoss":
+        return <DamageLoss />;
+      case "RiskInfo":
+        return <RiskInfo />;
+      case "RealTime":
+        return <LiveData />;
+      case "Report":
+        return <ReportAnAncident />;
+      case "DataArchieve":
+        return <DataArchieve />;
+      case "Situation":
+        return <Situation />;
+      case "Feedback":
+        return <Feedback />;
+      default:
+        return <Dashboard />;
+    }
+  };
+  const ComponentToRender = changeComponent(component);
   const metroJSON = async () => {
     let data = await fetch(
       "http://127.0.0.1:8000/api/v1/spatial/lalitpurMetro/"
@@ -43,7 +79,6 @@ export const Portal = () => {
     wardJSON();
   }, []);
   const data = useSelector((state) => state.disaster.data);
-  const [slidercontent, changeSlidebarContent] = useState(<Dashboard />);
   const position = [27.67571580617923, 85.3183283194577];
   const scrollWheelZoom = true;
   return (
@@ -54,7 +89,7 @@ export const Portal = () => {
             slidebarState ? "w-2/4" : "w-0"
           } duration-300 h-[90vh] relative`}
         >
-          {slidercontent}
+          {ComponentToRender}
           <NavigateNextIcon
             style={{
               maxWidth: "30px",
@@ -108,7 +143,7 @@ export const Portal = () => {
             <Markers disaster={event} key={event.id} />
           ))}
         </MapContainer>
-        <SideBar changeSlidebarContent={changeSlidebarContent} />
+        <SideBar />
       </div>
     </Layout>
   );
