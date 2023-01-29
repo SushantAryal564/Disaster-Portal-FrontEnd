@@ -3,7 +3,7 @@ import Incident from "../../Sidebar/incident";
 import Dashboard from "../../Sidebar/dashboard";
 import DamageLoss from "../../Sidebar/damageLoss";
 import RiskInfo from "../../Sidebar/riskinfo";
-import RealTime from "../../Sidebar/realtime";
+import { LiveData } from "../../Sidebar/realtime";
 import ReportAnAncident from "../../Sidebar/reportIncident";
 import DataArchieve from "../../Sidebar/dataArchive";
 import Situation from "../../Sidebar/situation";
@@ -28,7 +28,7 @@ const SlidebarContentSlice = createSlice({
       state.selectedSlidebarComponent = <RiskInfo />;
     },
     selectedRealTime(state) {
-      state.selectedSlidebarComponent = <RealTime />;
+      state.selectedSlidebarComponent = <LiveData />;
     },
     selectedReportIncident(state) {
       state.selectedSlidebarComponent = <ReportAnAncident />;

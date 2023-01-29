@@ -1,9 +1,5 @@
 import React, { useState } from "react";
 import { NavLink, Link } from "react-router-dom";
-import { useDispatch } from "react-redux";
-import { useSelector } from "react-redux";
-import AccountCircleIcon from "@mui/icons-material/AccountCircle";
-import { authAction } from "../../store/authenticaltionSlice";
 const NavigationBar = () => {
   let Links = [
     { name: "Home", links: "/" },

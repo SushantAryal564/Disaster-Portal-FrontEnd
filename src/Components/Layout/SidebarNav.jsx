@@ -13,7 +13,7 @@ import Dashboard from "../../Sidebar/dashboard";
 import Incident from "../../Sidebar/incident";
 import DamageLoss from "../../Sidebar/damageLoss";
 import RiskInfo from "../../Sidebar/riskinfo";
-import RealTime from "../../Sidebar/realtime";
+import { LiveData } from "../../Sidebar/realtime";
 import ReportAnAncident from "../../Sidebar/reportIncident";
 import DataArchieve from "../../Sidebar/dataArchive";
 import Situation from "../../Sidebar/situation";
@@ -34,7 +34,7 @@ export const SideBar = ({ changeSlidebarContent }) => {
     changeSlidebarContent(<RiskInfo />);
   };
   const handletoggleRealTime = (event) => {
-    changeSlidebarContent(<RealTime />);
+    changeSlidebarContent(<LiveData />);
   };
   const handletoggleReportAnAncident = (event) => {
     changeSlidebarContent(<ReportAnAncident />);

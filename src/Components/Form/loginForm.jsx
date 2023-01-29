@@ -2,7 +2,6 @@ import React, { Fragment } from "react";
 import useInput from "../../hooks/formValidationHook";
 import { Button } from "../UI/Button";
 import { useDispatch } from "react-redux";
-import { authAction } from "../../store/authenticaltionSlice";
 export const Login = (props) => {
   const dispatch = useDispatch();
 
@@ -30,7 +29,6 @@ export const Login = (props) => {
   }
   const formSubmissionHandler = (event) => {
     event.preventDefault();
-    dispatch(authAction.LoggedIn());
     if (!formIsValid) {
       return;
     }
