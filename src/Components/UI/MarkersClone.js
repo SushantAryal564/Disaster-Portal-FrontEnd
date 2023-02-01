@@ -43,8 +43,19 @@ export var blackIcon = L.icon({
   shadowSize: [41, 41],
 });
 
-function Markers({ disaster: event }) {
-  console.log('Marker gets',event);
+export var stationIcon = L.icon({
+  iconUrl:
+    require("./black.jpg"),
+  shadowUrl:
+    "https://cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.7/images/marker-shadow.png",
+  iconSize: [25, 25],
+  iconAnchor: [12, 41],
+  popupAnchor: [1, -34],
+  shadowSize: [10, 10],
+});
+
+function MarkersClone({ disaster: event }) {
+  console.log('Markerclone gets',event[0]);
   const getIcon = (type) => {
     switch (event.type) {
       case "Flood":
@@ -59,23 +70,23 @@ function Markers({ disaster: event }) {
         return greenIcon;
     }
   };
-  return (
-    <Marker
+  return (<>
+    {event.map(event=>(<Marker
       key={`disaster-${event.id}`}
-      position={[event.lat || 23, event.long || 83]}
-      icon={getIcon(event.name)}
+      position={[event.point.coordinates[1],event.point.coordinates[0]]}
+      icon={stationIcon}
     >
       <Popup>
         <div class="">
           <div class="bg-indigo-700 text-white text-md border-gray-200 border-t-2 pt-3 ">
             <center>
-              <h1>{event.name}</h1>
+              <h1>{event.name}{event.title}</h1>
             </center>
             <br />
           </div>
 
           <div class="text-black-900 text-sm mt-3">
-            Fire in the forest of Godawari
+            {event.title}
           </div>
           <div className="border-gray-200 border-b-2 p-3 hover:bg-gray-200 py-4">
             <div className="text-md font-medium flex flex-row  ">
@@ -104,8 +115,8 @@ function Markers({ disaster: event }) {
           </div>
         </div>
       </Popup>
-    </Marker>
-  );
+    </Marker>))}
+ </> );
 }
 
-export default Markers;
+export default MarkersClone;

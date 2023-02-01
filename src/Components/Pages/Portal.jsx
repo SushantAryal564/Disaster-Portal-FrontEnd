@@ -9,6 +9,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { disasterAsyncGETThunk } from "../../store/Slices/disasterSlice";
 import { slidebarAction } from "../../store/Slices/uiSlice";
 import Markers from "../UI/Marker";
+import MarkersClone from "../UI/MarkersClone"
 import Dashboard from "../../Sidebar/dashboard";
 import Incident from "../../Sidebar/incident";
 import DamageLoss from "../../Sidebar/damageLoss";
@@ -18,7 +19,7 @@ import ReportAnAncident from "../../Sidebar/reportIncident";
 import DataArchieve from "../../Sidebar/dataArchive";
 import Situation from "../../Sidebar/situation";
 import Feedback from "@mui/icons-material/Feedback";
-import { LivePollutionDataAsyncGETThunk } from "../../store/Slices/livedataSlice";
+import { LivePollutionDataAsyncGETThunk, WaterDataAsyncGETThunk } from "../../store/Slices/livedataSlice";
 
 
 
@@ -26,7 +27,8 @@ export const Portal = () => {
   const dispatch = useDispatch();
   var [jsonLalitpurMetro, setJsonLalitpurMetro] = useState("");
   var [jsonWard, setJsonWard] = useState("");
-  const postStatus = useSelector((state) => state.disaster.status);
+  const disasterStatus = useSelector((state) => state.disaster.status);
+  const realStatus = useSelector((state) => state.live.status);
   const slidebarState = useSelector((state) => {
     return state.slidebar.slidebarState;
   });
@@ -34,22 +36,22 @@ export const Portal = () => {
 //get dashboard
 
   useEffect(() => {
-    if (postStatus === "idle" && component=="Dashboard") {
-    
+    if (  component=="Dashboard") { 
       dispatch(disasterAsyncGETThunk());
     }
-  }, [postStatus, dispatch]);
+  }, []);
   //realtime
   useEffect(() => {
-    if (postStatus === "idle" && component=="RealTime") {
+    if (realStatus === "idle" && component=="RealTime") {
       dispatch(LivePollutionDataAsyncGETThunk());
+      dispatch(WaterDataAsyncGETThunk());
     }
-  }, [postStatus, dispatch]);
+  }, [realStatus, dispatch]);
   const component = useSelector((state) => {
     return state.component;
   });
 
-  console.log(component,'rednered compnent')
+  console.log(component,'rednered compnent---com name')
   const changeComponent = (compName) => {
     switch (compName) {
       case "Dashboard":
@@ -173,20 +175,20 @@ console.log('data',realtimedatawater)
             icon="url(/some/relative/path.png)"
             position="topright"
           />
-          {component=='Dashboard'?datadisaster.map((event) => {
-            console.log('disaster')
+          {component=='Dashboard'? datadisaster.map((event) => {
+            console.log('disaster marker')
             return <Markers disaster={event} key={event.id} />
             }):''}
 
-          {component=='RealTime'?realtimedatawater.map((event) => (  
-            <Markers disaster={event} key={event.id} />
+          {component=='RealTime'?realtimedatawater.map((event) => {
+             console.log('realwater marker')
+            return <MarkersClone disaster={event.results} key={event.id} />
+ }):''}
+            {component=='RealTime'?realtimepollution.map((event) => {
+             console.log('realpoll marker')
+            return <MarkersClone disaster={event.results} key={event.id} />
 
-          )):''}
-          {component=='RealTime'?realtimepollution.map((event) => (
-      
-            <Markers disaster={event} key={event.id} />
-     
-    )):''}
+ }):''}
         </MapContainer>
         <SideBar />
       </div>
