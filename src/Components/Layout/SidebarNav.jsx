@@ -9,15 +9,6 @@ import ArticleIcon from "@mui/icons-material/Article";
 import AssignmentIcon from "@mui/icons-material/Assignment";
 import FeedbackIcon from "@mui/icons-material/Feedback";
 import AccessTimeIcon from "@mui/icons-material/AccessTime";
-// import Dashboard from "../../Sidebar/dashboard";
-// import Incident from "../../Sidebar/incident";
-// import DamageLoss from "../../Sidebar/damageLoss";
-// import RiskInfo from "../../Sidebar/riskinfo";
-// import { LiveData } from "../../Sidebar/realtime";
-// import ReportAnAncident from "../../Sidebar/reportIncident";
-// import DataArchieve from "../../Sidebar/dataArchive";
-// import Situation from "../../Sidebar/situation";
-// import Feedback from "@mui/icons-material/Feedback";
 import { useDispatch } from "react-redux";
 import { setComponent } from "../../store/Slices/hope";
 export const SideBar = () => {

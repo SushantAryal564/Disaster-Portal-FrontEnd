@@ -18,47 +18,76 @@ import ReportAnAncident from "../../Sidebar/reportIncident";
 import DataArchieve from "../../Sidebar/dataArchive";
 import Situation from "../../Sidebar/situation";
 import Feedback from "@mui/icons-material/Feedback";
+import { WaterDataAsyncGETThunk } from "../../store/Slices/livedataSlice";
+import { LivePollutionDataAsyncGETThunk } from "../../store/Slices/livedataSlice";
 export const Portal = () => {
   const dispatch = useDispatch();
   var [jsonLalitpurMetro, setJsonLalitpurMetro] = useState("");
   var [jsonWard, setJsonWard] = useState("");
-  const postStatus = useSelector((state) => state.disaster.status);
+  // const postStatus = useSelector((state) => state.disaster.status);
   const slidebarState = useSelector((state) => {
     return state.slidebar.slidebarState;
   });
-  useEffect(() => {
-    if (postStatus === "idle") {
-      dispatch(disasterAsyncGETThunk());
-    }
-  }, [postStatus, dispatch]);
-  const component = useSelector((state) => {
+  let [component, setComponent] = useState(<Dashboard />);
+  const componentname = useSelector((state) => {
     return state.component;
   });
-  const changeComponent = (compName) => {
-    switch (compName) {
-      case "Dashboard":
-        return <Dashboard />;
-      case "Incident":
-        return <Incident />;
-      case "DamageLoss":
-        return <DamageLoss />;
-      case "RiskInfo":
-        return <RiskInfo />;
-      case "RealTime":
-        return <LiveData />;
-      case "Report":
-        return <ReportAnAncident />;
-      case "DataArchieve":
-        return <DataArchieve />;
-      case "Situation":
-        return <Situation />;
-      case "Feedback":
-        return <Feedback />;
-      default:
-        return <Dashboard />;
+  const data = useSelector((state) => {
+    if (componentname === "RealTime") {
+      console.log(state.live.water);
+      console.log(state.live.pollution);
+      // return [...state.live.water.results, ...state.live.pollution.results];
+    } else {
+      return state.disaster.data;
     }
-  };
-  const ComponentToRender = changeComponent(component);
+  });
+  console.log(data);
+  useEffect(() => {
+    switch (componentname) {
+      case "Dashboard":
+        dispatch(disasterAsyncGETThunk());
+        setComponent(<Dashboard />);
+        return;
+      case "Incident":
+        dispatch(disasterAsyncGETThunk());
+        setComponent(<Incident />);
+        return;
+      case "DamageLoss":
+        dispatch(disasterAsyncGETThunk());
+        setComponent(<DamageLoss />);
+        return;
+      case "RiskInfo":
+        dispatch(LivePollutionDataAsyncGETThunk());
+        dispatch(WaterDataAsyncGETThunk());
+        setComponent(<RiskInfo />);
+        return;
+      case "RealTime":
+        dispatch(disasterAsyncGETThunk());
+        setComponent(<LiveData />);
+        return;
+      case "Report":
+        dispatch(disasterAsyncGETThunk());
+        setComponent(<ReportAnAncident />);
+        return;
+      case "DataArchieve":
+        dispatch(disasterAsyncGETThunk());
+        setComponent(<DataArchieve />);
+        return;
+      case "Situation":
+        dispatch(disasterAsyncGETThunk());
+        setComponent(<Situation />);
+        return;
+      case "Feedback":
+        dispatch(disasterAsyncGETThunk());
+        setComponent(<Feedback />);
+        return;
+      default:
+        dispatch(disasterAsyncGETThunk());
+        setComponent(<Dashboard />);
+    }
+  }, [dispatch, componentname]);
+  console.log(component);
+
   const metroJSON = async () => {
     let data = await fetch(
       "http://127.0.0.1:8000/api/v1/spatial/lalitpurMetro/"
@@ -78,7 +107,6 @@ export const Portal = () => {
     metroJSON();
     wardJSON();
   }, []);
-  const data = useSelector((state) => state.disaster.data);
   const position = [27.67571580617923, 85.3183283194577];
   const scrollWheelZoom = true;
   return (
@@ -89,7 +117,7 @@ export const Portal = () => {
             slidebarState ? "w-2/4" : "w-0"
           } duration-300 h-[90vh] relative`}
         >
-          {ComponentToRender}
+          {component}
           <NavigateNextIcon
             style={{
               maxWidth: "30px",
