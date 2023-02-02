@@ -19,66 +19,76 @@ import ReportAnAncident from "../../Sidebar/reportIncident";
 import DataArchieve from "../../Sidebar/dataArchive";
 import Situation from "../../Sidebar/situation";
 import Feedback from "@mui/icons-material/Feedback";
+import {
+  DASHBOARD,
+  INCIDENT,
+  DAMAGELOSS,
+  RISKINFO,
+  REALTIME,
+  REPORT,
+  DATA,
+  SITUATION,
+  FEEDBACK,
+} from "./../../store/constant";
+import {
+  LivePollutionDataAsyncGETThunk,
+  WaterDataAsyncGETThunk,
+} from "../../store/Slices/livedataSlice";
+
 export const Portal = () => {
   const dispatch = useDispatch();
   var [jsonLalitpurMetro, setJsonLalitpurMetro] = useState("");
   var [jsonWard, setJsonWard] = useState("");
-  const postStatus = useSelector((state) => state.disaster.status);
+  const disasterStatus = useSelector((state) => state.disaster.status);
+  const realStatus = useSelector((state) => state.live.status);
   const slidebarState = useSelector((state) => {
     return state.slidebar.slidebarState;
   });
+
+  //get dashboard
+
   useEffect(() => {
-    if (postStatus === "idle") {
+    if (component == "Dashboard") {
       dispatch(disasterAsyncGETThunk());
     }
-  }, [postStatus, dispatch]);
+  }, []);
+  //realtime
+  useEffect(() => {
+    if (realStatus === "idle" && component == "RealTime") {
+      dispatch(LivePollutionDataAsyncGETThunk());
+      dispatch(WaterDataAsyncGETThunk());
+    }
+  }, [realStatus, dispatch]);
   const component = useSelector((state) => {
     return state.component;
   });
+
+  console.log(component, "rednered compnent---com name");
   const changeComponent = (compName) => {
     switch (compName) {
-      case "Dashboard":
-        dispatch(disasterAsyncGETThunk());
-        setComponent(<Dashboard />);
-        return;
-      case "Incident":
-        dispatch(disasterAsyncGETThunk());
-        setComponent(<Incident />);
-        return;
-      case "DamageLoss":
-        dispatch(disasterAsyncGETThunk());
-        setComponent(<DamageLoss />);
-        return;
-      case "RiskInfo":
-        dispatch(LivePollutionDataAsyncGETThunk());
-        dispatch(WaterDataAsyncGETThunk());
-        setComponent(<RiskInfo />);
-        return;
-      case "RealTime":
-        dispatch(disasterAsyncGETThunk());
-        setComponent(<LiveData />);
-        return;
-      case "Report":
-        dispatch(disasterAsyncGETThunk());
-        setComponent(<ReportAnAncident />);
-        return;
-      case "DataArchieve":
-        dispatch(disasterAsyncGETThunk());
-        setComponent(<DataArchieve />);
-        return;
-      case "Situation":
-        dispatch(disasterAsyncGETThunk());
-        setComponent(<Situation />);
-        return;
-      case "Feedback":
-        dispatch(disasterAsyncGETThunk());
-        setComponent(<Feedback />);
-        return;
+      case DASHBOARD:
+        return <Dashboard />;
+      case INCIDENT:
+        return <Incident />;
+      case DAMAGELOSS:
+        return <DamageLoss />;
+      case RISKINFO:
+        return <RiskInfo />;
+      case REALTIME:
+        return <LiveData />;
+      case REPORT:
+        return <ReportAnAncident />;
+      case DATA:
+        return <DataArchieve />;
+      case SITUATION:
+        return <Situation />;
+      case FEEDBACK:
+        return <Feedback />;
       default:
-        dispatch(disasterAsyncGETThunk());
-        setComponent(<Dashboard />);
+        return <Dashboard />;
     }
   };
+
   const ComponentToRender = changeComponent(component);
   const metroJSON = async () => {
     let data = await fetch(
@@ -102,7 +112,13 @@ export const Portal = () => {
     metroJSON();
     wardJSON();
   }, []);
-  const data = useSelector((state) => state.disaster.data);
+
+  //disaster selector
+  const datadisaster = useSelector((state) => state.disaster.data);
+  //
+  const realtimedatawater = useSelector((state) => state.live.water);
+  const realtimepollution = useSelector((state) => state.live.pollution);
+
   const position = [27.67571580617923, 85.3183283194577];
   const scrollWheelZoom = true;
   return (
@@ -163,20 +179,20 @@ export const Portal = () => {
             icon="url(/some/relative/path.png)"
             position="topright"
           />
-          {component == "Dashboard"
+          {component == DASHBOARD
             ? datadisaster.map((event) => {
                 console.log("disaster marker");
                 return <Markers disaster={event} key={event.id} />;
               })
             : ""}
 
-          {component == "RealTime"
+          {component == REALTIME
             ? realtimedatawater.map((event) => {
                 console.log("realwater marker");
                 return <MarkersClone disaster={event.results} key={event.id} />;
               })
             : ""}
-          {component == "RealTime"
+          {component == REALTIME
             ? realtimepollution.map((event) => {
                 console.log("realpoll marker");
                 return <MarkersClone disaster={event.results} key={event.id} />;
