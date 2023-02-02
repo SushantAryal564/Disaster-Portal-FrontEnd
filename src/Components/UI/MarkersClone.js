@@ -44,8 +44,7 @@ export var blackIcon = L.icon({
 });
 
 export var stationIcon = L.icon({
-  iconUrl:
-    require("./black.jpg"),
+  iconUrl: require("./black.jpg"),
   shadowUrl:
     "https://cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.7/images/marker-shadow.png",
   iconSize: [25, 25],
@@ -55,7 +54,7 @@ export var stationIcon = L.icon({
 });
 
 function MarkersClone({ disaster: event }) {
-  console.log('Markerclone gets',event[0]);
+  console.log("Markerclone gets", event[0]);
   const getIcon = (type) => {
     switch (event.type) {
       case "Flood":
@@ -70,53 +69,65 @@ function MarkersClone({ disaster: event }) {
         return greenIcon;
     }
   };
-  return (<>
-    {event.map(event=>(<Marker
-      key={`disaster-${event.id}`}
-      position={[event.point.coordinates[1],event.point.coordinates[0]]}
-      icon={stationIcon}
-    >
-      <Popup>
-        <div class="">
-          <div class="bg-indigo-700 text-white text-md border-gray-200 border-t-2 pt-3 ">
-            <center>
-              <h1>{event.name}{event.title}</h1>
-            </center>
-            <br />
-          </div>
-
-          <div class="text-black-900 text-sm mt-3">
-            {event.title}
-          </div>
-          <div className="border-gray-200 border-b-2 p-3 hover:bg-gray-200 py-4">
-            <div className="text-md font-medium flex flex-row  ">
-              <div className="text-red-700 text-sm flex flex-col  border-indigo-300 border-r-2 pr-4">
-                <span className="px-2">
-                  {" "}
-                  <AiFillFire size={30} />
-                </span>
-                <p className="text-xs pl-3">Fire</p>
+  return (
+    <>
+      {event.map((event) => (
+        <Marker
+          key={`disaster-${event.id}`}
+          position={[event.point.coordinates[1], event.point.coordinates[0]]}
+          icon={stationIcon}
+        >
+          <Popup>
+            <div class="">
+              <div class="bg-indigo-700 text-white text-md border-gray-200 border-t-2 pt-3 ">
+                <center>
+                  <h1>
+                    {event.name}
+                    {event.title}
+                  </h1>
+                </center>
+                <br />
               </div>
-              <span className="font-normal ml-5 pt-1 text-sm">
-                <div className="font-semibold "> Kyonjan Municipality</div>
-                <div>
-                  <div className="text-xs  text-gray-500 flex justify-start ">
-                    <span className="">2023/1/23</span>
-                    <div className="flex items-center px-2">
-                      <span>
-                        <BiAlarm />
-                      </span>
-                      <span className="pl-1">4:55</span>
+
+              {event.tags ? (
+                <div class="text-gray-700 text-xs mt-3">
+                   {event.tags[0].name}   {event.tags[0].description}
+                </div>
+              ) : (
+                ""
+              )}
+              <div class="text-gray-700 text-xs mt-3">
+                <p className="text-red-500">{event.description}</p>
+              </div>
+              <div class="text-black-900 text-sm mt-3">
+                <span className="text-xs text-gray-400">
+                  Data source-{event.dataSource}
+                </span>
+              </div>
+              <span className="font-normal ml-5 pt-1 text-sm border-t-2 ">
+                  <div className="font-semibold ">{event.status}</div>
+                  <div>
+                    <div className="text-xs text-gray-500  ">
+                      <div className="flex items-center px-2">
+                        <span className="pl-1">{event.waterLevelOn}</span>
+                      </div>
                     </div>
                   </div>
+                </span>
+              <div className="text-md font-medium   ">
+                <div className="text-red-700 text-sm   border-indigo-300 border-r-2 pr-4">
+                  <span className="px-2">
+                    {event.images ? <img src={event.images[0]}></img> : ""}
+                    
+                  </span>
                 </div>
-              </span>
+              </div>
             </div>
-          </div>
-        </div>
-      </Popup>
-    </Marker>))}
- </> );
+          </Popup>
+        </Marker>
+      ))}
+    </>
+  );
 }
 
 export default MarkersClone;
