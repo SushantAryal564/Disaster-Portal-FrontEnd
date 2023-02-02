@@ -9,6 +9,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { disasterAsyncGETThunk } from "../../store/Slices/disasterSlice";
 import { slidebarAction } from "../../store/Slices/uiSlice";
 import Markers from "../UI/Marker";
+import MarkersClone from "../UI/MarkersClone"
 import Dashboard from "../../Sidebar/dashboard";
 import Incident from "../../Sidebar/incident";
 import DamageLoss from "../../Sidebar/damageLoss";
@@ -18,22 +19,39 @@ import ReportAnAncident from "../../Sidebar/reportIncident";
 import DataArchieve from "../../Sidebar/dataArchive";
 import Situation from "../../Sidebar/situation";
 import Feedback from "@mui/icons-material/Feedback";
+import { LivePollutionDataAsyncGETThunk, WaterDataAsyncGETThunk } from "../../store/Slices/livedataSlice";
+
+
+
 export const Portal = () => {
   const dispatch = useDispatch();
   var [jsonLalitpurMetro, setJsonLalitpurMetro] = useState("");
   var [jsonWard, setJsonWard] = useState("");
-  const postStatus = useSelector((state) => state.disaster.status);
+  const disasterStatus = useSelector((state) => state.disaster.status);
+  const realStatus = useSelector((state) => state.live.status);
   const slidebarState = useSelector((state) => {
     return state.slidebar.slidebarState;
   });
+  
+//get dashboard
+
   useEffect(() => {
-    if (postStatus === "idle") {
+    if (  component=="Dashboard") { 
       dispatch(disasterAsyncGETThunk());
     }
-  }, [postStatus, dispatch]);
+  }, []);
+  //realtime
+  useEffect(() => {
+    if (realStatus === "idle" && component=="RealTime") {
+      dispatch(LivePollutionDataAsyncGETThunk());
+      dispatch(WaterDataAsyncGETThunk());
+    }
+  }, [realStatus, dispatch]);
   const component = useSelector((state) => {
     return state.component;
   });
+
+  console.log(component,'rednered compnent---com name')
   const changeComponent = (compName) => {
     switch (compName) {
       case "Dashboard":
@@ -58,6 +76,7 @@ export const Portal = () => {
         return <Dashboard />;
     }
   };
+
   const ComponentToRender = changeComponent(component);
   const metroJSON = async () => {
     let data = await fetch(
@@ -66,29 +85,45 @@ export const Portal = () => {
     let datajson = await data.json();
     setJsonLalitpurMetro(datajson);
   };
+
   const wardJSON = async () => {
     let data = await fetch("http://127.0.0.1:8000/api/v1/spatial/ward/");
     let datajson = await data.json();
     setJsonWard(datajson);
   };
+
   const changeSlidebarState = () => {
     dispatch(slidebarAction.changeSlidebarState());
   };
+
   useEffect(() => {
     metroJSON();
     wardJSON();
   }, []);
-  const data = useSelector((state) => state.disaster.data);
+  
+ //disaster selector
+  const datadisaster = useSelector((state) => state.disaster.data);
+//
+const realtimedatawater = useSelector((state) => state.live.water);
+const realtimepollution =useSelector((state) => state.live.pollution);
+console.log('realtimewatre',realtimedatawater)
+
+console.log('realtimepollutio',realtimepollution)
+
+console.log('data',realtimedatawater)
+
   const position = [27.67571580617923, 85.3183283194577];
   const scrollWheelZoom = true;
   return (
     <Layout>
+
       <div className="flex">
         <div
           className={`${
             slidebarState ? "w-2/4" : "w-0"
           } duration-300 h-[90vh] relative`}
         >
+
           {ComponentToRender}
           <NavigateNextIcon
             style={{
@@ -103,6 +138,7 @@ export const Portal = () => {
               }`}
             onClick={changeSlidebarState}
           />
+
         </div>
         <MapContainer
           center={position}
@@ -139,9 +175,20 @@ export const Portal = () => {
             icon="url(/some/relative/path.png)"
             position="topright"
           />
-          {data.map((event) => (
-            <Markers disaster={event} key={event.id} />
-          ))}
+          {component=='Dashboard'? datadisaster.map((event) => {
+            console.log('disaster marker')
+            return <Markers disaster={event} key={event.id} />
+            }):''}
+
+          {component=='RealTime'?realtimedatawater.map((event) => {
+             console.log('realwater marker')
+            return <MarkersClone disaster={event.results} key={event.id} />
+ }):''}
+            {component=='RealTime'?realtimepollution.map((event) => {
+             console.log('realpoll marker')
+            return <MarkersClone disaster={event.results} key={event.id} />
+
+ }):''}
         </MapContainer>
         <SideBar />
       </div>
