@@ -126,7 +126,7 @@ function MarkersClone({ disaster: event }) {
                 <div className="text-md font-medium   ">
                   <div className="text-red-700 text-sm   border-indigo-300 border-r-2 pr-4">
                     <span className="px-2">
-                      <img src={event.images[0]}></img>
+                      <img  className='object-scale-down h-48 w-96' src={event.images[0]}></img>
                     </span>
                   </div>
                 </div>
@@ -137,7 +137,7 @@ function MarkersClone({ disaster: event }) {
                 <div className="text-md font-medium   ">
                   <div className="text-red-700 text-sm   border-indigo-300 border-r-2 pr-4">
                     <span className="px-2">
-                      <img src={event.image}></img>
+                      <img className='object-none h-48 w-96' src={event.image}></img>
                     </span>
                   </div>
                 </div>
