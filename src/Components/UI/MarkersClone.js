@@ -3,73 +3,14 @@ import { Marker, Popup } from "react-leaflet";
 import { AiFillFire } from "react-icons/ai";
 import { BiAlarm } from "react-icons/bi";
 import defaultimage from './black.jpg'
-export var greenIcon = L.icon({
-  iconUrl:
-    "https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-green.png",
-  shadowUrl:
-    "https://cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.7/images/marker-shadow.png",
-  iconSize: [25, 41],
-  iconAnchor: [12, 41],
-  popupAnchor: [1, -34],
-  shadowSize: [41, 41],
-});
-export var redIcon = L.icon({
-  iconUrl:
-    "https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-red.png",
-  shadowUrl:
-    "https://cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.7/images/marker-shadow.png",
-  iconSize: [25, 41],
-  iconAnchor: [12, 41],
-  popupAnchor: [1, -34],
-  shadowSize: [41, 41],
-});
-export var blueIcon = L.icon({
-  iconUrl:
-    "https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-blue.png",
-  shadowUrl:
-    "https://cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.7/images/marker-shadow.png",
-  iconSize: [25, 41],
-  iconAnchor: [12, 41],
-  popupAnchor: [1, -34],
-  shadowSize: [41, 41],
-});
-export var blackIcon = L.icon({
-  iconUrl:
-    "https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-black.png",
-  shadowUrl:
-    "https://cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.7/images/marker-shadow.png",
-  iconSize: [25, 41],
-  iconAnchor: [12, 41],
-  popupAnchor: [1, -34],
-  shadowSize: [41, 41],
-});
+import { useSelector } from "react-redux";
 
-export var stationIcon = L.icon({
-  iconUrl: require("./black.jpg"),
-  shadowUrl:
-    "https://cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.7/images/marker-shadow.png",
-  iconSize: [25, 25],
-  iconAnchor: [12, 41],
-  popupAnchor: [1, -34],
-  shadowSize: [10, 10],
-});
 
 function MarkersClone({ disaster: event }) {
-  console.log("Markerclone gets", event[0]);
-  const getIcon = (type) => {
-    switch (event.type) {
-      case "Flood":
-        return blueIcon;
-      case "Fire":
-        return redIcon;
-      case "LandSlide":
-        return blackIcon;
-      case "Other":
-        return greenIcon;
-      default:
-        return greenIcon;
-    }
-  };
+  const selecteddata =useSelector(state=>state.selected.selectedMarkerId)
+
+  console.log(selecteddata,'from marker selected marker is')
+  
   return (
     <>
       {event.map((event) => (
@@ -77,9 +18,10 @@ function MarkersClone({ disaster: event }) {
           key={`disaster-${event.id}`}
           position={[event.point.coordinates[1], event.point.coordinates[0]]}
           icon={ new L.DivIcon({
-            className: 'blinking-marker',
+            className:  selecteddata==event.id?'blinking-marker-selected':"blinking-marker",
           })}
         >
+
           <Popup maxWidth={400}>
             <div className=" pop-width w-96 p-2">
               <div className="bg-teal-500 text-white text-md border-gray-200 border-t-2 pt-3 ">
