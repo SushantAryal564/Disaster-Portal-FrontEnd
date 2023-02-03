@@ -2,10 +2,13 @@ import React, { useEffect } from "react";
 import { BiWater } from "react-icons/bi";
 import { GiFactory } from "react-icons/gi";
 import { useDispatch, useSelector } from "react-redux";
+
+
 import {
   LivePollutionDataAsyncGETThunk,
   WaterDataAsyncGETThunk,
 } from "../store/Slices/livedataSlice";
+import { selectMarker } from "../store/Slices/selecteddata";
 
 export const LiveData = () => {
   const dispatch = useDispatch();
@@ -47,6 +50,8 @@ export const LiveData = () => {
   );
 };
 export const Pollution = ({ data }) => {
+
+  const dispatch = useDispatch();
   return (
     <div>
       <div className="text-[12px] p-1 bg-teal-500 text-white">Pollution Live Data</div>
@@ -73,11 +78,10 @@ export const Pollution = ({ data }) => {
                   </div>
                 </div>
               </div>
-
               {data.map((instance) => {
                 return (
-                  <div className=" border-gray-300 hover:bg-gray-100">
-                    <div className="pl-3 w-full  transition duration-300 ease-in-out bg-white flex justify-evenly ">
+                  <div className=" border-gray-300 hover:bg-gray-400" onClick={()=>dispatch(selectMarker(instance.id))}>
+                    <div className="pl-3 w-full  hover:bg-gray-200 cursor-pointer transition duration-300 ease-in-out bg-white flex justify-evenly ">
                       <div className="text-[12px] text-gray-900 font-light px-8 py-2 whitespace-nowrap">
                         {instance.id}
                       </div>
@@ -115,6 +119,7 @@ export const Pollution = ({ data }) => {
 };
 
 export const Water = ({ data2 }) => {
+  const dispatch=useDispatch()
   return (
     <div>
       <div className="text-[12px] p-1 bg-teal-500 text-white">River Live Data</div>
@@ -144,8 +149,8 @@ export const Water = ({ data2 }) => {
 
               {data2.map((instance) => {
                 return (
-                  <div className="  hover:bg-gray-100 ">
-                    <div className="w-full   transition duration-300 ease-in-out bg-white flex justify-evenly pl-4 ">
+                  <div className="  hover:bg-gray-100 " onClick={()=>dispatch(selectMarker(instance.id))}>
+                    <div className="w-full    hover:bg-gray-200 cursor-pointer transition duration-300 ease-in-out bg-white flex justify-evenly pl-4 ">
                       <div className="text-[12px] text-gray-900 font-light px-1 py-4 whitespace-nowrap ">
                         {instance.id}
                       </div>
