@@ -3,3 +3,36 @@
   height: 93vh;
   background-color: white;
 }
+
+pop-width{
+  width: 100px;
+}
+
+.blinking-marker {
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  border: 2px solid black;
+  background-color: red;
+  animation: blink 1s infinite;
+  box-shadow: 2px 2px 2px #333;
+}
+
+.marker {
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  border: 2px solid black;
+  background-color: blue;
+  box-shadow: 2px 2px 2px #333;
+}
+
+@keyframes blink {
+  0% { opacity: 1; }
+  50% { opacity: 0; }
+  100% { opacity: 1; }
+}
+
+.leaflet-marker-icon.blinking {
+  animation: blink 1s infinite;
+}
