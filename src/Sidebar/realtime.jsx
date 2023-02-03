@@ -20,8 +20,11 @@ export const LiveData = () => {
       dispatch(WaterDataAsyncGETThunk());
     }
   }, [dispatch, status2]);
+  
+  const selectedMarkerId = useSelector(state => state.selected.selectedMarkerId)
+  console.log(selectedMarkerId,'seellelelellel---------------------')
   return (
-    <div>
+    <div className="w-full max-w-screen-xl mx-auto">
       {/*
       <div className="flex justify-evenly text-xs py-2">
         <div className="hover:bg-gray-100 px-10 py-2 w-full">
@@ -33,7 +36,7 @@ export const LiveData = () => {
         </div>
   </div>*/}
       {data[0]?.results && data2[0]?.results ? (
-        <div className="h-32">
+        <div className="">
           <Water data2={data2[0].results}></Water>
           <Pollution data={data[0].results}></Pollution>
         </div>
@@ -73,7 +76,7 @@ export const Pollution = ({ data }) => {
 
               {data.map((instance) => {
                 return (
-                  <div className=" border-b-2 border-gray-300 hover:bg-gray-100">
+                  <div className=" border-gray-300 hover:bg-gray-100">
                     <div className="pl-3 w-full  transition duration-300 ease-in-out bg-white flex justify-evenly ">
                       <div className="text-[12px] text-gray-900 font-light px-8 py-2 whitespace-nowrap">
                         {instance.id}
@@ -141,7 +144,7 @@ export const Water = ({ data2 }) => {
 
               {data2.map((instance) => {
                 return (
-                  <div className=" border-b-2 border-gray-300 hover:bg-gray-100 ">
+                  <div className="  hover:bg-gray-100 ">
                     <div className="w-full   transition duration-300 ease-in-out bg-white flex justify-evenly pl-4 ">
                       <div className="text-[12px] text-gray-900 font-light px-1 py-4 whitespace-nowrap ">
                         {instance.id}
@@ -165,7 +168,7 @@ export const Water = ({ data2 }) => {
                     <div className="pl-12 py-1 text-[12px] text-red-400 bg-white ">
                       {instance.status}
                     </div>
-                    <div className="px-9 py-1 text-[10px] text-gray-400 bg-gray-100 flex justify-end bg-white">
+                    <div className="px-9  text-[10px] text-gray-400 bg-gray-100 flex justify-end bg-white">
                       {instance.modifiedOn}
                     </div>
                   </div>

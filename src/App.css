@@ -13,11 +13,10 @@ pop-width{
   height: 20px;
   border-radius: 50%;
   border: 2px solid black;
-  background-color: red;
+  background-color: rgb(254, 25, 25);
   animation: blink 1s infinite;
   box-shadow: 2px 2px 2px #333;
 }
-
 .marker {
   width: 20px;
   height: 20px;
@@ -30,7 +29,6 @@ pop-width{
 @keyframes blink {
   0% { opacity: 1; }
   50% { opacity: 0; }
-  100% { opacity: 1; }
 }
 
 .leaflet-marker-icon.blinking {
