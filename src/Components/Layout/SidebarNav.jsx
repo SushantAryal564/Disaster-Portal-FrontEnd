@@ -9,89 +9,91 @@ import ArticleIcon from "@mui/icons-material/Article";
 import AssignmentIcon from "@mui/icons-material/Assignment";
 import FeedbackIcon from "@mui/icons-material/Feedback";
 import AccessTimeIcon from "@mui/icons-material/AccessTime";
-// import Dashboard from "../../Sidebar/dashboard";
-// import Incident from "../../Sidebar/incident";
-// import DamageLoss from "../../Sidebar/damageLoss";
-// import RiskInfo from "../../Sidebar/riskinfo";
-// import { LiveData } from "../../Sidebar/realtime";
-// import ReportAnAncident from "../../Sidebar/reportIncident";
-// import DataArchieve from "../../Sidebar/dataArchive";
-// import Situation from "../../Sidebar/situation";
-// import Feedback from "@mui/icons-material/Feedback";
 import { useDispatch } from "react-redux";
 import { setComponent } from "../../store/Slices/hope";
+import {
+  DASHBOARD,
+  INCIDENT,
+  DAMAGELOSS,
+  RISKINFO,
+  REALTIME,
+  REPORT,
+  DATA,
+  SITUATION,
+  FEEDBACK,
+} from "./../../store/constant";
 export const SideBar = () => {
   const dispatch = useDispatch();
   const handletoggleDashboard = (event) => {
-    dispatch(setComponent("Dashboard"));
+    dispatch(setComponent(DASHBOARD));
   };
   const handletoggleIncident = (event) => {
-    dispatch(setComponent("Incident"));
+    dispatch(setComponent(INCIDENT));
   };
   const handletoggleDamageLoss = (event) => {
-    dispatch(setComponent("DamageLoss"));
+    dispatch(setComponent(DAMAGELOSS));
   };
   const handletoggleRiskInfo = (event) => {
-    dispatch(setComponent("RiskInfo"));
+    dispatch(setComponent(RISKINFO));
   };
   const handletoggleRealTime = (event) => {
-    dispatch(setComponent("RealTime"));
+    dispatch(setComponent(REALTIME));
   };
   const handletoggleReportAnAncident = (event) => {
-    dispatch(setComponent("Report"));
+    dispatch(setComponent(REPORT));
   };
   const handletoggleDataArchieve = (event) => {
-    dispatch(setComponent("DataArchieve"));
+    dispatch(setComponent(DATA));
   };
   const handletoggleSituation = (event) => {
-    dispatch(setComponent("Situation"));
+    dispatch(setComponent(SITUATION));
   };
   const handletoggleDataFeedback = (event) => {
-    dispatch(setComponent("Feedback"));
+    dispatch(setComponent(FEEDBACK));
   };
   const buttonInfo = [
     {
-      name: "Dashboard",
+      name: DASHBOARD,
       icon: HomeIcon,
       handler: handletoggleDashboard,
     },
     {
-      name: "Incident",
+      name: INCIDENT,
       icon: HelpIcon,
       handler: handletoggleIncident,
     },
     {
-      name: "Damage & Loss",
+      name: DAMAGELOSS,
       icon: AccessTimeFilledIcon,
       handler: handletoggleDamageLoss,
     },
     {
-      name: "Risk Info",
+      name: RISKINFO,
       icon: InfoIcon,
       handler: handletoggleRiskInfo,
     },
     {
-      name: "Real Time",
+      name: REALTIME,
       icon: AccessTimeIcon,
       handler: handletoggleRealTime,
     },
     {
-      name: "Report an Incident",
+      name: REPORT,
       icon: ReportIcon,
       handler: handletoggleReportAnAncident,
     },
     {
-      name: "Data Archieve",
+      name: DATA,
       icon: ArticleIcon,
       handler: handletoggleDataArchieve,
     },
     {
-      name: "Situation Report",
+      name: SITUATION,
       icon: AssignmentIcon,
       handler: handletoggleSituation,
     },
     {
-      name: "Feedback",
+      name: FEEDBACK,
       icon: FeedbackIcon,
       handler: handletoggleDataFeedback,
     },

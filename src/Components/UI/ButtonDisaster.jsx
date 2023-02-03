@@ -1,10 +1,22 @@
 import React from "react";
 import { useDispatch } from "react-redux";
 import { slidebarAction } from "../../store/Slices/uiSlice";
+import { useSelector } from "react-redux";
 const ButtonDisaster = ({ name, Icon, handler }) => {
   const dispatch = useDispatch();
+  const slideState = useSelector((state) => {
+    return state.slidebar.slidebarState;
+  });
+  const currentmodule = useSelector((state) => {
+    return state.component;
+  });
+  console.log("***************");
+  console.log(currentmodule, name);
+  console.log("##########");
   const changeSlidebarState = () => {
-    dispatch(slidebarAction.changeSlidebarState());
+    if (!slideState || currentmodule == name) {
+      dispatch(slidebarAction.changeSlidebarState());
+    }
     handler();
   };
   return (

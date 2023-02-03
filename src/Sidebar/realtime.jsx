@@ -22,6 +22,7 @@ export const LiveData = () => {
   }, [dispatch, status2]);
   return (
     <div>
+      {/*
       <div className="flex justify-evenly text-xs py-2">
         <div className="hover:bg-gray-100 px-10 py-2 w-full">
           Pollution <BiWater />
@@ -30,12 +31,12 @@ export const LiveData = () => {
           Water Level
           <GiFactory />
         </div>
-      </div>
+  </div>*/}
       {data[0]?.results && data2[0]?.results ? (
-        <>
+        <div className="h-20 overflow-y-scroll">
           <Water data2={data2[0].results}></Water>
           <Pollution data={data[0].results}></Pollution>
-        </>
+        </div>
       ) : (
         ""
       )}

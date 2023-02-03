@@ -89,56 +89,28 @@ function MarkersClone({ disaster: event }) {
                 <br />
               </div>
 
-              {event.tags ? (
-                <div class="text-gray-700 text-xs mt-3 ">
-                  {event.tags[0].name} {event.tags[0].description}
-                </div>
-              ) : (
-                ""
-              )}
-              <div class="text-gray-700 text-xs mt-3">
-                <p className="text-red-500">{event.description}</p>
-              </div>
-              <div class="text-black-900 text-sm mt-3">
-                <span className="text-xs text-gray-400">
-                  Datasource- {event.dataSource}
+          <div class="text-black-900 text-sm mt-3">
+            {event.title}
+          </div>
+          <div className="border-gray-200 border-b-2 p-3 hover:bg-gray-200 py-4">
+            <div className="text-md font-medium flex flex-row  ">
+              <div className="text-red-700 text-sm flex flex-col  border-indigo-300 border-r-2 pr-4">
+                <span className="px-2">
+                  {" "}
+                  <AiFillFire size={30} />
                 </span>
               </div>
-              <div className=" border-t-2">
-                <span className="font-normal pt-1 text-sm  ">
-                  {/* <div className="font-semibold text-xs ">{event.status}</div> */}
-                  <div className="text-xs text-gray-500  ">
-                    {event.waterLevelOn ? (
-                      <>
-                       <span className="">Water Level : {event.waterLevel}</span><br/>
-                       <span className="">Warning Level: {event.warningLevel}</span>
-                        <p className="">Updated on :</p>
-                        <span className="">{event.waterLevelOn}</span>
-                      </>
-                    ) : (
-                      ""
-                    )}
-                  </div>
-                </span>
-              </div>
-
-              {event.images ? (
-                <div className="text-md font-medium   ">
-                  <div className="text-red-700 text-sm   border-indigo-300 border-r-2 pr-4">
-                    <span className="px-2">
-                      <img  className='object-none h-48 w-96rigin' src={event.images[0]}></img>
-                    </span>
-                  </div>
-                </div>
-              ) : (
-                ""
-              )}
-              {event.image ? (
-                <div className="text-md font-medium   ">
-                  <div className="text-red-700 text-sm   border-indigo-300 border-r-2 pr-4">
-                    <span className="px-2">
-                      <img className='object-none h-48 w-96' src={event.image}></img>
-                    </span>
+              <span className="font-normal ml-5 pt-1 text-sm">
+                <div className="font-semibold "> Kyonjan Municipality</div>
+                <div>
+                  <div className="text-xs  text-gray-500 flex justify-start ">
+                    <span className="">2023/1/23</span>
+                    <div className="flex items-center px-2">
+                      <span>
+                        <BiAlarm />
+                      </span>
+                      <span className="pl-1">4:55</span>
+                    </div>
                   </div>
                 </div>
               ) : (

@@ -1,0 +1,9 @@
+export const DASHBOARD = "DASHBOARD";
+export const INCIDENT = "INCIDENT";
+export const DAMAGELOSS = "DAMAGE&LOSS";
+export const RISKINFO = "RISKINFO";
+export const REALTIME = "REALTIME";
+export const REPORT = "REPORT";
+export const DATA = "DATA";
+export const SITUATION = "SITUATION";
+export const FEEDBACK = "FEEDBACK";
