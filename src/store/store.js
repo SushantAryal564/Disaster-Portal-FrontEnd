@@ -4,6 +4,7 @@ import slidebarcontentreducer from "./Slices/slidebarcontentslice";
 import slidebarReducer from "./Slices/uiSlice";
 import livedatareducer from "./Slices/livedataSlice";
 import componetreducer from "./Slices/hope";
+import markerReducer from './Slices/selecteddata'
 const store = configureStore({
   reducer: {
     disaster: disasterReducer,
@@ -11,6 +12,7 @@ const store = configureStore({
     slidebarcontent: slidebarcontentreducer,
     live: livedatareducer,
     component: componetreducer,
+    selected:markerReducer,
   },
 });
 export default store;

@@ -3,3 +3,47 @@
   height: 93vh;
   background-color: white;
 }
+
+pop-width{
+  width: 100px;
+}
+
+.blinking-marker {
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  border: 2px solid black;
+  background-color: rgb(254, 25, 25);
+  animation: blink 1s infinite;
+  box-shadow: 2px 2px 2px #333;
+  padding: 3px;
+}
+
+.blinking-marker-selected {
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  border: 2px solid black;
+  background-color: rgb(247, 255, 7);
+  animation: blink .3s infinite;
+  box-shadow: 2px 2px 2px #333;
+  padding: 7px;
+}
+
+.marker {
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  border: 2px solid black;
+  background-color: blue;
+  box-shadow: 2px 2px 2px #333;
+}
+
+@keyframes blink {
+  0% { opacity: 1; }
+  50% { opacity: 0; }
+}
+
+.leaflet-marker-icon.blinking {
+  animation: blink 1s infinite;
+}
