@@ -1,9 +1,17 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { useSelector } from "react-redux";
 import { AiFillInfoCircle } from "react-icons/ai";
 import { BiAlarm } from "react-icons/bi";
-
+import { disasterAsyncGETThunk } from "../store/Slices/disasterSlice";
+import { useDispatch } from "react-redux";
 function Dashboard() {
+  const dispatch = useDispatch();
+  const status = useSelector((state) => state.disaster.status);
+  useEffect(() => {
+    if (status === "idle") {
+      dispatch(disasterAsyncGETThunk());
+    }
+  }, []);
   const disasterData = useSelector((state) => {
     return state.disaster.data;
   });

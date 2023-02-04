@@ -3,7 +3,6 @@ import { BiWater } from "react-icons/bi";
 import { GiFactory } from "react-icons/gi";
 import { useDispatch, useSelector } from "react-redux";
 
-
 import {
   LivePollutionDataAsyncGETThunk,
   WaterDataAsyncGETThunk,
@@ -23,9 +22,10 @@ export const LiveData = () => {
       dispatch(WaterDataAsyncGETThunk());
     }
   }, [dispatch, status2]);
-  
-  const selectedMarkerId = useSelector(state => state.selected.selectedMarkerId)
-  console.log(selectedMarkerId,'from realtime dashboard selected marker id')
+
+  const selectedMarkerId = useSelector(
+    (state) => state.selected.selectedMarkerId
+  );
   return (
     <div className="w-full max-w-screen-xl mx-auto">
       {/*
@@ -40,8 +40,14 @@ export const LiveData = () => {
   </div>*/}
       {data[0]?.results && data2[0]?.results ? (
         <div className="">
-          <Water data2={data2[0].results} selectedMarkerId={selectedMarkerId}></Water>
-          <Pollution data={data[0].results} selectedMarkerId={selectedMarkerId}></Pollution>
+          <Water
+            data2={data2[0].results}
+            selectedMarkerId={selectedMarkerId}
+          ></Water>
+          <Pollution
+            data={data[0].results}
+            selectedMarkerId={selectedMarkerId}
+          ></Pollution>
         </div>
       ) : (
         ""
@@ -49,12 +55,13 @@ export const LiveData = () => {
     </div>
   );
 };
-export const Pollution = ({ data,selectedMarkerId}) => {
-
+export const Pollution = ({ data, selectedMarkerId }) => {
   const dispatch = useDispatch();
   return (
     <div>
-      <div className="text-[12px] p-1 bg-teal-500 text-white">Pollution Live Data</div>
+      <div className="text-[12px] p-1 bg-teal-500 text-white">
+        Pollution Live Data
+      </div>
       <div className="flex flex-col mt-0">
         <div className="">
           <div className="py-0 inline-block min-w-full ">
@@ -79,10 +86,24 @@ export const Pollution = ({ data,selectedMarkerId}) => {
                 </div>
               </div>
               {data.map((instance) => {
-                console.log('check,check',instance.id,selectedMarkerId,instance.id==selectedMarkerId)
+                console.log(
+                  "check,check",
+                  instance.id,
+                  selectedMarkerId,
+                  instance.id == selectedMarkerId
+                );
                 return (
-                  <div className='border-gray-300 hover:bg-gray-400' onClick={()=>dispatch(selectMarker(instance.id))}>
-                    <div className={instance.id==selectedMarkerId?"pl-3 w-full  cursor-pointer transition duration-300 ease-in-out bg-yellow-300 text-white flex justify-evenly ":"pl-3 w-full  hover:bg-gray-200 cursor-pointer transition duration-300 ease-in-out bg-white flex justify-evenly"}>
+                  <div
+                    className="border-gray-300 hover:bg-gray-400"
+                    onClick={() => dispatch(selectMarker(instance.id))}
+                  >
+                    <div
+                      className={
+                        instance.id == selectedMarkerId
+                          ? "pl-3 w-full  cursor-pointer transition duration-300 ease-in-out bg-yellow-300 text-white flex justify-evenly "
+                          : "pl-3 w-full  hover:bg-gray-200 cursor-pointer transition duration-300 ease-in-out bg-white flex justify-evenly"
+                      }
+                    >
                       <div className="text-[12px] text-gray-900 font-light px-8 py-2 whitespace-nowrap">
                         {instance.id}
                       </div>
@@ -103,7 +124,7 @@ export const Pollution = ({ data,selectedMarkerId}) => {
                     </div>
 
                     <div className="pl-12 py-2 text-[12px] text-red-400 bg-white ">
-                      {instance.description} 
+                      {instance.description}
                     </div>
                     <div className="px-9  text-[10px] text-gray-400 bg-gray-100 flex justify-end    bg-white">
                       {instance.modifiedOn}
@@ -119,11 +140,13 @@ export const Pollution = ({ data,selectedMarkerId}) => {
   );
 };
 
-export const Water = ({ data2,selectedMarkerId}) => {
-  const dispatch=useDispatch()
+export const Water = ({ data2, selectedMarkerId }) => {
+  const dispatch = useDispatch();
   return (
     <div>
-      <div className="text-[12px] p-1 bg-teal-500 text-white">River Live Data</div>
+      <div className="text-[12px] p-1 bg-teal-500 text-white">
+        River Live Data
+      </div>
       <div className="flex flex-col mt-0">
         <div className="">
           <div className="py-0 inline-block min-w-full ">
@@ -150,9 +173,21 @@ export const Water = ({ data2,selectedMarkerId}) => {
 
               {data2.map((instance) => {
                 return (
-                  <div className={instance.id==selectedMarkerId? 'border-gray-300 bg-yellow-500' :'border-gray-300 hover:bg-gray-400'} onClick={()=>dispatch(selectMarker(instance.id))}>
-                    <div  className={instance.id==selectedMarkerId?"pl-3 w-full  cursor-pointer transition duration-300 ease-in-out bg-yellow-300 text-white flex justify-evenly ":"pl-3 w-full  hover:bg-gray-200 cursor-pointer transition duration-300 ease-in-out bg-white flex justify-evenly"}>
-                   
+                  <div
+                    className={
+                      instance.id == selectedMarkerId
+                        ? "border-gray-300 bg-yellow-500"
+                        : "border-gray-300 hover:bg-gray-400"
+                    }
+                    onClick={() => dispatch(selectMarker(instance.id))}
+                  >
+                    <div
+                      className={
+                        instance.id == selectedMarkerId
+                          ? "pl-3 w-full  cursor-pointer transition duration-300 ease-in-out bg-yellow-300 text-white flex justify-evenly "
+                          : "pl-3 w-full  hover:bg-gray-200 cursor-pointer transition duration-300 ease-in-out bg-white flex justify-evenly"
+                      }
+                    >
                       <div className="text-[12px] text-gray-900 font-light px-1 py-4 whitespace-nowrap ">
                         {instance.id}
                       </div>

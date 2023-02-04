@@ -32,10 +32,6 @@ import {
   SITUATION,
   FEEDBACK,
 } from "./../../store/constant";
-import {
-  LivePollutionDataAsyncGETThunk,
-  WaterDataAsyncGETThunk,
-} from "../../store/Slices/livedataSlice";
 
 export const Portal = () => {
   const dispatch = useDispatch();
@@ -49,18 +45,11 @@ export const Portal = () => {
 
   //get dashboard
 
-  useEffect(() => {
-    if (component == DASHBOARD) {
-      dispatch(disasterAsyncGETThunk());
-    }
-  }, []);
-  //realtime
-  useEffect(() => {
-    if (realStatus === "idle" && component == "RealTime") {
-      dispatch(LivePollutionDataAsyncGETThunk());
-      dispatch(WaterDataAsyncGETThunk());
-    }
-  }, [realStatus, dispatch]);
+  // useEffect(() => {
+  //   if (component == DASHBOARD) {
+  //     dispatch(disasterAsyncGETThunk());
+  //   }
+  // }, []);
   const component = useSelector((state) => {
     return state.component;
   });
@@ -117,10 +106,9 @@ export const Portal = () => {
 
   //disaster selector
   const datadisaster = useSelector((state) => state.disaster.data);
-  //
   const realtimedatawater = useSelector((state) => state.live.water);
   const realtimepollution = useSelector((state) => state.live.pollution);
-
+  const dataIncident = useSelector((state) => state.disasterIncident.data);
   const position = [27.67571580617923, 85.3183283194577];
   const scrollWheelZoom = true;
   return (
@@ -181,18 +169,23 @@ export const Portal = () => {
             icon="url(/some/relative/path.png)"
             position="topright"
           />
-          {component == DASHBOARD
+          {component === DASHBOARD
             ? datadisaster.map((event) => {
                 return <Markers disaster={event} key={event.id} />;
               })
             : ""}
-          {component == REALTIME
+          {component === INCIDENT
+            ? dataIncident.map((event) => {
+                return <Markers disaster={event} key={event.id} />;
+              })
+            : ""}
+          {component === REALTIME
             ? realtimedatawater.map((event) => {
                 console.log("realwater marker");
                 return <MarkersClone disaster={event.results} key={event.id} />;
               })
             : ""}
-          {component == REALTIME
+          {component === REALTIME
             ? realtimepollution.map((event) => {
                 console.log("realpoll marker");
                 return <MarkersClone disaster={event.results} key={event.id} />;
