@@ -2,7 +2,7 @@ import { createSlice } from "@reduxjs/toolkit";
 import React from "react";
 
 const initialState = {
-  slidebarState: false,
+  slidebarState: true,
 };
 const slidebarSlice = createSlice({
   name: "slidebar",

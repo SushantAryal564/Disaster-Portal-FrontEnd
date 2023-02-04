@@ -2,10 +2,12 @@ import React from "react";
 import { useSelector } from "react-redux";
 import { AiFillInfoCircle } from "react-icons/ai";
 import { BiAlarm } from "react-icons/bi";
+
 function Dashboard() {
   const disasterData = useSelector((state) => {
     return state.disaster.data;
   });
+  console.log(disasterData);
   return (
     <React.Fragment>
       {disasterData.map((data) => {

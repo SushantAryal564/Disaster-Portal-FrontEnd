@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import L from 'leaflet';
+import L from "leaflet";
 import Layout from "../Layout/Layout";
 import { LayersControl, MapContainer, Marker, TileLayer } from "react-leaflet";
 import { GeoJSONLayer } from "../Map Layer/GeoJSONLayer";
@@ -20,7 +20,7 @@ import ReportAnAncident from "../../Sidebar/reportIncident";
 import DataArchieve from "../../Sidebar/dataArchive";
 import Situation from "../../Sidebar/situation";
 import Feedback from "@mui/icons-material/Feedback";
-import { Marker as M, Popup } from 'react-leaflet';
+import { Marker as M, Popup } from "react-leaflet";
 import {
   DASHBOARD,
   INCIDENT,
@@ -50,7 +50,7 @@ export const Portal = () => {
   //get dashboard
 
   useEffect(() => {
-    if (component == "Dashboard") {
+    if (component == DASHBOARD) {
       dispatch(disasterAsyncGETThunk());
     }
   }, []);
@@ -183,11 +183,9 @@ export const Portal = () => {
           />
           {component == DASHBOARD
             ? datadisaster.map((event) => {
-                console.log("disaster marker");
                 return <Markers disaster={event} key={event.id} />;
               })
             : ""}
-
           {component == REALTIME
             ? realtimedatawater.map((event) => {
                 console.log("realwater marker");
@@ -200,9 +198,6 @@ export const Portal = () => {
                 return <MarkersClone disaster={event.results} key={event.id} />;
               })
             : ""}
-      
-              
-                
         </MapContainer>
         <SideBar />
       </div>
