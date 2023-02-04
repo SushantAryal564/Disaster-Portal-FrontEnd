@@ -44,7 +44,7 @@ export const LiveData = () => {
             data2={data2[0].results}
             selectedMarkerId={selectedMarkerId}
           ></Water>
-          <Pollution
+          <Pollution 
             data={data[0].results}
             selectedMarkerId={selectedMarkerId}
           ></Pollution>
@@ -59,7 +59,7 @@ export const Pollution = ({ data, selectedMarkerId }) => {
   const dispatch = useDispatch();
   return (
     <div>
-      <div className="text-[12px] p-1 bg-teal-500 text-white">
+      <div className="text-[12px] p-1 bg-teal-500 text-white mt-12">
         Pollution Live Data
       </div>
       <div className="flex flex-col mt-0">
