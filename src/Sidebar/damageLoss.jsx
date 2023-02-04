@@ -3,7 +3,9 @@ import React, { useState } from "react";
 function DamageLoss() {
   const [startDate, setStartDate] = useState(null);
   const [endDate, setEndDate] = useState(null);
-
+  
+  console.log(startDate,endDate)
+  
   const handleSubmit = (event) => {
     event.preventDefault();
     // Do something with the startDate and endDate values here
@@ -45,9 +47,14 @@ function DamageLoss() {
           />
         </div>
         <button onClick={handleSubmit} className="bg-teal-500 mt-5 text-white p-1">Submit</button>
-        
       </div>
     </form>
+    <div className="flex justify-evenly">
+      <button onClick={()=>{}} className="bg-teal-500 mt-5 text-white m-2 p-1 px-2">Incident</button>
+      <button onClick={()=>{}} className="bg-teal-500 mt-5 text-white m-2 p-1 px-2">Lives Lost</button>
+      <button onClick={()=>{}} className="bg-teal-500 mt-5 text-white m-2 p-1 px-2">Property Loss</button>
+      <button onClick={()=>{}} className="bg-teal-500 mt-5 text-white m-2 p-1 px-2">Infrastructure Damage</button>
+      </div>
     </div>
   );
 }
