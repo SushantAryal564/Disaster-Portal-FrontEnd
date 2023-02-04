@@ -25,7 +25,7 @@ function Incident() {
                   {" "}
                   <AiFillInfoCircle size={20} />
                 </span>
-                <p className="text-xs">{data.type || "none"}</p>
+                <p className="text-xs">{data.type.title || "none"}</p>
               </div>
               <span className="font-normal ml-5 pt-1 text-sm">
                 <div className="font-semibold text-xs"> {data.name}</div>

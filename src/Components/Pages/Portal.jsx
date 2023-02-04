@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import L from "leaflet";
+import { GeoJSON } from "react-leaflet";
 import Layout from "../Layout/Layout";
 import { LayersControl, MapContainer, Marker, TileLayer } from "react-leaflet";
 import { GeoJSONLayer } from "../Map Layer/GeoJSONLayer";
@@ -7,7 +7,6 @@ import { SideBar } from "../Layout/SidebarNav";
 import ResetViewControl from "@20tab/react-leaflet-resetview";
 import NavigateNextIcon from "@mui/icons-material/NavigateNext";
 import { useDispatch, useSelector } from "react-redux";
-import { disasterAsyncGETThunk } from "../../store/Slices/disasterSlice";
 import { slidebarAction } from "../../store/Slices/uiSlice";
 import Markers from "../UI/Marker";
 import MarkersClone from "../UI/MarkersClone";
@@ -20,7 +19,6 @@ import ReportAnAncident from "../../Sidebar/reportIncident";
 import DataArchieve from "../../Sidebar/dataArchive";
 import Situation from "../../Sidebar/situation";
 import Feedback from "@mui/icons-material/Feedback";
-import { Marker as M, Popup } from "react-leaflet";
 import {
   DASHBOARD,
   INCIDENT,
@@ -32,19 +30,11 @@ import {
   SITUATION,
   FEEDBACK,
 } from "./../../store/constant";
-
-// Legend---------------------->
-import Legend, { RealTimeLegend } from "./Legend";
-import { red } from "@mui/material/colors";
-
-//----------------------------.....>
-
+import { DashboardLegend, RealTimeLegend } from "../Legends/Legend";
 export const Portal = () => {
   const dispatch = useDispatch();
   var [jsonLalitpurMetro, setJsonLalitpurMetro] = useState("");
   var [jsonWard, setJsonWard] = useState("");
-  const disasterStatus = useSelector((state) => state.disaster.status);
-  const realStatus = useSelector((state) => state.live.status);
   const slidebarState = useSelector((state) => {
     return state.slidebar.slidebarState;
   });
@@ -90,7 +80,6 @@ export const Portal = () => {
     let datajson = await data.json();
     setJsonWard(datajson);
   };
-
   const changeSlidebarState = () => {
     dispatch(slidebarAction.changeSlidebarState());
   };
@@ -106,13 +95,41 @@ export const Portal = () => {
   const realtimepollution = useSelector((state) => state.live.pollution);
   const dataIncident = useSelector((state) => state.disasterIncident.data);
   const position = [27.67571580617923, 85.3183283194577];
+  let disasterinDashboard = [
+    ...new Set(datadisaster.map((data) => data.type.title)),
+  ];
   const scrollWheelZoom = true;
+  const getColor = (d) => {
+    return d > 50
+      ? "#800026"
+      : d > 30
+      ? "#BD0026"
+      : d > 20
+      ? "#E31A1C"
+      : d > 10
+      ? "#FC4E2A"
+      : d > 5
+      ? "#FD8D3C"
+      : d > 2
+      ? "#FEB24C"
+      : "";
+  };
+  const styleFeature = (feature) => {
+    return {
+      fillColor: getColor(feature.properties.no_of_incidents),
+      weight: 2,
+      opacity: 1,
+      color: "white",
+      dashArray: "3",
+      fillOpacity: 0.7,
+    };
+  };
   return (
     <Layout>
       <div className="flex">
         <div
           className={`${
-            slidebarState ? "w-2/4" : "w-0"
+            slidebarState ? "w-2/5" : "w-0"
           } duration-300 h-[90vh] relative`}
         >
           {ComponentToRender}
@@ -137,11 +154,14 @@ export const Portal = () => {
           className="mt-1 z-10"
         >
           <LayersControl position="topright">
-            <LayersControl.BaseLayer checked name="OSM Streets">
+            <LayersControl.BaseLayer name="OSM Streets">
               <TileLayer url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png" />
             </LayersControl.BaseLayer>
             <LayersControl.BaseLayer name="World Imagery">
               <TileLayer url="https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}" />
+            </LayersControl.BaseLayer>
+            <LayersControl.BaseLayer checked name="Grey Imagery">
+              <TileLayer url="https://tiles.stadiamaps.com/tiles/alidade_smooth/{z}/{x}/{y}{r}.png" />
             </LayersControl.BaseLayer>
             {jsonLalitpurMetro ? (
               <GeoJSONLayer
@@ -165,6 +185,9 @@ export const Portal = () => {
             icon="url(/some/relative/path.png)"
             position="topright"
           />
+          {component === DAMAGELOSS && (
+            <GeoJSON data={jsonWard} style={styleFeature} />
+          )}
           {component === DASHBOARD
             ? datadisaster.map((event) => {
                 return <Markers disaster={event} key={event.id} />;
@@ -187,7 +210,10 @@ export const Portal = () => {
                 return <MarkersClone disaster={event.results} key={event.id} />;
               })
             : ""}
-         <RealTimeLegend/>
+          {component === REALTIME && <RealTimeLegend />}
+          {component === DASHBOARD && (
+            <DashboardLegend legendItem={disasterinDashboard} />
+          )}
         </MapContainer>
         <SideBar />
       </div>

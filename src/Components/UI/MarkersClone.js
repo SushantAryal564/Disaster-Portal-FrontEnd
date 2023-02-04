@@ -2,26 +2,26 @@ import L from "leaflet";
 import { Marker, Popup } from "react-leaflet";
 import { AiFillFire } from "react-icons/ai";
 import { BiAlarm } from "react-icons/bi";
-import defaultimage from './black.jpg'
+import defaultimage from "./black.jpg";
 import { useSelector } from "react-redux";
 
-
 function MarkersClone({ disaster: event }) {
-  const selecteddata =useSelector(state=>state.selected.selectedMarkerId)
-
-  console.log(selecteddata,'from marker selected marker is')
-  
+  const selecteddata = useSelector((state) => state.selected.selectedMarkerId);
   return (
     <>
       {event.map((event) => (
         <Marker
           key={`disaster-${event.id}`}
           position={[event.point.coordinates[1], event.point.coordinates[0]]}
-          icon={ new L.DivIcon({
-            className:  selecteddata==event.id?'blinking-marker-selected':"blinking-marker",
-          })}
+          icon={
+            new L.DivIcon({
+              className:
+                selecteddata == event.id
+                  ? "blinking-marker-selected"
+                  : "blinking-marker",
+            })
+          }
         >
-
           <Popup maxWidth={400}>
             <div className=" pop-width w-96 p-2">
               <div className="bg-teal-500 text-white text-md border-gray-200 border-t-2 pt-3 ">
@@ -91,7 +91,7 @@ function MarkersClone({ disaster: event }) {
                 <div className="text-md font-medium   ">
                   <div className="text-red-700 text-sm   border-indigo-300 border-r-2 pr-4">
                     <span className="px-2">
-                      { event.image && (
+                      {event.image && (
                         <img
                           className="object-cover h-96 w-96"
                           src={event.image || defaultimage}
