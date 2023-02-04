@@ -33,6 +33,12 @@ import {
   FEEDBACK,
 } from "./../../store/constant";
 
+// Legend---------------------->
+import Legend, { RealTimeLegend } from "./Legend";
+import { red } from "@mui/material/colors";
+
+//----------------------------.....>
+
 export const Portal = () => {
   const dispatch = useDispatch();
   var [jsonLalitpurMetro, setJsonLalitpurMetro] = useState("");
@@ -191,6 +197,7 @@ export const Portal = () => {
                 return <MarkersClone disaster={event.results} key={event.id} />;
               })
             : ""}
+         <RealTimeLegend/>
         </MapContainer>
         <SideBar />
       </div>
