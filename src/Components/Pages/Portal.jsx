@@ -42,19 +42,9 @@ export const Portal = () => {
   const slidebarState = useSelector((state) => {
     return state.slidebar.slidebarState;
   });
-
-  //get dashboard
-
-  // useEffect(() => {
-  //   if (component == DASHBOARD) {
-  //     dispatch(disasterAsyncGETThunk());
-  //   }
-  // }, []);
   const component = useSelector((state) => {
     return state.component;
   });
-
-  console.log(component, "rednered compnent---com name");
   const changeComponent = (compName) => {
     switch (compName) {
       case DASHBOARD:
