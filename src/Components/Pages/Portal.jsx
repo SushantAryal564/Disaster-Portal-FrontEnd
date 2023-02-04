@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import L from 'leaflet';
+import L from "leaflet";
 import Layout from "../Layout/Layout";
 import { LayersControl, MapContainer, Marker, TileLayer } from "react-leaflet";
 import { GeoJSONLayer } from "../Map Layer/GeoJSONLayer";
@@ -20,7 +20,7 @@ import ReportAnAncident from "../../Sidebar/reportIncident";
 import DataArchieve from "../../Sidebar/dataArchive";
 import Situation from "../../Sidebar/situation";
 import Feedback from "@mui/icons-material/Feedback";
-import { Marker as M, Popup } from 'react-leaflet';
+import { Marker as M, Popup } from "react-leaflet";
 import {
   DASHBOARD,
   INCIDENT,
@@ -36,6 +36,12 @@ import {
   LivePollutionDataAsyncGETThunk,
   WaterDataAsyncGETThunk,
 } from "../../store/Slices/livedataSlice";
+
+// Legend---------------------->
+import Legend from "./Legend";
+import { red } from "@mui/material/colors";
+
+//----------------------------.....>
 
 export const Portal = () => {
   const dispatch = useDispatch();
@@ -200,9 +206,30 @@ export const Portal = () => {
                 return <MarkersClone disaster={event.results} key={event.id} />;
               })
             : ""}
-      
-              
-                
+
+          {/* LEGEND */}
+          <div className="bg-teal-500 w-96">
+          <div
+            className="legend"
+            style={{ position: "absolute", bottom: "20px", right: "20px",zIndex: 9999}}
+          >
+            <h3 className="bg-white text-black p-1 mb-2">Legend</h3>
+            <p className="max-h-[10rem]">
+              Selected Stations:{" "}
+              <span className="blinking-marker-selected">
+                &nbsp;&nbsp;;
+              </span>
+            </p>
+            <p>
+              Real time Station
+              <span className="blinking-marker">
+                &nbsp;&nbsp;&nbsp;&nbsp;
+              </span>
+            </p>
+           
+          </div>
+          </div>
+          {/*LEGEND  */}
         </MapContainer>
         <SideBar />
       </div>
