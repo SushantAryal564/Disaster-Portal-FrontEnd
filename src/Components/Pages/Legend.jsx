@@ -1,23 +1,27 @@
-import { LayersControl, Map, TileLayer } from 'react-leaflet';
+import React from 'react'
 
-function Legend({ position = 'bottomright' }) {
-  console.log("legend rendered")
+export const RealTimeLegend = () => {
   return (
-    <div className={`legend leaflet-${position}`}>
-      <div>
-        <span className="legend-item" style={{ backgroundColor: 'red' }}></span>
-        <span>High Pollution</span>
-      </div>
-      <div>
-        <span className="legend-item" style={{ backgroundColor: 'yellow' }}></span>
-        <span>Moderate Pollution</span>
-      </div>
-      <div>
-        <span className="legend-item" style={{ backgroundColor: 'green' }}></span>
-        <span>Low Pollution</span>
-      </div>
-    </div>
-  );
+     <div className="bg-teal-500 w-96">
+     <div
+       className="legend"
+       style={{ position: "absolute", bottom: "20px", right: "20px",zIndex: 9999}}
+     >
+       <h3 className="bg-white text-black p-1 mb-2"> Real Time Module Legend</h3>
+       <p className="m-2">
+         Selected Stations:{" "}
+         <span className="blinking-marker-selected-legend ">
+           &nbsp;&nbsp;&nbsp;&nbsp;
+         </span>
+       </p>
+
+       <p className="m-2">
+         Real time Station
+         <span className="blinking-marker-legend ">
+           &nbsp;&nbsp;&nbsp;&nbsp;
+         </span>
+       </p>
+     </div>
+     </div>
+  )
 }
-export default Legend
-//DISCARDED FILE

@@ -2,7 +2,7 @@ import { createSlice } from "@reduxjs/toolkit";
 
 const componentSlice = createSlice({
   name: "component",
-  initialState: "Dashboard",
+  initialState: "Daddashboard",
   reducers: {
     setComponent: (state, action) => {
       return action.payload;

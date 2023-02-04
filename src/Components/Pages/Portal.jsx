@@ -38,7 +38,7 @@ import {
 } from "../../store/Slices/livedataSlice";
 
 // Legend---------------------->
-import Legend from "./Legend";
+import Legend, { RealTimeLegend } from "./Legend";
 import { red } from "@mui/material/colors";
 
 //----------------------------.....>
@@ -207,29 +207,10 @@ export const Portal = () => {
               })
             : ""}
 
-          {/* LEGEND */}
-          <div className="bg-teal-500 w-96">
-          <div
-            className="legend"
-            style={{ position: "absolute", bottom: "20px", right: "20px",zIndex: 9999}}
-          >
-            <h3 className="bg-white text-black p-1 mb-2">Legend</h3>
-            <p className="max-h-[10rem]">
-              Selected Stations:{" "}
-              <span className="blinking-marker-selected">
-                &nbsp;&nbsp;;
-              </span>
-            </p>
-            <p>
-              Real time Station
-              <span className="blinking-marker">
-                &nbsp;&nbsp;&nbsp;&nbsp;
-              </span>
-            </p>
-           
-          </div>
-          </div>
-          {/*LEGEND  */}
+
+          {/* ----- conditionally renderder different Legend for different Module */}
+         <RealTimeLegend/>
+         {/* ------ */}
         </MapContainer>
         <SideBar />
       </div>
