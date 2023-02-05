@@ -13,11 +13,8 @@ function Dashboard() {
     }
   }, []);
   const disasterData = useSelector((state) => {
-    console.log(state);
     return state.disaster.data;
   });
-  console.log("********************");
-  console.log(disasterData);
   return (
     <React.Fragment>
       {disasterData.map((data) => {

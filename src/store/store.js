@@ -6,6 +6,7 @@ import livedatareducer from "./Slices/livedataSlice";
 import componetreducer from "./Slices/hope";
 import markerReducer from "./Slices/selecteddata";
 import disasterIncidentreducer from "./Slices/incidentSlice";
+import damagelossreducer from "./Slices/damageLossSlice";
 const store = configureStore({
   reducer: {
     disaster: disasterReducer,
@@ -15,6 +16,7 @@ const store = configureStore({
     live: livedatareducer,
     component: componetreducer,
     selected: markerReducer,
+    damageloss: damagelossreducer,
   },
 });
 export default store;

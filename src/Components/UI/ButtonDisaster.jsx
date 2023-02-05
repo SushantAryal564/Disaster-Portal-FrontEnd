@@ -10,9 +10,6 @@ const ButtonDisaster = ({ name, Icon, handler }) => {
   const currentmodule = useSelector((state) => {
     return state.component;
   });
-  console.log("***************");
-  console.log(currentmodule, name);
-  console.log("##########");
   const changeSlidebarState = () => {
     if (!slideState || currentmodule == name) {
       dispatch(slidebarAction.changeSlidebarState());

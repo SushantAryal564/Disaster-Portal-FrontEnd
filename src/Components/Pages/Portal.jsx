@@ -35,6 +35,10 @@ export const Portal = () => {
   const dispatch = useDispatch();
   var [jsonLalitpurMetro, setJsonLalitpurMetro] = useState("");
   var [jsonWard, setJsonWard] = useState("");
+  const stateofdamagerequest = useSelector((state) => {
+    return state.damageloss.status;
+  });
+  console.log(stateofdamagerequest);
   const slidebarState = useSelector((state) => {
     return state.slidebar.slidebarState;
   });
