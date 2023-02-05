@@ -96,7 +96,7 @@ export const Portal = () => {
   const dataIncident = useSelector((state) => state.disasterIncident.data);
   const position = [27.67571580617923, 85.3183283194577];
   let disasterinDashboard = [
-    ...new Set(datadisaster.map((data) => data.type.title)),
+    ...new Set(datadisaster.map((data) => data?.type?.title)),
   ];
   const scrollWheelZoom = true;
   const getColor = (d) => {
