@@ -4,7 +4,7 @@ const NavigationBar = () => {
   let Links = [
     { name: "Home", links: "/" },
     { name: "Portal", links: "/portal" },
-    { name: "About Us", links: "/aboutus" },
+    { name: "Manage-Disaster", links: "/aboutus" },
   ];
   let [open, setopen] = useState(false);
   let key = 0;
