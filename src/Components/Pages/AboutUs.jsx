@@ -14,6 +14,19 @@ const AboutUs = (props) => {
           scrollWheelZoom={scrollWheelZoom}
           className="mt-1 z-10"
         >
+         <LayersControl position="topright">
+            <LayersControl.BaseLayer name="OSM Streets">
+              <TileLayer url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png" />
+            </LayersControl.BaseLayer>
+            <LayersControl.BaseLayer name="World Imagery">
+              <TileLayer url="https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}" />
+            </LayersControl.BaseLayer>
+            <LayersControl.BaseLayer checked name="Grey Imagery">
+              <TileLayer url="https://tiles.stadiamaps.com/tiles/alidade_smooth/{z}/{x}/{y}{r}.png" />
+            </LayersControl.BaseLayer>
+            
+          </LayersControl>
+
         </MapContainer>
     </Layout>
   );
