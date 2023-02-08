@@ -61,3 +61,33 @@ export const DashboardLegend = ({ legendItem }) => {
     </div>
   );
 };
+
+export const DamageAndLossLegend = ({ changeDamagestate }) => {
+  return (
+    <div>
+      <div
+        className="bg-[#ffffff]"
+        style={{
+          position: "absolute",
+          width: "400px",
+          bottom: "20px",
+          left: "20px",
+          zIndex: 9999,
+        }}
+      >
+        <div className="m-2 flex justify-between pb-1 items-start">
+          <div onClick={() => changeDamagestate("incident")}>Incident</div>
+          <div onClick={() => changeDamagestate("peopleDeath")}>
+            People death
+          </div>
+          <div onClick={() => changeDamagestate("estimatedLoss")}>
+            Estimated loss
+          </div>
+          <div onClick={() => changeDamagestate("infrastructuredestroyed")}>
+            Infrastructure destroyed
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+};

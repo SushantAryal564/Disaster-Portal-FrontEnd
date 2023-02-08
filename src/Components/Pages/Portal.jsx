@@ -19,6 +19,7 @@ import ReportAnAncident from "../../Sidebar/reportIncident";
 import DataArchieve from "../../Sidebar/dataArchive";
 import Situation from "../../Sidebar/situation";
 import Feedback from "@mui/icons-material/Feedback";
+import { DamageAndLossLegend } from "../Legends/Legend";
 import {
   DASHBOARD,
   INCIDENT,
@@ -35,10 +36,20 @@ export const Portal = () => {
   const dispatch = useDispatch();
   var [jsonLalitpurMetro, setJsonLalitpurMetro] = useState("");
   var [jsonWard, setJsonWard] = useState("");
-  const stateofdamagerequest = useSelector((state) => {
-    return state.damageloss.status;
+  const [currentdamageindex, setdamageindex] = useState("incident");
+  console.log(currentdamageindex);
+  const totalIncident = useSelector((state) => {
+    return state.damageloss.totalIncident;
   });
-  console.log(stateofdamagerequest);
+  const totalEstimatedLoss = useSelector((state) => {
+    return state.damageloss.totalEstimatedLoss;
+  });
+  const totalPeopleDeath = useSelector((state) => {
+    return state.damageloss.totalPeopledeath;
+  });
+  const totalInfrastructureDamage = useSelector((state) => {
+    return state.damageloss.totalInfrastrucutre;
+  });
   const slidebarState = useSelector((state) => {
     return state.slidebar.slidebarState;
   });
@@ -104,23 +115,37 @@ export const Portal = () => {
   ];
   const scrollWheelZoom = true;
   const getColor = (d) => {
-    return d > 50
+    return d > 90
       ? "#800026"
-      : d > 30
+      : d > 80
       ? "#BD0026"
-      : d > 20
+      : d > 60
       ? "#E31A1C"
-      : d > 10
+      : d > 40
       ? "#FC4E2A"
-      : d > 5
+      : d > 20
       ? "#FD8D3C"
-      : d > 2
+      : d >= 0
       ? "#FEB24C"
-      : "";
+      : "#FEB24C";
   };
   const styleFeature = (feature) => {
+    let currentLegendItem = currentdamageindex;
+    let data = 0;
+    if (currentLegendItem === "incident") {
+      data = feature.properties.number_of_disasters / totalIncident;
+    } else if (currentLegendItem === "peopleDeath") {
+      data = feature.properties.total_people_death / totalPeopleDeath;
+    } else if (currentLegendItem === "estimatedLoss") {
+      data = feature.properties.total_estimated_loss / totalEstimatedLoss;
+    } else if (currentLegendItem === "infrastructuredestroyed") {
+      data =
+        feature.properties.total_infrastructure / totalInfrastructureDamage;
+    } else {
+      data = feature.properties.number_of_disasters;
+    }
     return {
-      fillColor: getColor(feature.properties.no_of_incidents),
+      fillColor: getColor(data),
       weight: 2,
       opacity: 1,
       color: "white",
@@ -217,6 +242,9 @@ export const Portal = () => {
           {component === REALTIME && <RealTimeLegend />}
           {component === DASHBOARD && (
             <DashboardLegend legendItem={disasterinDashboard} />
+          )}
+          {component === DAMAGELOSS && (
+            <DamageAndLossLegend changeDamagestate={setdamageindex} />
           )}
         </MapContainer>
         <SideBar />

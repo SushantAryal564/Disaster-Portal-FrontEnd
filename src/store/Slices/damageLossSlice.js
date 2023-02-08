@@ -14,6 +14,9 @@ export const DamageLossAsyncGETThunk = createAsyncThunk(
 const initialState = {
   data: [],
   totalIncident: 0,
+  totalPeopledeath: 0,
+  totalEstimatedLoss: 0,
+  totalInfrastructure: 0,
   status: "idle",
   error: null,
 };
@@ -32,6 +35,18 @@ export const damageLossSlice = createSlice({
         state.data = state.data.concat(action.payload);
         state.totalIncident = state.data.reduce(
           (sum, event) => sum + event.Ward.number_of_disasters,
+          0
+        );
+        state.totalPeopledeath = state.data.reduce(
+          (sum, event) => sum + event.Ward.total_people_death,
+          0
+        );
+        state.totalEstimatedLoss = state.data.reduce(
+          (sum, event) => sum + event.Ward.total_estimated_loss,
+          0
+        );
+        state.totalInfrastructure = state.data.reduce(
+          (sum, event) => sum + event.Ward.total_infrastructure_damaged,
           0
         );
       })
