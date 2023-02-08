@@ -4,18 +4,18 @@ const NavigationBar = () => {
   let Links = [
     { name: "Home", links: "/" },
     { name: "Portal", links: "/portal" },
-    { name: "About Us", links: "/aboutus" },
+    { name: "Manage-Disaster", links: "/aboutus" },
   ];
   let [open, setopen] = useState(false);
   let key = 0;
   return (
     <div className="shadow-md w-full">
-      <div className="md:flex	 items-center justify-between py-0.5 md:px-10 px-15">
-        <div className="font-bold text-xl cursor-pointer flex items-center font-[Aerial] text-gray-800">
-          <span className="text-3xl text-red-600 mr-1 pt-2">
-            <ion-icon name="flame-sharp"></ion-icon>
+      <div className="md:flex	 items-center justify-between md:pr-2 pr-15">
+        <div className="font-bold text-xl cursor-pointer flex items-center  text-gray-800">
+          <span className="text-sm text-white bg-teal-500 p-2">
+            {/* <ion-icon name="flame-sharp"></ion-icon> */}  LMC Disaster Portal
           </span>
-          Disaster Portal
+         
         </div>
         <div
           onClick={() => setopen(!open)}
