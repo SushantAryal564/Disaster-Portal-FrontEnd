@@ -8,6 +8,9 @@ import markerReducer from "./Slices/selecteddata";
 import disasterIncidentreducer from "./Slices/incidentSlice";
 import damagelossreducer from "./Slices/damageLossSlice";
 import damageLegendSlice from "./Slices/damageLegendSlice";
+import authReducer from "./Slices/authSlice";
+import { userAuthApi } from "./../services/auth";
+import manageDisasterReducer from "./Slices/manageDisasterSlice";
 const store = configureStore({
   reducer: {
     disaster: disasterReducer,
@@ -19,6 +22,11 @@ const store = configureStore({
     selected: markerReducer,
     damageloss: damagelossreducer,
     damageLegend: damageLegendSlice,
+    [userAuthApi.reducerPath]: userAuthApi.reducer,
+    auth: authReducer,
+    manageDisaster: manageDisasterReducer,
   },
+  middleware: (getDefaultMiddleware) =>
+    getDefaultMiddleware().concat(userAuthApi.middleware),
 });
 export default store;

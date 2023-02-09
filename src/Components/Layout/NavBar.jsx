@@ -1,11 +1,21 @@
 import React, { useState } from "react";
 import { NavLink, Link } from "react-router-dom";
+import { getToken } from "../../services/localStorageService";
+import { removeToken } from "../../services/localStorageService";
+import { unSetUserToken } from "../../store/Slices/authSlice";
+import { useDispatch } from "react-redux";
 const NavigationBar = () => {
+  const { access_token } = getToken();
+  const dispatch = useDispatch();
   let Links = [
     { name: "Home", links: "/" },
     { name: "Portal", links: "/portal" },
-    { name: "Manage-Disaster", links: "/aboutus" },
+    { name: "Manage-Disaster", links: "/managedisaster" },
   ];
+  const logoutHandler = () => {
+    removeToken();
+    dispatch(unSetUserToken(null));
+  };
   let [open, setopen] = useState(false);
   let key = 0;
   return (
@@ -13,9 +23,8 @@ const NavigationBar = () => {
       <div className="md:flex	 items-center justify-between md:pr-2 pr-15">
         <div className="font-bold text-xl cursor-pointer flex items-center  text-gray-800">
           <span className="text-sm text-white bg-teal-500 p-2">
-            {/* <ion-icon name="flame-sharp"></ion-icon> */}  LMC Disaster Portal
+            {/* <ion-icon name="flame-sharp"></ion-icon> */} LMC Disaster Portal
           </span>
-         
         </div>
         <div
           onClick={() => setopen(!open)}
@@ -38,20 +47,22 @@ const NavigationBar = () => {
               </NavLink>
             </div>
           ))}
-          {/*{isLogged_In ? (
-            <AccountCircleIcon
-              onClick={loginHandler}
-              style={{ fontSize: 45 }}
+          {access_token ? (
+            <Link
               className="bg-red-600 text-xl text-white font-[Aerial] font-bold py-0.5 px-2 rounded md:ml-8 hover:shadow-xl duration-500"
-            />
+              to="/login"
+              onClick={logoutHandler}
+            >
+              LogOut
+            </Link>
           ) : (
             <Link
               className="bg-red-600 text-xl text-white font-[Aerial] font-bold py-0.5 px-2 rounded md:ml-8 hover:shadow-xl duration-500"
               to="/login"
             >
-              Log In
+              LogIn
             </Link>
-          )}*/}
+          )}
         </div>
       </div>
     </div>

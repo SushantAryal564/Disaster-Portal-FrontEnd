@@ -1,10 +1,21 @@
-import React, { Fragment } from "react";
+import React, { Fragment, useState, useEffect } from "react";
 import useInput from "../../hooks/formValidationHook";
 import { Button } from "../UI/Button";
+import { useNavigate } from "react-router-dom";
+import { useLoginUserMutation } from "./../../services/auth.js";
+import {
+  getToken,
+  storeToken,
+  getUserInformation,
+} from "./../../services/localStorageService.js";
+import { setUserToken, setUserInfo } from "../../store/Slices/authSlice";
 import { useDispatch } from "react-redux";
-export const Login = (props) => {
-  const dispatch = useDispatch();
 
+export const Login = (props) => {
+  const [loginUser, { isLoading }] = useLoginUserMutation();
+  const [server_error, setServerError] = useState({});
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
   const {
     value: enteredEmail,
     isValid: enteredEmailIsValid,
@@ -12,7 +23,7 @@ export const Login = (props) => {
     valueInputHandler: emailChangedHandler,
     reset: resetEmailInput,
     BlurHandler: emailBlurHandler,
-  } = useInput((value) => value.includes("@"));
+  } = useInput((value) => value.includes(""));
 
   const {
     value: enteredPassword,
@@ -27,14 +38,35 @@ export const Login = (props) => {
   if (enteredEmailIsValid && PasswordIsValid) {
     formIsValid = true;
   }
-  const formSubmissionHandler = (event) => {
+  const formSubmissionHandler = async (event) => {
     event.preventDefault();
     if (!formIsValid) {
       return;
     }
+    const actualData = {
+      username: enteredEmail,
+      password: enteredPassword,
+    };
+
+    const res = await loginUser(actualData);
+    if (res.message) {
+      setServerError(res.message);
+    }
+    if (res.data) {
+      console.log(res.data);
+      storeToken(res.data);
+      let { access_token } = getToken();
+      dispatch(setUserToken({ access_token: access_token }));
+
+      let { WardId, IsWard, IsMunicipality, wardNumber } = getUserInformation();
+      dispatch(setUserInfo({ WardId, IsWard, IsMunicipality, wardNumber }));
+      navigate("/portal");
+    }
+
     resetEmailInput();
     resetPasswordInput();
   };
+
   return (
     <Fragment>
       <form onSubmit={formSubmissionHandler}>

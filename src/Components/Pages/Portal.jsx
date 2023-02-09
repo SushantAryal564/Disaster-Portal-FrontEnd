@@ -36,6 +36,7 @@ export const Portal = () => {
   const dispatch = useDispatch();
   var [jsonLalitpurMetro, setJsonLalitpurMetro] = useState("");
   var [jsonWard, setJsonWard] = useState("");
+  console.log("******I am from portal ******", jsonWard);
   const [currentdamageindex, setdamageindex] = useState("incident");
   console.log(currentdamageindex);
   const totalIncident = useSelector((state) => {
@@ -89,7 +90,6 @@ export const Portal = () => {
     let datajson = await data.json();
     setJsonLalitpurMetro(datajson);
   };
-
   const wardJSON = async () => {
     let data = await fetch("http://127.0.0.1:8000/api/v1/spatial/ward/");
     let datajson = await data.json();

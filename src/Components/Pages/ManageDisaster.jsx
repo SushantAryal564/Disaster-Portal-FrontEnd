@@ -1,14 +1,30 @@
 import React from "react";
 import Layout from "../Layout/Layout";
 import { LayersControl, MapContainer, Marker, TileLayer } from "react-leaflet";
-const AboutUs = (props) => {
+import { useSelector } from "react-redux";
+import { GetManageDisasterWardShpGETThunk } from "../../store/Slices/manageDisasterSlice";
+import { useEffect } from "react";
+import { useDispatch } from "react-redux";
+import { GeoJSON } from "react-leaflet";
+
+const ManageDisaster = (props) => {
+  const dispatch = useDispatch();
+  const wardId = useSelector((state) => {
+    return state.auth.wardId;
+  });
+  const wardShp = useSelector((state) => {
+    return state.manageDisaster.data[0];
+  });
+  useEffect(() => {
+    dispatch(GetManageDisasterWardShpGETThunk(wardId));
+  }, [dispatch, wardId]);
   const scrollWheelZoom = true;
   const position = [27.67571580617923, 85.3183283194577];
 
   return (
     <Layout>
       <div className="grid grid-cols-4">
-      <div className="col-span-2 ">06</div>
+        <div className="col-span-2 ">06</div>
         <div className="col-span-2 ">
           <MapContainer
             center={position}
@@ -27,10 +43,12 @@ const AboutUs = (props) => {
                 <TileLayer url="https://tiles.stadiamaps.com/tiles/alidade_smooth/{z}/{x}/{y}{r}.png" />
               </LayersControl.BaseLayer>
             </LayersControl>
+
+            {wardShp ? <GeoJSON data={wardShp}></GeoJSON> : ""}
           </MapContainer>
         </div>
       </div>
     </Layout>
   );
 };
-export default AboutUs;
+export default ManageDisaster;
