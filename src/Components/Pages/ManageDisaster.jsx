@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import Layout from "../Layout/Layout";
 import { LayersControl, MapContainer, Marker, TileLayer } from "react-leaflet";
 import { useSelector } from "react-redux";
@@ -6,9 +6,17 @@ import { GetManageDisasterWardShpGETThunk } from "../../store/Slices/manageDisas
 import { useEffect } from "react";
 import { useDispatch } from "react-redux";
 import { GeoJSON } from "react-leaflet";
-
-const ManageDisaster = (props) => {
+import ActiveManage from "../ManageDisasterComponent/activeManage";
+import ActivityLog from "../ManageDisasterComponent/ActivityLog";
+import AllIncident from "../ManageDisasterComponent/AllIncident";
+import Markers from "../UI/Marker";
+const ManageDisaster = () => {
   const dispatch = useDispatch();
+  const [disasterData, setDisasterData] = useState([]);
+  const [ManageDisasterPanel, ChangeManageDisasterPanel] = useState(
+    <ActiveManage changeMarkerDataState={setDisasterData} />
+  );
+
   const wardId = useSelector((state) => {
     return state.auth.wardId;
   });
@@ -24,7 +32,41 @@ const ManageDisaster = (props) => {
   return (
     <Layout>
       <div className="grid grid-cols-4">
-        <div className="col-span-2 ">06</div>
+        <div className="col-span-2 ">
+          <div className="flex gap gap-1">
+            <div
+              onClick={() => {
+                ChangeManageDisasterPanel(
+                  <ActiveManage changeMarkerDataState={setDisasterData} />
+                );
+              }}
+              className="bg-red-400"
+            >
+              Active Incident
+            </div>
+            <div
+              onClick={() => {
+                ChangeManageDisasterPanel(
+                  <AllIncident changeMarkerDataState={setDisasterData} />
+                );
+              }}
+              className="bg-blue-400"
+            >
+              All Incident
+            </div>
+            <div
+              onClick={() => {
+                ChangeManageDisasterPanel(
+                  <ActivityLog changeMarkerDataState={setDisasterData} />
+                );
+              }}
+              className="bg-green-400"
+            >
+              Activity Log
+            </div>
+          </div>
+          <div>{ManageDisasterPanel}</div>
+        </div>
         <div className="col-span-2 ">
           <MapContainer
             center={position}
@@ -45,6 +87,9 @@ const ManageDisaster = (props) => {
             </LayersControl>
 
             {wardShp ? <GeoJSON data={wardShp}></GeoJSON> : ""}
+            {disasterData.map((event) => {
+              return <Markers disaster={event} key={event.id} />;
+            })}
           </MapContainer>
         </div>
       </div>

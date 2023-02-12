@@ -36,9 +36,7 @@ export const Portal = () => {
   const dispatch = useDispatch();
   var [jsonLalitpurMetro, setJsonLalitpurMetro] = useState("");
   var [jsonWard, setJsonWard] = useState("");
-  console.log("******I am from portal ******", jsonWard);
   const [currentdamageindex, setdamageindex] = useState("incident");
-  console.log(currentdamageindex);
   const totalIncident = useSelector((state) => {
     return state.damageloss.totalIncident;
   });

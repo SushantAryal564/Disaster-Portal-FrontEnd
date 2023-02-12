@@ -24,7 +24,7 @@ function Markers({ disaster: event }) {
   return (
     <Marker
       key={`disaster-${event.id}`}
-      position={[event.lat || 23, event.long || 83]}
+      position={[event.long || 23, event.lat || 83]}
       icon={getIcon(event?.type?.title)}
     >
       <Popup>

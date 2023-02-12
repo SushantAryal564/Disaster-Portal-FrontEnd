@@ -4,7 +4,7 @@ export const DamageLossAsyncGETThunk = createAsyncThunk(
   "damageLossGet",
   async (startdate, enddate) => {
     const response = await fetch(
-      `http://127.0.0.1:8000/api/v1/disaster/disasterEventwithoutgeom/?start_time=${startdate}T00:00:00&end_time=${enddate}T23:59:59`
+      `http://127.0.0.1:8000/api/v1/disaster/disasterEventwithoutgeom/?name=&Ward=$&type=&is_closed=&startTime__gte=${startdate}T18%3A00%3A00Z&startTime__gt=&startTime=&startTime__lte=${enddate}T18%3A00%3A00Z`
     );
     const data = await response.json();
     return data;
