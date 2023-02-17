@@ -10,22 +10,37 @@ import ActiveManage from "../ManageDisasterComponent/activeManage";
 import ActivityLog from "../ManageDisasterComponent/ActivityLog";
 import AllIncident from "../ManageDisasterComponent/AllIncident";
 import Markers from "../UI/Marker";
+import DisasterAnalysis from "../ManageDisasterComponent/DisasterAnalysis";
 const ManageDisaster = () => {
   const dispatch = useDispatch();
   const [disasterData, setDisasterData] = useState([]);
+  const [analysisResult, setAnalysisResult] = useState([]);
   const [ManageDisasterPanel, ChangeManageDisasterPanel] = useState(
     <ActiveManage changeMarkerDataState={setDisasterData} />
   );
-
+  console.log(analysisResult);
   const wardId = useSelector((state) => {
     return state.auth.wardId;
   });
   const wardShp = useSelector((state) => {
     return state.manageDisaster.data[0];
   });
+
+  const fetchBufferPolygon = async (latlng) => {
+    const data = await fetch(
+      `http://127.0.0.1:8000/api/v1/analysis/building/?lat=27.661485423990104&lon=85.32102656735674&buffer_distance=100`
+    );
+    const affectedBuilding = await data.json();
+    setAnalysisResult(affectedBuilding);
+  };
+
   useEffect(() => {
     dispatch(GetManageDisasterWardShpGETThunk(wardId));
   }, [dispatch, wardId]);
+
+  const polygon = analysisResult ? (
+    <GeoJSON data={analysisResult}></GeoJSON>
+  ) : null;
   const scrollWheelZoom = true;
   const position = [27.67571580617923, 85.3183283194577];
 
@@ -64,6 +79,17 @@ const ManageDisaster = () => {
             >
               Activity Log
             </div>
+            <div
+              onClick={() => {
+                ChangeManageDisasterPanel(
+                  <DisasterAnalysis changeMarkerDataState={setDisasterData} />
+                );
+              }}
+              className="bg-pink-400"
+            >
+              Analysis
+            </div>
+            <button onClick={fetchBufferPolygon}>Get Buffer Polygon</button>
           </div>
           <div>{ManageDisasterPanel}</div>
         </div>
@@ -85,11 +111,11 @@ const ManageDisaster = () => {
                 <TileLayer url="https://tiles.stadiamaps.com/tiles/alidade_smooth/{z}/{x}/{y}{r}.png" />
               </LayersControl.BaseLayer>
             </LayersControl>
-
             {wardShp ? <GeoJSON data={wardShp}></GeoJSON> : ""}
             {disasterData.map((event) => {
               return <Markers disaster={event} key={event.id} />;
             })}
+            {polygon}
           </MapContainer>
         </div>
       </div>
