@@ -11,6 +11,8 @@ import damageLegendSlice from "./Slices/damageLegendSlice";
 import authReducer from "./Slices/authSlice";
 import { userAuthApi } from "./../services/auth";
 import manageDisasterReducer from "./Slices/manageDisasterSlice";
+import latlngreducer from "./Slices/latlng";
+import featureReducer from "./Slices/featureSlice";
 const store = configureStore({
   reducer: {
     disaster: disasterReducer,
@@ -25,6 +27,8 @@ const store = configureStore({
     [userAuthApi.reducerPath]: userAuthApi.reducer,
     auth: authReducer,
     manageDisaster: manageDisasterReducer,
+    latlng: latlngreducer,
+    feature: featureReducer,
   },
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware().concat(userAuthApi.middleware),

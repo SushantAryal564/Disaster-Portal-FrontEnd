@@ -208,11 +208,7 @@ export const Portal = () => {
               ""
             )}
           </LayersControl>
-          <ResetViewControl
-            title="Reset view"
-            icon="url(/some/relative/path.png)"
-            position="topright"
-          />
+          <ResetViewControl title="Reset view" position="topright" />
           {component === DAMAGELOSS && (
             <GeoJSON data={jsonWard} style={styleFeature} />
           )}
