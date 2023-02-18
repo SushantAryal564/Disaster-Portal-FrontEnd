@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import Layout from "../Layout/Layout";
 import { LayersControl, MapContainer, Marker, TileLayer } from "react-leaflet";
+import MarkerClusterGroup from "react-leaflet-cluster";
 import { useSelector } from "react-redux";
 import { GetManageDisasterWardShpGETThunk } from "../../store/Slices/manageDisasterSlice";
 import { useEffect } from "react";
@@ -14,11 +15,13 @@ import DisasterAnalysis from "../ManageDisasterComponent/DisasterAnalysis";
 const ManageDisaster = () => {
   const dispatch = useDispatch();
   const [disasterData, setDisasterData] = useState([]);
+  const [latlng, setLatLng] = useState([85.32009429187968, 27.67463274662417]);
+  console.log(latlng);
   const [analysisResultBuilding, setAnalysisResultBuilding] = useState(null);
   const [analysisResultAmenities, setAnalysisResultAmenities] = useState(null);
   const [analysisResultWaterBody, setAnalysisResultWaterBody] = useState(null);
   const [analysisResultForest, setAnalysisResultForest] = useState(null);
-
+  console.log(analysisResultBuilding);
   const [ManageDisasterPanel, ChangeManageDisasterPanel] = useState(
     <ActiveManage changeMarkerDataState={setDisasterData} />
   );
@@ -30,7 +33,6 @@ const ManageDisaster = () => {
   });
 
   const fetchBufferBuilding = async (latlng) => {
-    console.log(latlng);
     const data = await fetch(
       `http://127.0.0.1:8000/api/v1/analysis/building/?lat=${latlng[1]}&lon=${latlng[0]}&buffer_distance=30`
     );
@@ -38,15 +40,13 @@ const ManageDisaster = () => {
     setAnalysisResultBuilding(affectedBuilding);
   };
   const fetchBufferForest = async (latlng) => {
-    console.log(latlng);
     const data = await fetch(
       `http://127.0.0.1:8000/api/v1/analysis/forest/?lat=${latlng[1]}&lon=${latlng[0]}&buffer_distance=30`
     );
-    const affectedBuilding = await data.json();
-    setAnalysisResultForest(affectedBuilding);
+    const affectedForest = await data.json();
+    setAnalysisResultForest(affectedForest);
   };
   const fetchBufferWaterbody = async (latlng) => {
-    console.log(latlng);
     const data = await fetch(
       `http://127.0.0.1:8000/api/v1/analysis/waterbody/?lat=${latlng[1]}&lon=${latlng[0]}&buffer_distance=30`
     );
@@ -54,18 +54,19 @@ const ManageDisaster = () => {
     setAnalysisResultWaterBody(affectedBuilding);
   };
   const fetchBufferAmenities = async (latlng) => {
-    console.log(latlng);
     const data = await fetch(
-      `http://127.0.0.1:8000/api/v1/analysis/waterbody/?lat=${latlng[1]}&lon=${latlng[0]}&buffer_distance=30`
+      `http://127.0.0.1:8000/api/v1/analysis/amenities/?lat=${latlng[1]}&lon=${latlng[0]}&buffer_distance=100`
     );
     const affectedBuilding = await data.json();
     setAnalysisResultAmenities(affectedBuilding);
   };
-  const fetchBufferHandler = (latlng) => {
-    fetchBufferBuilding(latlng);
-    fetchBufferForest(latlng);
-    fetchBufferWaterbody(latlng);
-    fetchBufferAmenities(latlng);
+  const fetchBufferHandler = () => {
+    if (latlng) {
+      fetchBufferBuilding(latlng);
+      fetchBufferForest(latlng);
+      fetchBufferWaterbody(latlng);
+      fetchBufferAmenities(latlng);
+    }
   };
   useEffect(() => {
     dispatch(GetManageDisasterWardShpGETThunk(wardId));
@@ -73,11 +74,31 @@ const ManageDisaster = () => {
 
   const getGeoJSON = (featureAnalysisResult) => {
     return featureAnalysisResult ? (
-      <GeoJSON data={featureAnalysisResult}></GeoJSON>
+      <GeoJSON
+        data={featureAnalysisResult}
+        style={(feature) => {
+          return {
+            color: "black",
+            fillColor:
+              featureAnalysisResult === analysisResultBuilding
+                ? "red"
+                : featureAnalysisResult === analysisResultForest
+                ? "green"
+                : featureAnalysisResult === analysisResultAmenities
+                ? "brown"
+                : "blue",
+            fillOpacity: 1,
+            weight: 0.5,
+          };
+        }}
+      ></GeoJSON>
     ) : null;
   };
+  useEffect(() => {
+    dispatch(GetManageDisasterWardShpGETThunk(wardId));
+    getGeoJSON([85.32009429187968, 27.67463274662417]);
+  }, [dispatch, wardId, latlng]);
   const scrollWheelZoom = true;
-  const position = [27.67571580617923, 85.3183283194577];
 
   return (
     <Layout>
@@ -120,6 +141,8 @@ const ManageDisaster = () => {
                   <DisasterAnalysis
                     changeMarkerDataState={setDisasterData}
                     analysisRequestHandler={fetchBufferHandler}
+                    setLatLng={setLatLng}
+                    latlng={latlng}
                   />
                 );
               }}
@@ -132,7 +155,7 @@ const ManageDisaster = () => {
         </div>
         <div className="col-span-2 ">
           <MapContainer
-            center={position}
+            center={[latlng[1], latlng[0]] || [27.671704, 85.316118]}
             zoom={14}
             scrollWheelZoom={scrollWheelZoom}
             className="mt-1 z-10"
@@ -149,23 +172,25 @@ const ManageDisaster = () => {
               </LayersControl.BaseLayer>
             </LayersControl>
             <LayersControl position="topright">
-              <LayersControl.Overlay name="Buidling">
+              <LayersControl.Overlay checked name="Buidling">
                 {getGeoJSON(analysisResultBuilding)}
               </LayersControl.Overlay>
-              <LayersControl.Overlay name="Forest">
+              <LayersControl.Overlay checked name="Forest">
                 {getGeoJSON(analysisResultForest)}
               </LayersControl.Overlay>
-              <LayersControl.Overlay name="Waterbody">
+              <LayersControl.Overlay checked name="Waterbody">
                 {getGeoJSON(analysisResultWaterBody)}
               </LayersControl.Overlay>
-              <LayersControl.Overlay name="Amenities">
+              <LayersControl.Overlay checked name="Amenities">
                 {getGeoJSON(analysisResultAmenities)}
               </LayersControl.Overlay>
             </LayersControl>
             {wardShp ? <GeoJSON data={wardShp}></GeoJSON> : ""}
-            {disasterData.map((event) => {
-              return <Markers disaster={event} key={event.id} />;
-            })}
+            <MarkerClusterGroup>
+              {disasterData.map((event) => {
+                return <Markers disaster={event} key={event.id} />;
+              })}
+            </MarkerClusterGroup>
           </MapContainer>
         </div>
       </div>

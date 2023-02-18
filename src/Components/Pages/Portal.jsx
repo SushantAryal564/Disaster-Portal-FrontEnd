@@ -19,7 +19,7 @@ import ReportAnAncident from "../../Sidebar/reportIncident";
 import DataArchieve from "../../Sidebar/dataArchive";
 import Situation from "../../Sidebar/situation";
 import Feedback from "@mui/icons-material/Feedback";
-import { ReactLeafletWaypoints } from "react-leaflet-waypoints";
+import MarkerClusterGroup from "react-leaflet-cluster";
 import { DamageAndLossLegend } from "../Legends/Legend";
 import {
   DASHBOARD,
@@ -216,16 +216,18 @@ export const Portal = () => {
           {component === DAMAGELOSS && (
             <GeoJSON data={jsonWard} style={styleFeature} />
           )}
-          {component === DASHBOARD
-            ? datadisaster.map((event) => {
-                return <Markers disaster={event} key={event.id} />;
-              })
-            : ""}
-          {component === INCIDENT
-            ? dataIncident.map((event) => {
-                return <Markers disaster={event} key={event.id} />;
-              })
-            : ""}
+          <MarkerClusterGroup>
+            {component === DASHBOARD
+              ? datadisaster.map((event) => {
+                  return <Markers disaster={event} key={event.id} />;
+                })
+              : ""}
+            {component === INCIDENT
+              ? dataIncident.map((event) => {
+                  return <Markers disaster={event} key={event.id} />;
+                })
+              : ""}
+          </MarkerClusterGroup>
           {component === REALTIME
             ? realtimedatawater.map((event) => {
                 console.log("realwater marker");
@@ -245,13 +247,6 @@ export const Portal = () => {
           {component === DAMAGELOSS && (
             <DamageAndLossLegend changeDamagestate={setdamageindex} />
           )}
-          <ReactLeafletWaypoints
-            layerUrl="https://layer-url/image.png"
-            waypoints={[
-              { lat: "50.4381311", lng: "-3.8196196" },
-              { lat: "52.7576862", lng: "1.5082874" },
-            ]}
-          />
         </MapContainer>
         <SideBar />
       </div>

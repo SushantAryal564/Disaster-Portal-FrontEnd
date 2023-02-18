@@ -23,7 +23,6 @@ function DisasterAnalysis({
   useEffect(() => {
     WardIncident();
   }, []);
-  console.log(wardAllIncident);
   return (
     <div>
       {wardAllIncident.map((data) => {
@@ -31,7 +30,8 @@ function DisasterAnalysis({
           <div
             className="border-gray-200 border-b-2 p-3 hover:bg-gray-200 py-4"
             onClick={() => {
-              analysisRequestHandler([data.lat, data.long]);
+              setLatLng([data.lat, data.long]);
+              analysisRequestHandler();
             }}
           >
             <div className="text-md font-medium flex flex-row ">
