@@ -14,11 +14,14 @@ import DisasterAnalysis from "../ManageDisasterComponent/DisasterAnalysis";
 const ManageDisaster = () => {
   const dispatch = useDispatch();
   const [disasterData, setDisasterData] = useState([]);
-  const [analysisResult, setAnalysisResult] = useState([]);
+  const [analysisResultBuilding, setAnalysisResultBuilding] = useState(null);
+  const [analysisResultAmenities, setAnalysisResultAmenities] = useState(null);
+  const [analysisResultWaterBody, setAnalysisResultWaterBody] = useState(null);
+  const [analysisResultForest, setAnalysisResultForest] = useState(null);
+
   const [ManageDisasterPanel, ChangeManageDisasterPanel] = useState(
     <ActiveManage changeMarkerDataState={setDisasterData} />
   );
-  console.log(analysisResult);
   const wardId = useSelector((state) => {
     return state.auth.wardId;
   });
@@ -26,21 +29,53 @@ const ManageDisaster = () => {
     return state.manageDisaster.data[0];
   });
 
-  const fetchBufferPolygon = async (latlng) => {
+  const fetchBufferBuilding = async (latlng) => {
+    console.log(latlng);
     const data = await fetch(
-      `http://127.0.0.1:8000/api/v1/analysis/building/?lat=27.661485423990104&lon=85.32102656735674&buffer_distance=100`
+      `http://127.0.0.1:8000/api/v1/analysis/building/?lat=${latlng[1]}&lon=${latlng[0]}&buffer_distance=30`
     );
     const affectedBuilding = await data.json();
-    setAnalysisResult(affectedBuilding);
+    setAnalysisResultBuilding(affectedBuilding);
   };
-
+  const fetchBufferForest = async (latlng) => {
+    console.log(latlng);
+    const data = await fetch(
+      `http://127.0.0.1:8000/api/v1/analysis/forest/?lat=${latlng[1]}&lon=${latlng[0]}&buffer_distance=30`
+    );
+    const affectedBuilding = await data.json();
+    setAnalysisResultForest(affectedBuilding);
+  };
+  const fetchBufferWaterbody = async (latlng) => {
+    console.log(latlng);
+    const data = await fetch(
+      `http://127.0.0.1:8000/api/v1/analysis/waterbody/?lat=${latlng[1]}&lon=${latlng[0]}&buffer_distance=30`
+    );
+    const affectedBuilding = await data.json();
+    setAnalysisResultWaterBody(affectedBuilding);
+  };
+  const fetchBufferAmenities = async (latlng) => {
+    console.log(latlng);
+    const data = await fetch(
+      `http://127.0.0.1:8000/api/v1/analysis/waterbody/?lat=${latlng[1]}&lon=${latlng[0]}&buffer_distance=30`
+    );
+    const affectedBuilding = await data.json();
+    setAnalysisResultAmenities(affectedBuilding);
+  };
+  const fetchBufferHandler = (latlng) => {
+    fetchBufferBuilding(latlng);
+    fetchBufferForest(latlng);
+    fetchBufferWaterbody(latlng);
+    fetchBufferAmenities(latlng);
+  };
   useEffect(() => {
     dispatch(GetManageDisasterWardShpGETThunk(wardId));
   }, [dispatch, wardId]);
 
-  const polygon = analysisResult ? (
-    <GeoJSON data={analysisResult}></GeoJSON>
-  ) : null;
+  const getGeoJSON = (featureAnalysisResult) => {
+    return featureAnalysisResult ? (
+      <GeoJSON data={featureAnalysisResult}></GeoJSON>
+    ) : null;
+  };
   const scrollWheelZoom = true;
   const position = [27.67571580617923, 85.3183283194577];
 
@@ -82,14 +117,16 @@ const ManageDisaster = () => {
             <div
               onClick={() => {
                 ChangeManageDisasterPanel(
-                  <DisasterAnalysis changeMarkerDataState={setDisasterData} />
+                  <DisasterAnalysis
+                    changeMarkerDataState={setDisasterData}
+                    analysisRequestHandler={fetchBufferHandler}
+                  />
                 );
               }}
               className="bg-pink-400"
             >
               Analysis
             </div>
-            <button onClick={fetchBufferPolygon}>Get Buffer Polygon</button>
           </div>
           <div>{ManageDisasterPanel}</div>
         </div>
@@ -111,11 +148,24 @@ const ManageDisaster = () => {
                 <TileLayer url="https://tiles.stadiamaps.com/tiles/alidade_smooth/{z}/{x}/{y}{r}.png" />
               </LayersControl.BaseLayer>
             </LayersControl>
+            <LayersControl position="topright">
+              <LayersControl.Overlay name="Buidling">
+                {getGeoJSON(analysisResultBuilding)}
+              </LayersControl.Overlay>
+              <LayersControl.Overlay name="Forest">
+                {getGeoJSON(analysisResultForest)}
+              </LayersControl.Overlay>
+              <LayersControl.Overlay name="Waterbody">
+                {getGeoJSON(analysisResultWaterBody)}
+              </LayersControl.Overlay>
+              <LayersControl.Overlay name="Amenities">
+                {getGeoJSON(analysisResultAmenities)}
+              </LayersControl.Overlay>
+            </LayersControl>
             {wardShp ? <GeoJSON data={wardShp}></GeoJSON> : ""}
             {disasterData.map((event) => {
               return <Markers disaster={event} key={event.id} />;
             })}
-            {polygon}
           </MapContainer>
         </div>
       </div>
