@@ -34,7 +34,6 @@ const ActiveManage = ({ changeMarkerDataState }) => {
     event.preventDefault();
     WardIncident(wardId, startDate, endDate);
   };
-  console.log(wardIncident);
   return (
     <React.Fragment>
       <div className="flex items-center ">

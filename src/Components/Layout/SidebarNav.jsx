@@ -22,7 +22,7 @@ import {
   SITUATION,
   FEEDBACK,
 } from "./../../store/constant";
-export const SideBar = () => {
+export const SideBar = ({ changeReportState }) => {
   const dispatch = useDispatch();
   const handletoggleDashboard = (event) => {
     dispatch(setComponent(DASHBOARD));
@@ -38,9 +38,6 @@ export const SideBar = () => {
   };
   const handletoggleRealTime = (event) => {
     dispatch(setComponent(REALTIME));
-  };
-  const handletoggleReportAnAncident = (event) => {
-    dispatch(setComponent(REPORT));
   };
   const handletoggleDataArchieve = (event) => {
     dispatch(setComponent(DATA));
@@ -78,11 +75,6 @@ export const SideBar = () => {
       handler: handletoggleRealTime,
     },
     {
-      name: REPORT,
-      icon: ReportIcon,
-      handler: handletoggleReportAnAncident,
-    },
-    {
       name: DATA,
       icon: ArticleIcon,
       handler: handletoggleDataArchieve,
@@ -107,6 +99,15 @@ export const SideBar = () => {
           handler={button.handler}
         />
       ))}
+      <button
+        className=" bg-gray-50 border w-full text-center text-xs self-center pt-2 pb-2 font-semibold  text-slate-600 cursor-pointer hover:text-[#e35163]"
+        onClick={changeReportState}
+      >
+        <div className="text-center pb-2">
+          <ReportIcon sx={{ fontSize: 33 }} />
+        </div>
+        Report
+      </button>
     </div>
   );
 };

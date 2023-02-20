@@ -14,6 +14,8 @@ import Markers from "../UI/Marker";
 import DisasterAnalysis from "../ManageDisasterComponent/DisasterAnalysis";
 
 const ManageDisaster = () => {
+  const [json, setjson] = useState(null);
+  console.log("*************", json);
   const dispatch = useDispatch();
   const [disasterData, setDisasterData] = useState([]);
   const [ManageDisasterPanel, ChangeManageDisasterPanel] = useState(
@@ -69,7 +71,8 @@ const ManageDisaster = () => {
     setForest(analysisResultForest);
     setWaterBody(analysisResultWaterBody);
     setAmenities(analysisResultAmenities);
-  }, [dispatch, wardId, analysisResultAmenities]);
+    setjson(<GeoJSON data={building} />);
+  }, [dispatch, wardId, analysisResultAmenities, setjson]);
 
   const scrollWheelZoom = true;
 
@@ -165,6 +168,9 @@ const ManageDisaster = () => {
               </LayersControl.Overlay>
               <LayersControl.Overlay checked name="Amenities">
                 {getGeoJSON(amenities)}
+              </LayersControl.Overlay>
+              <LayersControl.Overlay checked name="test">
+                {json}
               </LayersControl.Overlay>
             </LayersControl>
             {wardShp ? <GeoJSON data={wardShp}></GeoJSON> : ""}

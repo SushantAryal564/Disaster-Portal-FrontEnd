@@ -34,6 +34,7 @@ import {
 } from "./../../store/constant";
 import { DashboardLegend, RealTimeLegend } from "../Legends/Legend";
 export const Portal = () => {
+  const [reportActivated, setReportActivated] = useState(false);
   const dispatch = useDispatch();
   var [jsonLalitpurMetro, setJsonLalitpurMetro] = useState("");
   var [jsonWard, setJsonWard] = useState("");
@@ -56,6 +57,9 @@ export const Portal = () => {
   const component = useSelector((state) => {
     return state.component;
   });
+  const changeReportState = () => {
+    setReportActivated(!reportActivated);
+  };
   const changeComponent = (compName) => {
     switch (compName) {
       case DASHBOARD:
@@ -244,7 +248,8 @@ export const Portal = () => {
             <DamageAndLossLegend changeDamagestate={setdamageindex} />
           )}
         </MapContainer>
-        <SideBar />
+        <SideBar changeReportState={changeReportState} />
+        {reportActivated ? <ReportAnAncident /> : ""}
       </div>
     </Layout>
   );
