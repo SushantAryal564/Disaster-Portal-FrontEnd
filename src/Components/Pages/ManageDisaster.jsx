@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 import Layout from "../Layout/Layout";
 import { LayersControl, MapContainer, Marker, TileLayer } from "react-leaflet";
-import MarkerClusterGroup from "react-leaflet-cluster";
 import { useSelector } from "react-redux";
 import { GetManageDisasterWardShpGETThunk } from "../../store/Slices/manageDisasterSlice";
 import { useEffect } from "react";

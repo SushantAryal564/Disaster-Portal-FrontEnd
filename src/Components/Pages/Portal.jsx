@@ -60,6 +60,7 @@ export const Portal = () => {
   const changeReportState = () => {
     setReportActivated(!reportActivated);
   };
+  console.log(reportActivated);
   const changeComponent = (compName) => {
     switch (compName) {
       case DASHBOARD:
@@ -158,6 +159,9 @@ export const Portal = () => {
   };
   return (
     <Layout>
+      {reportActivated ? (
+        <div className="absolute  w-[100%] h-[100%] z-[25] backdrop-brightness-[0.6] "></div>
+      ) : null}
       <div className="flex">
         <div
           className={`${
@@ -173,7 +177,7 @@ export const Portal = () => {
               minHeight: "50px",
             }}
             className={`
-              bg-white absolute cursor-pointer -right-[30px] top-1/2 w-7 border-2 z-50  ${
+              bg-white absolute cursor-pointer -right-[30px] top-1/2 w-7 border-2 z-20  ${
                 slidebarState ? "rotate-180 rounded-l-lg" : "rounded-r-lg"
               }`}
             onClick={changeSlidebarState}
@@ -249,7 +253,11 @@ export const Portal = () => {
           )}
         </MapContainer>
         <SideBar changeReportState={changeReportState} />
-        {reportActivated ? <ReportAnAncident /> : ""}
+        {reportActivated ? (
+          <ReportAnAncident setReportActivated={setReportActivated} />
+        ) : (
+          ""
+        )}
       </div>
     </Layout>
   );
