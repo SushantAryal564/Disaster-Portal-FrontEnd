@@ -1,16 +1,10 @@
-import React, {
-  useState,
-  useEffect,
-  useMemo,
-  useCallback,
-  useRef,
-} from "react";
+import React, { useState, useEffect } from "react";
 import { useFormik } from "formik";
 import * as Yup from "yup";
 import CloseIcon from "@mui/icons-material/Close";
 import Select, { StylesConfig } from "react-select";
+import L from "leaflet";
 import { MapContainer, TileLayer, Marker, Popup } from "react-leaflet";
-import { Map } from "leaflet";
 function ReportAnAncident({ setReportActivated }) {
   const [markerPosition, setMarkerPosition] = useState({ lat: 0, lng: 0 });
   const [disaster, setDisaster] = useState([]);
@@ -106,46 +100,12 @@ function ReportAnAncident({ setReportActivated }) {
       },
     }),
   };
-  const center = {
-    lat: 51.505,
-    lng: -0.09,
-  };
-  function DraggableMarker() {
-    const [draggable, setDraggable] = useState(false);
-    const [position, setPosition] = useState(center);
-    const markerRef = useRef(null);
-    const eventHandlers = useMemo(
-      () => ({
-        dragend() {
-          const marker = markerRef.current;
-          if (marker != null) {
-            setPosition(marker.getLatLng());
-          }
-        },
-      }),
-      []
-    );
-    const toggleDraggable = useCallback(() => {
-      setDraggable((d) => !d);
-    }, []);
-
-    return (
-      <Marker
-        draggable={draggable}
-        eventHandlers={eventHandlers}
-        position={position}
-        ref={markerRef}
-      >
-        <Popup minWidth={90}>
-          <span onClick={toggleDraggable}>
-            {draggable
-              ? "Marker is draggable"
-              : "Click here to make marker draggable"}
-          </span>
-        </Popup>
-      </Marker>
-    );
-  }
+  const customIcon = new L.Icon({
+    iconUrl: require("./../assests/marker.png"),
+    iconSize: [40, 40],
+    iconAnchor: [17, 46],
+    popupAnchor: [0, -46],
+  });
 
   return (
     <div className="absolute w-[40%] z-50 bg-white h-[90%] left-[50%] top-[7%] px-8 border rounded shadow-2xl scrollbar scrollbar-thumb-gray-300 scrollbar-track-gray-100 scrollbar-w-1 scrollbar-rounded-rounded-md translate-x-[-50%]">
@@ -342,7 +302,14 @@ function ReportAnAncident({ setReportActivated }) {
                 attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
                 url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
               />
-              <DraggableMarker />
+              <Marker
+                position={markerPosition}
+                draggable={true}
+                onDragend={handleMarkerDragEnd}
+                icon={customIcon}
+              >
+                <Popup>Drag me!</Popup>
+              </Marker>
             </MapContainer>
           </div>
           <button type="submit" disabled={!formIsValid}>
