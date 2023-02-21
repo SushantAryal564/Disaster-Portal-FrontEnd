@@ -1,4 +1,7 @@
+import { width } from "@mui/system";
 import React from "react";
+import { useSelector } from "react-redux";
+import { GetColor } from "../UI/GetColor";
 export const RealTimeLegend = () => {
   return (
     <div className="bg-teal-500">
@@ -87,6 +90,51 @@ export const DamageAndLossLegend = ({ changeDamagestate }) => {
             Infrastructure destroyed
           </div>
         </div>
+      </div>
+    </div>
+  );
+};
+export const ManageDisasterLegend = ({}) => {
+  const legendItem = new Array(
+    ...new Set(useSelector((state) => state.feature.allfeature))
+  );
+  console.log(legendItem);
+
+  return (
+    <div>
+      <div
+        className="legend"
+        style={{
+          position: "absolute",
+          bottom: "20px",
+          right: "20px",
+          zIndex: 9999,
+        }}
+      >
+        <h6 className="bg-white text-black p-[0.5px] mb-2"> Legend</h6>
+        {legendItem.map((item) => {
+          let colorRGB = GetColor(item);
+          let color = `rgb(${colorRGB[0]}, ${colorRGB[1]}, ${colorRGB[2]})`;
+          return (
+            <div className="m-2 items-center justify-between pb-1 border-b-2">
+              <div>
+                {" "}
+                <span
+                  style={{
+                    background: color,
+                    color: color,
+                    width: "2px",
+                    margin: "5px",
+                    display: "inline",
+                  }}
+                >
+                  sdf
+                </span>
+                {item[0].toUpperCase() + item.slice(1)}
+              </div>
+            </div>
+          );
+        })}
       </div>
     </div>
   );

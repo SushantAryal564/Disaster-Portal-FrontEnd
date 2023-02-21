@@ -44,15 +44,26 @@ export const GetAmenitiesWithInBuffer = createAsyncThunk(
 const initialState = {
   building: [],
   forest: [],
+  allfeature: [],
   waterbody: [],
   amenities: [],
   status: "idle",
+  featureEachCount: [],
   error: null,
 };
-export const manageDisasterSlice = createSlice({
+export const FeatureSlice = createSlice({
   name: "manageDisaster",
   initialState,
-  reducers: {},
+  reducers: {
+    removeAll: (state) => {
+      state.building = null;
+      state.forest = null;
+      state.waterbody = null;
+      state.amenities = null;
+      state.allfeature = [];
+      state.featureEachCount = [];
+    },
+  },
   extraReducers(builder) {
     builder
       .addCase(GetBuildingWithInBuffer.pending, (state, action) => {
@@ -62,6 +73,11 @@ export const manageDisasterSlice = createSlice({
       .addCase(GetBuildingWithInBuffer.fulfilled, (state, action) => {
         state.status = "succeeded";
         state.building = [action.payload];
+        state.allfeature = state.allfeature.concat([
+          ...new Set(
+            action.payload.features.map((feature) => feature.properties.classes)
+          ),
+        ]);
       })
       .addCase(GetBuildingWithInBuffer.rejected, (state, action) => {
         state.status = "failed";
@@ -74,6 +90,11 @@ export const manageDisasterSlice = createSlice({
       .addCase(GetAmenitiesWithInBuffer.fulfilled, (state, action) => {
         state.status = "succeeded";
         state.amenities = [action.payload];
+        state.allfeature = state.allfeature.concat([
+          ...new Set(
+            action.payload.features.map((feature) => feature.properties.classes)
+          ),
+        ]);
       })
       .addCase(GetAmenitiesWithInBuffer.rejected, (state, action) => {
         state.status = "failed";
@@ -86,6 +107,11 @@ export const manageDisasterSlice = createSlice({
       .addCase(GetForestWithInBuffer.fulfilled, (state, action) => {
         state.status = "succeeded";
         state.forest = [action.payload];
+        state.allfeature = state.allfeature.concat([
+          ...new Set(
+            action.payload.features.map((feature) => feature.properties.classes)
+          ),
+        ]);
       })
       .addCase(GetForestWithInBuffer.rejected, (state, action) => {
         state.status = "failed";
@@ -98,6 +124,11 @@ export const manageDisasterSlice = createSlice({
       .addCase(GetWaterbodyWithInBuffer.fulfilled, (state, action) => {
         state.status = "succeeded";
         state.waterbody = [action.payload];
+        state.allfeature = state.allfeature.concat([
+          ...new Set(
+            action.payload.features.map((feature) => feature.properties.classes)
+          ),
+        ]);
       })
       .addCase(GetWaterbodyWithInBuffer.rejected, (state, action) => {
         state.status = "failed";
@@ -105,4 +136,5 @@ export const manageDisasterSlice = createSlice({
       });
   },
 });
-export default manageDisasterSlice.reducer;
+export const { removeAll } = FeatureSlice.actions;
+export default FeatureSlice.reducer;

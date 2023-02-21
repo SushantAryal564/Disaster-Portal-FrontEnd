@@ -4,9 +4,13 @@ import * as Yup from "yup";
 import CloseIcon from "@mui/icons-material/Close";
 import Select, { StylesConfig } from "react-select";
 import L from "leaflet";
+import { useMap } from "react-leaflet";
 import { MapContainer, TileLayer, Marker, Popup } from "react-leaflet";
 function ReportAnAncident({ setReportActivated }) {
-  const [markerPosition, setMarkerPosition] = useState({ lat: 0, lng: 0 });
+  const [position, setPosition] = useState([
+    27.66445354418368, 85.31856628971687,
+  ]);
+  console.log(position);
   const [disaster, setDisaster] = useState([]);
   const [Region, SetRegion] = useState([]);
   const disasterTypeGET = async () => {
@@ -34,9 +38,9 @@ function ReportAnAncident({ setReportActivated }) {
       label: region.properties.palika + " " + region.properties.ward,
     };
   });
-  const handleMarkerDragEnd = (e) => {
-    setMarkerPosition(e.target.getLatLng());
-  };
+  function updatePosition(event) {
+    setPosition([event.target.getLatLng().lat, event.target.getLatLng().lng]);
+  }
   const formik = useFormik({
     initialValues: {
       description: "",
@@ -100,21 +104,29 @@ function ReportAnAncident({ setReportActivated }) {
       },
     }),
   };
-  const customIcon = new L.Icon({
+  const markerIcon = new L.Icon({
     iconUrl: require("./../assests/marker.png"),
     iconSize: [40, 40],
     iconAnchor: [17, 46],
     popupAnchor: [0, -46],
   });
-
+  function CustomZoomControl() {
+    const map = useMap();
+    const zoomControl = L.control.zoom({ position: "bottomright" });
+    React.useEffect(() => {
+      zoomControl.addTo(map);
+      return () => map.removeControl(zoomControl);
+    }, []);
+    return null;
+  }
   return (
     <div className="absolute w-[40%] z-50 bg-white h-[90%] left-[50%] top-[7%] px-8 border rounded shadow-2xl scrollbar scrollbar-thumb-gray-300 scrollbar-track-gray-100 scrollbar-w-1 scrollbar-rounded-rounded-md translate-x-[-50%]">
       <div className="h-96 self-center text-gray-500">
         <form onSubmit={formik.handleSubmit}>
           <div className="flex flex-row items-center justify-center lg:justify-start ">
-            <p className=" mb-12 mt-4 ">Report an incident</p>
+            <p className=" mb-8 mt-4 font-bold text-lg">Report an incident</p>
           </div>
-          <div className="pt-3">
+          <div className="pt-2">
             <div class="relative h-11 w-full min-w-[200px]">
               <input
                 className="peer h-full w-full border-b border-blue-gray-200 bg-transparent pt-4 pb-1.5 font-sans text-sm font-normal text-blue-gray-700 outline outline-0 transition-all placeholder-shown:border-blue-gray-200 focus:border-red-500 focus:outline-0 disabled:border-0 disabled:bg-blue-gray-50"
@@ -136,7 +148,7 @@ function ReportAnAncident({ setReportActivated }) {
             ) : null}
           </div>
           <div className="pt-3 flex gap-10 ">
-            <div className="w-full hover:text-red-500">
+            <div className="w-full hover:text-red-500 z-[10000]">
               <label
                 htmlFor="hazard"
                 className="text-xs font-normal leading-tight text-blue-gray-500 transition-all after:absolute after:-bottom-2.5 after:block after:w-full after:scale-x-0 after:border-b-2 after:border-red-500 after:transition-transform after:duration-300 peer-placeholder-shown:leading-tight font-bold"
@@ -181,7 +193,7 @@ function ReportAnAncident({ setReportActivated }) {
               ) : null}
             </div>
           </div>
-          <div className="pt-3 mt-5">
+          <div className="mt-3">
             <div class="relative h-11 w-full min-w-[200px]">
               <input
                 className="peer h-8 w-full border-b border-blue-gray-200 bg-transparent  font-sans text-sm font-normal text-blue-gray-700 outline outline-0 transition-all focus:border-red-500 focus:outline-0 disabled:border-8 disabled:bg-blue-gray-50"
@@ -222,7 +234,7 @@ function ReportAnAncident({ setReportActivated }) {
             </label>
           </div>
           <div className="grid grid-cols-3 gap-2">
-            <div className="pt-3 hover:text-red-500">
+            <div className="pt-3 hover:text-red-500 z-[1000]">
               <label
                 htmlFor="region"
                 className="text-xs font-normal leading-tight text-blue-gray-500 transition-all after:absolute after:-bottom-2.5 after:block after:w-full after:scale-x-0 after:border-b-2 after:border-red-500 after:transition-transform after:duration-300 peer-placeholder-shown:leading-tight font-bold "
@@ -258,7 +270,7 @@ function ReportAnAncident({ setReportActivated }) {
                 className="h-9 border rounded border-stone-300 w-40 hover:border-red-500 hover:text-black		"
                 onChange={formik.handleChange}
                 onBlur={formik.handleBlur}
-                value={formik.values.longitude}
+                value={(formik.values.longitude = position[1].toFixed(5))}
               ></input>
               {formik.errors.longitude && formik.touched.longitude ? (
                 <div className="text-red-600 text-xs">
@@ -272,7 +284,7 @@ function ReportAnAncident({ setReportActivated }) {
                   htmlFor="latitude"
                   className="text-xs font-normal leading-tight text-blue-gray-500 transition-all font-bold"
                 >
-                  LONGITUDE
+                  LATITUDE
                 </label>
                 <input
                   id="latitude"
@@ -281,7 +293,7 @@ function ReportAnAncident({ setReportActivated }) {
                   className="h-9 border rounded border-stone-300	w-40 hover:border-red-500 hover:text-black	"
                   onChange={formik.handleChange}
                   onBlur={formik.handleBlur}
-                  value={formik.values.latitude}
+                  value={(formik.values.latitude = position[0].toFixed(5))}
                 ></input>
               </div>
               {formik.errors.latitude && formik.touched.latitude ? (
@@ -291,30 +303,36 @@ function ReportAnAncident({ setReportActivated }) {
               ) : null}
             </div>
           </div>
-          <div style={{ height: "275px" }} className="mt-5">
+          <div style={{ height: "275px" }} className="mt-3">
             <MapContainer
               style={{ height: "100%", minHeight: "100%" }}
               center={[27.66445354418368, 85.31856628971687]}
               zoom={13}
               scrollWheelZoom={true}
+              zoomControl={false}
             >
-              <TileLayer
-                attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-                url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-              />
+              <TileLayer url="https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}" />
               <Marker
-                position={markerPosition}
                 draggable={true}
-                onDragend={handleMarkerDragEnd}
-                icon={customIcon}
+                eventHandlers={{ dragend: updatePosition }}
+                position={position}
+                icon={markerIcon}
               >
-                <Popup>Drag me!</Popup>
+                <Popup>
+                  <b>Is this the place?</b>
+                </Popup>
               </Marker>
+              <CustomZoomControl />
             </MapContainer>
           </div>
-          <button type="submit" disabled={!formIsValid}>
-            Submit
-          </button>
+          <div className="flex justify-center">
+            <button
+              type="submit"
+              className="inline-block rounded bg-danger px-6 pt-2.5 pb-2 my-2 text-xs font-medium uppercase leading-normal text-white shadow-[0_4px_9px_-4px_#dc4c64] transition duration-150 ease-in-out hover:bg-danger-600 hover:shadow-[0_8px_9px_-4px_rgba(220,76,100,0.3),0_4px_18px_0_rgba(220,76,100,0.2)] focus:bg-danger-600 focus:shadow-[0_8px_9px_-4px_rgba(220,76,100,0.3),0_4px_18px_0_rgba(220,76,100,0.2)] focus:outline-none focus:ring-0 active:bg-danger-700 active:shadow-[0_8px_9px_-4px_rgba(220,76,100,0.3),0_4px_18px_0_rgba(220,76,100,0.2)]"
+            >
+              Submit
+            </button>
+          </div>
         </form>
       </div>
 

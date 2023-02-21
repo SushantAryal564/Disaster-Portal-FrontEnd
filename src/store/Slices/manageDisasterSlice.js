@@ -7,7 +7,6 @@ export const GetManageDisasterWardShpGETThunk = createAsyncThunk(
       `http://127.0.0.1:8000/api/v1/spatial/ward/${wardId}/`
     );
     const data = await response.json();
-    console.log("******************", data);
     return data;
   }
 );

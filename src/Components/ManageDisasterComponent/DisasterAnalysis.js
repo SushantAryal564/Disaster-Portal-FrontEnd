@@ -10,8 +10,10 @@ import {
   GetForestWithInBuffer,
   GetWaterbodyWithInBuffer,
 } from "./../../store/Slices/featureSlice";
-import { dialogActionsClasses } from "@mui/material";
-function DisasterAnalysis({ changeMarkerDataState }) {
+import { removeAll } from "./../../store/Slices/featureSlice";
+import Accordian from "../UI/Accordian";
+
+function DisasterAnalysis({ changeMarkerDataState, map }) {
   let now = new Date();
   let dispatch = useDispatch();
   let today = now.toISOString().substr(0, 10);
@@ -27,53 +29,20 @@ function DisasterAnalysis({ changeMarkerDataState }) {
   };
   const latlngHandler = (array) => {
     dispatch(setlatlng(array));
-    dispatch(GetAmenitiesWithInBuffer(array));
-    dispatch(GetBuildingWithInBuffer(array));
-    dispatch(GetForestWithInBuffer(array));
-    dispatch(GetWaterbodyWithInBuffer(array));
+    if (array) {
+      dispatch(GetAmenitiesWithInBuffer(array));
+      dispatch(GetBuildingWithInBuffer(array));
+      dispatch(GetForestWithInBuffer(array));
+      dispatch(GetWaterbodyWithInBuffer(array));
+    }
   };
   useEffect(() => {
     WardIncident();
   }, []);
   return (
     <div>
-      {wardAllIncident.map((data) => {
-        return (
-          <div
-            className="border-gray-200 border-b-2 p-3 hover:bg-gray-200 py-4"
-            onClick={() => {
-              latlngHandler([data.lat, data.long]);
-              console.log("Now a will run");
-            }}
-          >
-            <div className="text-md font-medium flex flex-row ">
-              <div className="text-red-500 text-sm flex flex-col">
-                <span className="px-3">
-                  {" "}
-                  <AiFillInfoCircle size={20} />
-                </span>
-                <p className="text-xs">{data?.type?.title || "none"}</p>
-              </div>
-              <span className="font-normal ml-5 pt-1 text-sm">
-                <div className="font-semibold text-xs"> {data.name}</div>
-                <div>
-                  <div className="text-xs  text-gray-500 flex justify-start ">
-                    <span className="">{data.date}</span>
-                    <div className="flex items-center px-2">
-                      <span>
-                        <BiAlarm />
-                      </span>
-                      <span className="pl-1">{data.time || "none"}</span>
-                    </div>
-                  </div>
-                </div>
-              </span>
-            </div>
-          </div>
-        );
-      })}
+      <Accordian AllDisaster={wardAllIncident} latlngHandler={latlngHandler} />
     </div>
   );
 }
-
 export default DisasterAnalysis;
