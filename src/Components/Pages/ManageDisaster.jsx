@@ -13,6 +13,8 @@ import DisasterAnalysis from "../ManageDisasterComponent/DisasterAnalysis";
 import { ManageDisasterLegend } from "../Legends/Legend";
 import NavigateNextIcon from "@mui/icons-material/NavigateNext";
 import WardjsonLoader from "../Map Layer/WardjsonLoader";
+import ManageData from "../ManageDisasterComponent/ManageData";
+import BuildingjsonLoader from "../Map Layer/BuildingjsonLoader";
 
 const ManageDisaster = () => {
   const mapRef = useRef();
@@ -78,15 +80,19 @@ const ManageDisaster = () => {
               <div
                 onClick={() => {
                   ChangeManageDisasterPanel(
-                    <DisasterAnalysis
-                      changeMarkerDataState={setDisasterData}
-                      map={mapRef}
-                    />
+                    <DisasterAnalysis changeMarkerDataState={setDisasterData} />
                   );
                 }}
                 className="bg-pink-400"
               >
                 Analysis
+              </div>
+              <div
+                onClick={() => {
+                  ChangeManageDisasterPanel(<ManageData />);
+                }}
+              >
+                Manage Data
               </div>
             </div>
           </div>
@@ -124,6 +130,9 @@ const ManageDisaster = () => {
           ) : (
             ""
           )}
+          {ManageDisasterPanel === <ManageData /> ? (
+            <BuildingjsonLoader />
+          ) : null}
           <ManageDisasterLegend />
         </MapContainer>
       </div>

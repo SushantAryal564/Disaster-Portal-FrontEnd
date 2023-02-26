@@ -13,7 +13,7 @@ import {
 import { removeAll } from "./../../store/Slices/featureSlice";
 import Accordian from "../UI/Accordian";
 
-function DisasterAnalysis({ changeMarkerDataState, map }) {
+function DisasterAnalysis({ changeMarkerDataState }) {
   let now = new Date();
   let dispatch = useDispatch();
   let today = now.toISOString().substr(0, 10);
