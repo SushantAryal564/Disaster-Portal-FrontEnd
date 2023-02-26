@@ -11,9 +11,6 @@ function LayerControler({ disasterData }) {
     return state.latlng;
   });
   const [json, setjson] = useState(null);
-  const wardShp = useSelector((state) => {
-    return state.manageDisaster.data[0];
-  });
   const analysisResultAmenities = useSelector((state) => {
     return state.feature.amenities;
   });
@@ -36,7 +33,6 @@ function LayerControler({ disasterData }) {
   useEffect(() => {
     if (latlng) leafletMap.setView([latlng[1], latlng[0]], 18);
   });
-  useEffect(() => {});
   const styleGEOJSON = (feature) => {
     let type = feature.properties.classes;
     let colorRGB = GetColor(type);
@@ -89,7 +85,6 @@ function LayerControler({ disasterData }) {
           {json}
         </LayersControl.Overlay>
       </LayersControl>
-      {wardShp ? <GeoJSON data={wardShp}></GeoJSON> : ""}
       {disasterData.map((event) => {
         return <Markers disaster={event} key={event.id} />;
       })}
