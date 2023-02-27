@@ -10,7 +10,6 @@ import {
   GetForestWithInBuffer,
   GetWaterbodyWithInBuffer,
 } from "./../../store/Slices/featureSlice";
-import { removeAll } from "./../../store/Slices/featureSlice";
 import Accordian from "../UI/Accordian";
 
 function DisasterAnalysis({ changeMarkerDataState }) {

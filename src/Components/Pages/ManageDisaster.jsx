@@ -21,6 +21,7 @@ const ManageDisaster = () => {
   const [slidebarState, setSlidebarState] = useState(false);
   const dispatch = useDispatch();
   const [disasterData, setDisasterData] = useState([]);
+  const [currenttab, setCurrentTab] = useState("activeIncident");
   const [ManageDisasterPanel, ChangeManageDisasterPanel] = useState(
     <ActiveManage changeMarkerDataState={setDisasterData} />
   );
@@ -37,6 +38,7 @@ const ManageDisaster = () => {
   const changeSlidebarState = () => {
     setSlidebarState(!slidebarState);
   };
+  console.log(currenttab);
   return (
     <Layout>
       <div className="flex">
@@ -49,6 +51,7 @@ const ManageDisaster = () => {
             <div className="flex justify-evenly">
               <div
                 onClick={() => {
+                  setCurrentTab("activeManage");
                   ChangeManageDisasterPanel(
                     <ActiveManage changeMarkerDataState={setDisasterData} />
                   );
@@ -59,8 +62,12 @@ const ManageDisaster = () => {
               </div>
               <div
                 onClick={() => {
+                  setCurrentTab("allincident");
                   ChangeManageDisasterPanel(
-                    <AllIncident changeMarkerDataState={setDisasterData} />
+                    <AllIncident
+                      changeMarkerDataState={setDisasterData}
+                      setCurrentTab={setCurrentTab}
+                    />
                   );
                 }}
                 className="bg-blue-400"
@@ -69,8 +76,12 @@ const ManageDisaster = () => {
               </div>
               <div
                 onClick={() => {
+                  setCurrentTab("activitylog");
                   ChangeManageDisasterPanel(
-                    <ActivityLog changeMarkerDataState={setDisasterData} />
+                    <ActivityLog
+                      changeMarkerDataState={setDisasterData}
+                      setCurrentTab={setCurrentTab}
+                    />
                   );
                 }}
                 className="bg-green-400"
@@ -79,8 +90,12 @@ const ManageDisaster = () => {
               </div>
               <div
                 onClick={() => {
+                  setCurrentTab("disasterAnalysis");
                   ChangeManageDisasterPanel(
-                    <DisasterAnalysis changeMarkerDataState={setDisasterData} />
+                    <DisasterAnalysis
+                      changeMarkerDataState={setDisasterData}
+                      setCurrentTab={setCurrentTab}
+                    />
                   );
                 }}
                 className="bg-pink-400"
@@ -89,7 +104,10 @@ const ManageDisaster = () => {
               </div>
               <div
                 onClick={() => {
-                  ChangeManageDisasterPanel(<ManageData />);
+                  setCurrentTab("manageData");
+                  ChangeManageDisasterPanel(
+                    <ManageData setCurrentTab={setCurrentTab} />
+                  );
                 }}
               >
                 Manage Data
@@ -119,20 +137,8 @@ const ManageDisaster = () => {
         >
           <LayerControler disasterData={disasterData} />
           <WardjsonLoader />
-          {ManageDisasterPanel ===
-          (
-            <DisasterAnalysis
-              changeMarkerDataState={setDisasterData}
-              map={mapRef}
-            />
-          ) ? (
-            <ManageDisasterLegend />
-          ) : (
-            ""
-          )}
-          {ManageDisasterPanel === <ManageData /> ? (
-            <BuildingjsonLoader />
-          ) : null}
+          {currenttab === "disasterAnalysis" ? <ManageDisasterLegend /> : ""}
+          {currenttab === "manageData" ? <BuildingjsonLoader /> : null}
           <ManageDisasterLegend />
         </MapContainer>
       </div>

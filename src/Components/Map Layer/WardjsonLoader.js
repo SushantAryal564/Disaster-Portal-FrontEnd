@@ -3,6 +3,7 @@ import { GeoJSON } from "react-leaflet";
 import { useSelector } from "react-redux";
 import { useMap } from "react-leaflet";
 import { Fragment } from "react";
+import { EditControl } from "react-leaflet-draw";
 
 function WardjsonLoader() {
   const leafletMap = useMap();
@@ -36,8 +37,19 @@ function WardjsonLoader() {
       );
     }
   }, [WardJSON]);
+  const wardStyle = () => {
+    return {
+      fillColor: `none`,
+      opacity: 1,
+      weight: 1,
+      color: "black",
+      fillOpacity: 0.7,
+    };
+  };
   return (
-    <Fragment>{WardJSON ? <GeoJSON data={WardJSON}></GeoJSON> : null}</Fragment>
+    <Fragment>
+      {WardJSON ? <GeoJSON data={WardJSON} style={wardStyle}></GeoJSON> : null}
+    </Fragment>
   );
 }
 
