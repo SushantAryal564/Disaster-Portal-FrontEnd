@@ -22,9 +22,13 @@ import WardjsonLoader from "../Map Layer/WardjsonLoader";
 import ManageData from "../ManageDisasterComponent/ManageData";
 import BuildingjsonLoader from "../Map Layer/BuildingjsonLoader";
 import { EditControl } from "react-leaflet-draw";
+import "leaflet/dist/leaflet.css";
+import "leaflet-draw/dist/leaflet.draw.css";
+import wk from "wellknown";
 
 const ManageDisaster = () => {
-  const mapRef = useRef();
+  const featureGroupRef = useRef();
+  const [polygonCoords, setPolygonCoords] = useState([]);
   const [slidebarState, setSlidebarState] = useState(false);
   const dispatch = useDispatch();
   const [disasterData, setDisasterData] = useState([]);
@@ -45,7 +49,48 @@ const ManageDisaster = () => {
   const changeSlidebarState = () => {
     setSlidebarState(!slidebarState);
   };
+  function onCreated(e) {
+    const layer = e.layer;
+    featureGroupRef.current.addLayer(layer);
 
+    const latLngs = layer.getLatLngs()[0];
+    const coords = latLngs.map(({ lat, lng }) => [lng, lat]);
+
+    // Convert coordinates to a Polygon and then to WKT
+    const polygonWkt = wk.stringify({
+      type: "Polygon",
+      coordinates: [coords],
+    });
+
+    setPolygonCoords(polygonWkt);
+    console.log("Polygon WKT:", polygonWkt);
+  }
+
+  function onEdited(e) {
+    const layers = e.layers;
+    layers.eachLayer((layer) => {
+      const latlngs = layer.getLatLngs()[0];
+      const coords = latlngs.map(({ lat, lng }) => [lng, lat]);
+      console.log("New polygon coordinates:", coords);
+    });
+    const featureGroup = featureGroupRef.current;
+    const layerArray = featureGroup.getLayers();
+    const coordsArray = layerArray.map((layer) => {
+      const latlngs = layer.getLatLngs()[0];
+      return latlngs.map(({ lat, lng }) => [lng, lat]);
+    });
+    const multiPolygonWkt = wk.stringify({
+      type: "Polygon",
+      coordinates: [coordsArray],
+    });
+    setPolygonCoords(multiPolygonWkt);
+    console.log("Polygon WKT:", multiPolygonWkt);
+  }
+  function onDelete() {
+    const featureGroup = featureGroupRef.current;
+    featureGroup.clearLayers();
+    setPolygonCoords(null);
+  }
   return (
     <Layout>
       <div className="flex">
@@ -113,7 +158,10 @@ const ManageDisaster = () => {
                 onClick={() => {
                   setCurrentTab("manageData");
                   ChangeManageDisasterPanel(
-                    <ManageData setCurrentTab={setCurrentTab} />
+                    <ManageData
+                      setCurrentTab={setCurrentTab}
+                      polygonCoords={polygonCoords}
+                    />
                   );
                 }}
               >
@@ -147,9 +195,22 @@ const ManageDisaster = () => {
           {currenttab === "disasterAnalysis" ? <ManageDisasterLegend /> : ""}
           {currenttab === "manageData" ? <BuildingjsonLoader /> : null}
           <ManageDisasterLegend />
-          <FeatureGroup>
-            <EditControl position="topright" onEdited={} />
-          </FeatureGroup>
+          {currenttab === "manageData" ? (
+            <FeatureGroup ref={featureGroupRef}>
+              <EditControl
+                position="topright"
+                onEdited={onEdited}
+                onCreated={onCreated}
+                onDeleted={onDelete}
+                draw={{
+                  circle: false,
+                  rectangle: false,
+                  marker: false,
+                }}
+                FeatureGroup={featureGroupRef.current}
+              />
+            </FeatureGroup>
+          ) : null}
         </MapContainer>
       </div>
     </Layout>
