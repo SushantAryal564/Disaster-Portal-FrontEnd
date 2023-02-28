@@ -5,7 +5,7 @@ import { GeoJSON } from "react-leaflet";
 import { useSelector } from "react-redux";
 import { useMap } from "react-leaflet";
 import { GetColor } from "../UI/GetColor";
-function LayerControler({ disasterData }) {
+function LayerControler({ disasterData, currenttab }) {
   const leafletMap = useMap();
   const latlng = useSelector((state) => {
     return state.latlng;
@@ -31,7 +31,7 @@ function LayerControler({ disasterData }) {
     );
   }, [analysisResultAmenities, setjson]);
   useEffect(() => {
-    if (latlng) leafletMap.setView([latlng[1], latlng[0]], 18);
+    if (latlng) leafletMap.setView([latlng[1], latlng[0]], 16);
   });
   const styleGEOJSON = (feature) => {
     let type = feature.properties.classes;
@@ -62,29 +62,32 @@ function LayerControler({ disasterData }) {
           <TileLayer url="https://tiles.stadiamaps.com/tiles/alidade_smooth/{z}/{x}/{y}{r}.png" />
         </LayersControl.BaseLayer>
       </LayersControl>
-      <LayersControl position="topright">
-        <LayersControl.Overlay checked name="Buidling">
-          {analysisResultBuilding
-            ? getGeoJSON(analysisResultBuilding[0])
-            : null}
-        </LayersControl.Overlay>
-        <LayersControl.Overlay checked name="Forest">
-          {analysisResultForest ? getGeoJSON(analysisResultForest[0]) : null}
-        </LayersControl.Overlay>
-        <LayersControl.Overlay checked name="Waterbody">
-          {analysisResultWaterBody
-            ? getGeoJSON(analysisResultWaterBody[0])
-            : null}
-        </LayersControl.Overlay>
-        <LayersControl.Overlay checked name="Amenities">
-          {analysisResultAmenities
-            ? getGeoJSON(analysisResultAmenities[0])
-            : null}
-        </LayersControl.Overlay>
-        <LayersControl.Overlay checked name="test">
-          {json}
-        </LayersControl.Overlay>
-      </LayersControl>
+      {currenttab == "disasterAnalysis" ? (
+        <LayersControl position="topright">
+          <LayersControl.Overlay checked name="Buidling">
+            {analysisResultBuilding
+              ? getGeoJSON(analysisResultBuilding[0])
+              : null}
+          </LayersControl.Overlay>
+          <LayersControl.Overlay checked name="Forest">
+            {analysisResultForest ? getGeoJSON(analysisResultForest[0]) : null}
+          </LayersControl.Overlay>
+          <LayersControl.Overlay checked name="Waterbody">
+            {analysisResultWaterBody
+              ? getGeoJSON(analysisResultWaterBody[0])
+              : null}
+          </LayersControl.Overlay>
+          <LayersControl.Overlay checked name="Amenities">
+            {analysisResultAmenities
+              ? getGeoJSON(analysisResultAmenities[0])
+              : null}
+          </LayersControl.Overlay>
+          <LayersControl.Overlay checked name="test">
+            {json}
+          </LayersControl.Overlay>
+        </LayersControl>
+      ) : null}
+
       {disasterData.map((event) => {
         return <Markers disaster={event} key={event.id} />;
       })}

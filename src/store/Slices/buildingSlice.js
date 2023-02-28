@@ -22,7 +22,11 @@ const initialState = {
 export const buildingSlice = createSlice({
   name: "buildings",
   initialState,
-  reducers: {},
+  reducers: {
+    addbuilding(state, action) {
+      state.selectedBuilding = action.payload;
+    },
+  },
   extraReducers(builder) {
     builder
       .addCase(buildingAsyncGETThunk.pending, (state, action) => {
@@ -38,4 +42,5 @@ export const buildingSlice = createSlice({
       });
   },
 });
+export const { addbuilding } = buildingSlice.actions;
 export default buildingSlice.reducer;

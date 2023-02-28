@@ -1,6 +1,12 @@
 import React, { useState, useRef } from "react";
 import Layout from "../Layout/Layout";
-import { MapContainer, Marker, TileLayer } from "react-leaflet";
+import {
+  MapContainer,
+  Marker,
+  TileLayer,
+  FeatureGroup,
+  Circle,
+} from "react-leaflet";
 import LayerControler from "../Map Layer/LayerControler";
 import { useSelector } from "react-redux";
 import { GetManageDisasterWardShpGETThunk } from "../../store/Slices/manageDisasterSlice";
@@ -15,6 +21,7 @@ import NavigateNextIcon from "@mui/icons-material/NavigateNext";
 import WardjsonLoader from "../Map Layer/WardjsonLoader";
 import ManageData from "../ManageDisasterComponent/ManageData";
 import BuildingjsonLoader from "../Map Layer/BuildingjsonLoader";
+import { EditControl } from "react-leaflet-draw";
 
 const ManageDisaster = () => {
   const mapRef = useRef();
@@ -38,13 +45,13 @@ const ManageDisaster = () => {
   const changeSlidebarState = () => {
     setSlidebarState(!slidebarState);
   };
-  console.log(currenttab);
+
   return (
     <Layout>
       <div className="flex">
         <div
           className={`${
-            slidebarState ? "w-4/5" : "w-0"
+            slidebarState ? "w-3/5" : "w-0"
           } duration-300 h-[90vh] relative`}
         >
           <div className="flex">
@@ -135,11 +142,14 @@ const ManageDisaster = () => {
           scrollWheelZoom={scrollWheelZoom}
           className="mt-1 z-10"
         >
-          <LayerControler disasterData={disasterData} />
+          <LayerControler currenttab={currenttab} disasterData={disasterData} />
           <WardjsonLoader />
           {currenttab === "disasterAnalysis" ? <ManageDisasterLegend /> : ""}
           {currenttab === "manageData" ? <BuildingjsonLoader /> : null}
           <ManageDisasterLegend />
+          <FeatureGroup>
+            <EditControl position="topright" onEdited={} />
+          </FeatureGroup>
         </MapContainer>
       </div>
     </Layout>

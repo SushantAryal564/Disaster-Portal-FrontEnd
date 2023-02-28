@@ -3,7 +3,6 @@ import { GeoJSON } from "react-leaflet";
 import { useSelector } from "react-redux";
 import { useMap } from "react-leaflet";
 import { Fragment } from "react";
-import { EditControl } from "react-leaflet-draw";
 
 function WardjsonLoader() {
   const leafletMap = useMap();
