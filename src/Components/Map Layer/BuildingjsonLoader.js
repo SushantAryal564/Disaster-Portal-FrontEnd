@@ -40,12 +40,28 @@ function BuildingjsonLoader() {
             fillOpacity: 0.7,
           });
         }
+
         layer.setStyle({
           fillColor: "blue",
           color: "blue",
           weight: 1,
           fillOpacity: 0.7,
         });
+        console.log('building polygon ins clickde_____________________-------------------------------------------------------------------------------')
+        if (prevLayer==layer) {
+          console.log('same polygon -unselecting...')
+          prevLayer.setStyle({
+            fillColor: "red",
+            color: "red",
+            weight: 1,
+            fillOpacity: 0.7,
+          }
+          
+          );
+          prevLayer=''
+          return
+        }
+        
         prevLayer = layer;
       },
     });
