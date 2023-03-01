@@ -44,7 +44,8 @@ function ManageData({ polygonCoords }) {
     email:  "",
   }
   useEffect(() => {
-    if(buildingdata){
+    console.log('builidng daata changed')
+    // if(buildingdata){
    setsavedValue({
       osm_id: osm_id || "",
       phoneNumber1: phoneNumber1 || "",
@@ -52,7 +53,7 @@ function ManageData({ polygonCoords }) {
       people: people || "",
       houseMetricNumber: housemetricnumber || "",
       buildingtype: type || "",
-    });}
+    });
   }, [buildingdata]);
 console.log('managed data rendere','Saved Valued-',savedValue)
   const formik = useFormik({
