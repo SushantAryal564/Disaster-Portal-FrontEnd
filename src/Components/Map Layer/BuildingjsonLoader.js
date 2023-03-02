@@ -2,7 +2,7 @@ import React, { useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { GeoJSON } from "react-leaflet";
 import {
-  addbuilding,
+  addbuilding,removebuilding,
   buildingAsyncGETThunk,
 } from "../../store/Slices/buildingSlice";
 import { Fragment } from "react";
@@ -40,12 +40,29 @@ function BuildingjsonLoader() {
             fillOpacity: 0.7,
           });
         }
+
         layer.setStyle({
           fillColor: "blue",
           color: "blue",
           weight: 1,
           fillOpacity: 0.7,
         });
+        console.log('building polygon ins clickde_____________________-------------------------------------------------------------------------------')
+        if (prevLayer==layer) {
+          dispatch(removebuilding())
+          console.log('same polygon -unselecting...')
+          prevLayer.setStyle({
+            fillColor: "red",
+            color: "red",
+            weight: 1,
+            fillOpacity: 0.7,
+          }
+          
+          );
+          prevLayer=''
+          return
+        }
+        
         prevLayer = layer;
       },
     });

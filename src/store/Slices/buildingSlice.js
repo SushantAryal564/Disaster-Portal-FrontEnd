@@ -26,6 +26,9 @@ export const buildingSlice = createSlice({
     addbuilding(state, action) {
       state.selectedBuilding = action.payload;
     },
+    removebuilding(state, action) {
+      state.selectedBuilding = null;
+    },
   },
   extraReducers(builder) {
     builder
@@ -42,5 +45,5 @@ export const buildingSlice = createSlice({
       });
   },
 });
-export const { addbuilding } = buildingSlice.actions;
+export const { addbuilding ,removebuilding} = buildingSlice.actions;
 export default buildingSlice.reducer;

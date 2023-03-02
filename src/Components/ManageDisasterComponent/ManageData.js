@@ -1,7 +1,7 @@
 import * as Yup from "yup";
 import { useFormik } from "formik";
 import { useSelector } from "react-redux";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 function ManageData({ polygonCoords }) {
   const buildingdata = useSelector((state) => {
     return state.buildings.selectedBuilding;
@@ -30,18 +30,35 @@ function ManageData({ polygonCoords }) {
       type,
       email,
     } = buildingdata;
+    
   }
-
-  const formik = useFormik({
-    initialValues: {
+  console.log("MANAGE DATA--->selected building",buildingdata)
+  const [savedValue,setsavedValue]=useState(null)
+  var initialValues={
+    osm_id: "",
+    phoneNumber1: "",
+    phoneNumber2:  "",
+    housemetricnumber:  "",
+    buildingtype:  "",
+    people: "",
+    email:  "",
+  }
+  useEffect(() => {
+    console.log('builidng daata changed')
+    // if(buildingdata){
+   setsavedValue({
       osm_id: osm_id || "",
       phoneNumber1: phoneNumber1 || "",
       phoneNumber2: phoneNumber2 || "",
-      housemetricnumber: housemetricnumber || "",
-      buildingtype: type || "",
       people: people || "",
-      email: email || "",
-    },
+      houseMetricNumber: housemetricnumber || "",
+      buildingtype: type || "",
+    });
+  }, [buildingdata]);
+console.log('managed data rendere','Saved Valued-',savedValue)
+  const formik = useFormik({
+    initialValues: savedValue||initialValues,
+    enableReinitialize: true,
     validationSchema: Yup.object({
       name: Yup.string(),
       type: Yup.string(),
@@ -63,16 +80,7 @@ function ManageData({ polygonCoords }) {
   });
 
   let formIsValid = true;
-  useEffect(() => {
-    formik.setValues({
-      osm_id: osm_id || "",
-      phoneNumber1: phoneNumber1 || "",
-      phoneNumber2: phoneNumber2 || "",
-      people: people || "",
-      houseMetricNumber: housemetricnumber || "",
-      type: type || "",
-    });
-  }, [buildingdata]);
+ 
 
   if (
     (formik.errors.name || formik.touched.name) &&
@@ -106,7 +114,7 @@ function ManageData({ polygonCoords }) {
                   type="text"
                   onChange={formik.handleChange}
                   onBlur={formik.handleBlur}
-                  value={formik.values.housemetricnumber}
+                  // value={formik.values.housemetricnumber}
                 />
                 <label class="after:content[' '] pointer-events-none absolute left-0 top-1 flex h-full w-full select-none text-xs font-normal leading-tight text-blue-gray-500 transition-all after:absolute after:bottom-0 after:block after:w-full after:scale-x-0 after:border-b-2 after:border-red-500 after:transition-transform after:duration-300 peer-placeholder-shown:leading-tight peer-placeholder-shown:text-blue-gray-500 peer-focus:text-xs peer-focus:leading-tight peer-focus:text-red-500 peer-focus:after:scale-x-100 peer-focus:after:border-red-500 peer-disabled:text-transparent peer-disabled:peer-placeholder-shown:text-blue-gray-500 font-bold">
                   House Metric Number
@@ -128,7 +136,7 @@ function ManageData({ polygonCoords }) {
                 type="text"
                 onChange={formik.handleChange}
                 onBlur={formik.handleBlur}
-                value={formik.values.address}
+                // value={formik.values.address}
               />
               <label class="after:content[' '] pointer-events-none absolute left-0 -top-3 flex h-full w-full select-none text-xs font-normal leading-tight text-blue-gray-500 transition-all after:absolute after:-bottom-0 after:block after:w-full after:scale-x-0 after:border-b-2 after:border-red-500 after:transition-transform after:duration-300 peer-placeholder-shown:leading-tight peer-placeholder-shown:text-blue-gray-500 peer-focus:text-xs peer-focus:leading-tight peer-focus:text-red-500 peer-focus:after:scale-x-100 peer-focus:after:border-red-500 peer-disabled:text-transparent peer-disabled:peer-placeholder-shown:text-blue-gray-500 font-bold">
                 ADDRESS
@@ -194,7 +202,7 @@ function ManageData({ polygonCoords }) {
                   type="text"
                   onChange={formik.handleChange}
                   onBlur={formik.handleBlur}
-                  value={formik.values.phoneNumber1}
+                  // value={formik.values.phoneNumber1}
                 />
                 <label class="after:content[' '] pointer-events-none absolute left-0 top-1 flex h-full w-full select-none text-xs font-normal leading-tight text-blue-gray-500 transition-all after:absolute after:bottom-0 after:block after:w-full after:scale-x-0 after:border-b-2 after:border-red-500 after:transition-transform after:duration-300 peer-placeholder-shown:leading-tight peer-placeholder-shown:text-blue-gray-500 peer-focus:text-xs peer-focus:leading-tight peer-focus:text-red-500 peer-focus:after:scale-x-100 peer-focus:after:border-red-500 peer-disabled:text-transparent peer-disabled:peer-placeholder-shown:text-blue-gray-500 font-bold">
                   Phone Number 1
@@ -215,7 +223,7 @@ function ManageData({ polygonCoords }) {
                   type="text"
                   onChange={formik.handleChange}
                   onBlur={formik.handleBlur}
-                  value={formik.values.phoneNumber2}
+                  // value={formik.values.phoneNumber2}
                 />
                 <label class="after:content[' '] pointer-events-none absolute left-0 top-1 flex h-full w-full select-none text-xs font-normal leading-tight text-blue-gray-500 transition-all after:absolute after:bottom-0 after:block after:w-full after:scale-x-0 after:border-b-2 after:border-red-500 after:transition-transform after:duration-300 peer-placeholder-shown:leading-tight peer-placeholder-shown:text-blue-gray-500 peer-focus:text-xs peer-focus:leading-tight peer-focus:text-red-500 peer-focus:after:scale-x-100 peer-focus:after:border-red-500 peer-disabled:text-transparent peer-disabled:peer-placeholder-shown:text-blue-gray-500 font-bold">
                   Phone Number 2
@@ -237,7 +245,7 @@ function ManageData({ polygonCoords }) {
                 type="text"
                 onChange={formik.handleChange}
                 onBlur={formik.handleBlur}
-                value={formik.values.email}
+                // value={formik.values.email}
               />
               <label class="after:content[' '] pointer-events-none absolute left-0 -top-3 flex h-full w-full select-none text-xs font-normal leading-tight text-blue-gray-500 transition-all after:absolute after:-bottom-0 after:block after:w-full after:scale-x-0 after:border-b-2 after:border-red-500 after:transition-transform after:duration-300 peer-placeholder-shown:leading-tight peer-placeholder-shown:text-blue-gray-500 peer-focus:text-xs peer-focus:leading-tight peer-focus:text-red-500 peer-focus:after:scale-x-100 peer-focus:after:border-red-500 peer-disabled:text-transparent peer-disabled:peer-placeholder-shown:text-blue-gray-500 font-bold">
                 Email Address
