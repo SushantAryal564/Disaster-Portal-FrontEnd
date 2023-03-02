@@ -25,6 +25,7 @@ import { EditControl } from "react-leaflet-draw";
 import "leaflet/dist/leaflet.css";
 import "leaflet-draw/dist/leaflet.draw.css";
 import wk from "wellknown";
+import { removebuilding } from "../../store/Slices/buildingSlice";
 
 const ManageDisaster = () => {
   const featureGroupRef = useRef();
@@ -50,6 +51,7 @@ const ManageDisaster = () => {
     setSlidebarState(!slidebarState);
   };
   function onCreated(e) {
+    dispatch(removebuilding())
     const layer = e.layer;
     featureGroupRef.current.addLayer(layer);
 

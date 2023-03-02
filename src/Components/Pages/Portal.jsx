@@ -157,6 +157,7 @@ export const Portal = () => {
       fillOpacity: 0.7,
     };
   };
+  console.log('mere ko dhekle re',jsonWard)
   return (
     <Layout>
       {reportActivated ? (
@@ -216,7 +217,36 @@ export const Portal = () => {
               ""
             )}
           </LayersControl>
+
           <ResetViewControl title="Reset view" position="topright" />
+          {jsonWard ? (
+            <GeoJSON
+              data={jsonWard}
+              style={{
+                fillColor: "none",
+                weight: 2,
+                opacity: 1,
+                color: "blue",
+                dashArray: "3",
+                fillOpacity: 0.7,
+                // label: "ward" ,
+                // labelFont: "12px Arial",
+                // labelPosition: "top",
+                // labelAlign: "center",
+              }}
+          
+              onEachFeature={(feature, layer) => {
+                layer.bindTooltip(""+feature.properties.ward, {
+                  permanent: true,
+                  direction: "center",
+                  className: "ward-label"
+                }).openTooltip();
+              }}
+            />
+          ) : (
+            ""
+          )}
+
           {component === DAMAGELOSS && (
             <GeoJSON data={jsonWard} style={styleFeature} />
           )}
