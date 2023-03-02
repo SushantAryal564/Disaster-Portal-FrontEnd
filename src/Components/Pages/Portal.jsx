@@ -20,6 +20,7 @@ import DataArchieve from "../../Sidebar/dataArchive";
 import Situation from "../../Sidebar/situation";
 import Feedback from "@mui/icons-material/Feedback";
 import MarkerClusterGroup from "react-leaflet-cluster";
+import L from 'leaflet';
 import { DamageAndLossLegend } from "../Legends/Legend";
 import {
   DASHBOARD,
@@ -157,7 +158,16 @@ export const Portal = () => {
       fillOpacity: 0.7,
     };
   };
+  
   console.log('mere ko dhekle re',jsonWard)
+  const createClusterCustomIcon = function (cluster) {
+    return L.divIcon({
+      html: `<span>${cluster.getChildCount()}</span>`,
+      className: 'marker-cluster-custom',
+      iconSize: L.point(35, 35, true),
+    });
+  };
+  
   return (
     <Layout>
       {reportActivated ? (
@@ -184,11 +194,11 @@ export const Portal = () => {
             onClick={changeSlidebarState}
           />
         </div>
-        <MapContainer
+        <MapContainer  className="markercluster-map mt-1 z-10"
           center={position}
           zoom={13}
           scrollWheelZoom={scrollWheelZoom}
-          className="mt-1 z-10"
+          
         >
           <LayersControl position="topright">
             <LayersControl.BaseLayer name="OSM Streets">
@@ -238,9 +248,9 @@ export const Portal = () => {
               }}
           
               onEachFeature={(feature, layer) => {
-                layer.bindTooltip(""+feature.properties.ward, {
+                layer.bindTooltip("W"+feature.properties.ward, {
                   permanent: true,
-                  direction: "center",
+                  direction: "left",
                   className: "ward-label"
                 }).openTooltip();
               }}
@@ -252,7 +262,10 @@ export const Portal = () => {
           {component === DAMAGELOSS && (
             <GeoJSON data={jsonWard} style={styleFeature} />
           )}
-          <MarkerClusterGroup>
+          <MarkerClusterGroup  
+          showCoverageOnHover={false}
+          spiderfyDistanceMultiplier={2}
+          iconCreateFunction={createClusterCustomIcon} >
             {component === DASHBOARD
               ? datadisaster.map((event) => {
                   return <Markers disaster={event} key={event.id} />;

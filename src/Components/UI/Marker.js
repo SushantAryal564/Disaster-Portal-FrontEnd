@@ -11,14 +11,11 @@ var flood = L.icon({
 });
 
 function Markers({ disaster: event }) {
+  console.log(event.disastertype,'type--------..',event)
   const getIcon = (disastertype) => {
-    return L.icon({
-      iconUrl: `http://127.0.0.1:8000/images/${disastertype}.svg`,
-      iconSize: [25, 41],
-      iconAnchor: [12, 41],
-      popupAnchor: [1, -34],
-      shadowSize: [41, 41],
-    });
+    return new L.DivIcon({
+      className:'marker-layout'
+    })
   };
 
   return (

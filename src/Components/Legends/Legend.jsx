@@ -48,15 +48,19 @@ export const DashboardLegend = ({ legendItem }) => {
           zIndex: 9999,
         }}
       >
-        <h3 className="bg-white text-black p-[0.5px] mb-2"> Legend</h3>
+        <h5 className="bg-white text-black p-[0.4px] mb-2"> Legend</h5>
         {legendItem.map((item) => {
           return (
             <div className="m-2 flex items-center justify-between pb-1 border-b-2">
-              {item}
-              <img
-                className="w-4"
-                src={`http://127.0.0.1:8000/images/${item}.svg`}
-              />
+              <div className="flex items-center justify-start">
+                <img
+                className="w-4 mx-2"
+                src={`http://127.0.0.1:8000/${item}.svg`}
+                
+              />   {item}</div>
+            
+              
+              <div className="marker-layout"></div>
             </div>
           );
         })}
