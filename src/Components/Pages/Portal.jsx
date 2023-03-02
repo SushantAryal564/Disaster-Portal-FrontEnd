@@ -113,7 +113,7 @@ export const Portal = () => {
   const realtimedatawater = useSelector((state) => state.live.water);
   const realtimepollution = useSelector((state) => state.live.pollution);
   const dataIncident = useSelector((state) => state.disasterIncident.data);
-  const position = [27.67571580617923, 85.3183283194577];
+  const position = [27.65707,85.31330];
   let disasterinDashboard = [
     ...new Set(datadisaster.map((data) => data?.type?.title)),
   ];
@@ -186,7 +186,7 @@ export const Portal = () => {
         </div>
         <MapContainer
           center={position}
-          zoom={14}
+          zoom={13}
           scrollWheelZoom={scrollWheelZoom}
           className="mt-1 z-10"
         >
