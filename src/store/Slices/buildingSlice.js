@@ -7,8 +7,6 @@ export const buildingAsyncGETThunk = createAsyncThunk(
       `http://127.0.0.1:8000/api/v1/analysis/allbuilding/?ward=${wardID}`
     );
     const data = await response.json();
-    console.log(data);
-    console.log("************************");
     return data;
   }
 );
@@ -16,6 +14,7 @@ export const buildingAsyncGETThunk = createAsyncThunk(
 const initialState = {
   allbuilding: null,
   selectedBuilding: null,
+  isSelected: false,
   status: "idle",
   error: null,
 };
@@ -25,6 +24,12 @@ export const buildingSlice = createSlice({
   reducers: {
     addbuilding(state, action) {
       state.selectedBuilding = action.payload;
+    },
+    removebuilding(state, action) {
+      state.selectedBuilding = null;
+    },
+    chageSelection(state, action) {
+      state.isSelected = !state.isSelected;
     },
   },
   extraReducers(builder) {
@@ -42,5 +47,6 @@ export const buildingSlice = createSlice({
       });
   },
 });
-export const { addbuilding } = buildingSlice.actions;
+export const { addbuilding, chageSelection, removebuilding } =
+  buildingSlice.actions;
 export default buildingSlice.reducer;

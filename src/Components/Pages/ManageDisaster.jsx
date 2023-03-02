@@ -7,6 +7,7 @@ import {
   FeatureGroup,
   Circle,
 } from "react-leaflet";
+import { removebuilding } from "../../store/Slices/buildingSlice";
 import LayerControler from "../Map Layer/LayerControler";
 import { useSelector } from "react-redux";
 import { GetManageDisasterWardShpGETThunk } from "../../store/Slices/manageDisasterSlice";
@@ -16,7 +17,7 @@ import ActiveManage from "../ManageDisasterComponent/activeManage";
 import ActivityLog from "../ManageDisasterComponent/ActivityLog";
 import AllIncident from "../ManageDisasterComponent/AllIncident";
 import DisasterAnalysis from "../ManageDisasterComponent/DisasterAnalysis";
-import { ManageDisasterLegend } from "../Legends/Legend";
+import { ManageDisasterLegend, ManageDataLegend } from "../Legends/Legend";
 import NavigateNextIcon from "@mui/icons-material/NavigateNext";
 import WardjsonLoader from "../Map Layer/WardjsonLoader";
 import ManageData from "../ManageDisasterComponent/ManageData";
@@ -36,7 +37,7 @@ const ManageDisaster = () => {
   const [ManageDisasterPanel, ChangeManageDisasterPanel] = useState(
     <ActiveManage changeMarkerDataState={setDisasterData} />
   );
-
+  var prevLayer = "";
   const wardId = useSelector((state) => {
     return state.auth.wardId;
   });
@@ -50,6 +51,7 @@ const ManageDisaster = () => {
     setSlidebarState(!slidebarState);
   };
   function onCreated(e) {
+    dispatch(removebuilding());
     const layer = e.layer;
     featureGroupRef.current.addLayer(layer);
 
@@ -63,7 +65,7 @@ const ManageDisaster = () => {
     });
 
     setPolygonCoords(polygonWkt);
-    console.log("Polygon WKT:", polygonWkt);
+    console.log("Polygon:", polygonWkt);
   }
 
   function onEdited(e) {
@@ -193,8 +195,10 @@ const ManageDisaster = () => {
           <LayerControler currenttab={currenttab} disasterData={disasterData} />
           <WardjsonLoader />
           {currenttab === "disasterAnalysis" ? <ManageDisasterLegend /> : ""}
-          {currenttab === "manageData" ? <BuildingjsonLoader /> : null}
-          <ManageDisasterLegend />
+          {currenttab === "manageData" ? (
+            <BuildingjsonLoader prevLayer={prevLayer} />
+          ) : null}
+          {currenttab == "manageData" ? <ManageDataLegend /> : ""}
           {currenttab === "manageData" ? (
             <FeatureGroup ref={featureGroupRef}>
               <EditControl

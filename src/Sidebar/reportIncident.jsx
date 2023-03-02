@@ -34,13 +34,27 @@ function ReportAnAncident({ setReportActivated }) {
   });
   const regionNameOptions = Region.map((region) => {
     return {
-      value: region.properties.palika + " " + region.properties.ward,
-      label: region.properties.palika + " " + region.properties.ward,
+      value: "Lalitpur" + " " + region.properties.ward,
+      label: "Lalitpur" + " " + region.properties.ward,
     };
   });
   function updatePosition(event) {
     setPosition([event.target.getLatLng().lat, event.target.getLatLng().lng]);
   }
+  const ReportSendToBackend = async (values) => {
+    const response = await fetch(
+      "http://127.0.0.1:8000/api/v1/response/activity/",
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(values),
+      }
+    );
+    const responseData = await response.json();
+    return responseData;
+  };
   const formik = useFormik({
     initialValues: {
       description: "",
@@ -63,7 +77,7 @@ function ReportAnAncident({ setReportActivated }) {
       longitude: Yup.number().required("Required"),
     }),
     onSubmit: (values) => {
-      console.log("I am here");
+      console.log(values);
       alert(JSON.stringify(values, null, 2));
     },
   });

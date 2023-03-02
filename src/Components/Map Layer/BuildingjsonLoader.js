@@ -4,17 +4,18 @@ import { GeoJSON } from "react-leaflet";
 import {
   addbuilding,
   buildingAsyncGETThunk,
+  chageSelection,
 } from "../../store/Slices/buildingSlice";
 import { Fragment } from "react";
 import { current } from "@reduxjs/toolkit";
-function BuildingjsonLoader() {
+
+function BuildingjsonLoader({ prevLayer }) {
   const dispatch = useDispatch();
   const wardID = localStorage.getItem("WardId");
 
   const building = useSelector((state) => {
     return state.buildings.allbuilding;
   });
-  var prevLayer = "";
   useEffect(() => {
     dispatch(buildingAsyncGETThunk(wardID));
   }, [wardID]);
@@ -32,14 +33,7 @@ function BuildingjsonLoader() {
     layer.on({
       click: (event) => {
         dispatch(addbuilding(event.target.feature.properties));
-        if (prevLayer) {
-          prevLayer.setStyle({
-            fillColor: "red",
-            color: "red",
-            weight: 1,
-            fillOpacity: 0.7,
-          });
-        }
+        dispatch(chageSelection());
         layer.setStyle({
           fillColor: "blue",
           color: "blue",
