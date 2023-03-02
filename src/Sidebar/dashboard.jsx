@@ -43,7 +43,9 @@ function Dashboard() {
                         <BiAlarm />
                       </span>
                       <span className="mx-2">{data.date_event.slice(0,10)}</span>
-                      <span className="pl-1">{data.date_event.slice(11,16)}</span>
+                      <span className="ml-2">{data.date_event.slice(11,16)}</span>
+                      <span className="ml-2">WARD-{data.Ward}</span>
+                      <span className="ml-3">{data.ADDRESS||'Dhapakhel,Gems School'}</span>
                     </div>
                   </div>
                 </div>

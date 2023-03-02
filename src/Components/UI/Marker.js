@@ -9,14 +9,24 @@ var flood = L.icon({
   popupAnchor: [1, -34],
   shadowSize: [41, 41],
 });
+export const getIcon = (disastertype) => {
+if (disastertype=='Fire'){
+  return new L.DivIcon({
+    className:'marker-fire'
+  })}
+  if (disastertype=='Flood'){
+    return new L.DivIcon({
+      className:'marker-flood'
+    })}
+  return new L.DivIcon({
+    className:'marker-fire'
+  })
+
+};
 
 function Markers({ disaster: event }) {
   console.log(event.disastertype,'type--------..',event)
-  const getIcon = (disastertype) => {
-    return new L.DivIcon({
-      className:'marker-layout'
-    })
-  };
+ 
 
   return (
     <Marker

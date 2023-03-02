@@ -120,13 +120,60 @@
   }
   
 
-  .marker-layout{
+  .marker-fire{
     
     width: 10px;
     height: 10px;
     border-radius: 50%;
  border: 2px solid black; 
     background: rgb(237, 12, 12);
+     animation: pulse .5s infinite; 
+    box-shadow: 2px 2px 2px #333;
+    padding: 3px;
+  }
+   
+  @keyframes pulse {
+    0% {
+      /* opacity: 0.2; */
+      /* transform: scale(1); */
+      box-shadow: 0 0 10px rgba(255, 0, 0, 0.854);
+      width: 11px;
+    height: 11px;
+    border:1px
+   
+    }
+    20% {
+        /* opacity: 0.3; */
+        box-shadow: 0 0 20px rgb(251, 11, 11);
+        /* transform: scale(1); */
+      }
+    30% {
+        /* opacity: 0.4; */
+        /* transform: scale(1); */
+        box-shadow: 0 0 10px rgb(255, 7, 7);
+      }
+    50% {
+      /* opacity: .5; */
+      /* transform: scale(1.2); */
+      box-shadow: 0 0 20px rgb(212, 115, 115);
+    }
+    100% {
+      /* opacity: 0.6; */
+      box-shadow: 0 0 20px rgb(255, 22, 22);
+      /* transform: scale(1); */
+    }
+  }
+
+
+
+
+  .marker-flood{
+    
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    border: 2px solid black; 
+    background: rgb(12, 87, 237);
      animation: pulse .5s infinite; 
     box-shadow: 2px 2px 2px #333;
     padding: 3px;

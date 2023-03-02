@@ -1,7 +1,20 @@
 import { width } from "@mui/system";
 import React from "react";
+import { Marker, Popup } from "react-leaflet";
 import { useSelector } from "react-redux";
 import { GetColor } from "../UI/GetColor";
+export const getIcon = (disastertype) => {
+  if (disastertype=='Fire'){
+    return 'marker-fire'
+  }
+    if (disastertype=='Flood'){
+      return 'marker-flood'
+    } 
+    return 'marker-fire'
+    }
+  
+  
+  
 export const RealTimeLegend = () => {
   return (
     <div className="bg-teal-500">
@@ -58,9 +71,10 @@ export const DashboardLegend = ({ legendItem }) => {
                 src={`http://127.0.0.1:8000/${item}.svg`}
                 
               />   {item}</div>
+              <div className={getIcon(item)}></div>
             
+              {/* {getIcon(item)} */}
               
-              <div className="marker-layout"></div>
             </div>
           );
         })}
