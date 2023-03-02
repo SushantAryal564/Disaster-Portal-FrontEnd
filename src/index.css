@@ -3,14 +3,21 @@
 @tailwind utilities;
 .leaflet-tooltip{
     background-color: rgba(255, 255, 255, 0.016) !important ;
-    color: rgb(78, 50, 218) !important;
-    padding: 2px! important;
+    color: rgb(46, 5, 255) !important;
+    padding: 1px! important;
     max-height: 15px !important ;
-    border-radius: 5px !important;
+    border-radius: 1px !important;
+    text-align: start;
+    box-shadow: 0 3px 3px rgba(16, 32, 183, 0.505)! important;
+  /* -webkit-user-select: none;
+     -moz-user-select: none;
+      -ms-user-select: none;
+          user-select: none; */
+
 }
 
 .ward-label {
-    padding: 0px;
+    padding: 0px ! important;
     /* background-color: rgba(217, 113, 113, 0.9); */
     /* border-radius: 50%; */
      font-size: 7px;

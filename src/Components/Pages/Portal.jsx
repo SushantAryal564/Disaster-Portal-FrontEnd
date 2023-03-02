@@ -223,12 +223,14 @@ export const Portal = () => {
             <GeoJSON
               data={jsonWard}
               style={{
-                fillColor: "none",
-                weight: 2,
-                opacity: 1,
+                fillColor: "white",
+                weight: 1,
+                opacity: .8,
                 color: "blue",
-                dashArray: "3",
-                fillOpacity: 0.7,
+                dashArray: "4",
+                fillOpacity: 0.1,
+                // lineJoin:'mitter',
+                // smoothFactor:1,
                 // label: "ward" ,
                 // labelFont: "12px Arial",
                 // labelPosition: "top",
