@@ -2,8 +2,8 @@
 @tailwind components;
 @tailwind utilities;
 .leaflet-tooltip{
-    background-color: rgba(255, 255, 255, 0.098) !important ;
-    color: rgb(67, 55, 125) !important;
+    background-color: rgba(255, 255, 255, 0.016) !important ;
+    color: rgb(78, 50, 218) !important;
     padding: 2px! important;
     max-height: 15px !important ;
     border-radius: 5px !important;

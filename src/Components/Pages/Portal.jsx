@@ -236,7 +236,7 @@ export const Portal = () => {
               }}
           
               onEachFeature={(feature, layer) => {
-                layer.bindTooltip("W-"+feature.properties.ward, {
+                layer.bindTooltip(""+feature.properties.ward, {
                   permanent: true,
                   direction: "center",
                   className: "ward-label"
