@@ -15,6 +15,7 @@ function Dashboard() {
   const disasterData = useSelector((state) => {
     return state.disaster.data;
   });
+
   return (
     <React.Fragment>
       {disasterData.map((data) => {
@@ -44,7 +45,7 @@ function Dashboard() {
                       </span>
                       <span className="mx-2">{data.date_event.slice(0,10)}</span>
                       <span className="ml-2">{data.date_event.slice(11,16)}</span>
-                      <span className="ml-2">WARD-{data.Ward}</span>
+                      <span className="ml-2">WARD-{data.Ward.ward}</span>
                       <span className="ml-3">{data.ADDRESS||'Dhapakhel,Gems School'}</span>
                     </div>
                   </div>

@@ -59,6 +59,7 @@ export const Login = (props) => {
       dispatch(setUserToken({ access_token: access_token }));
 
       let { WardId, IsWard, IsMunicipality, wardNumber } = getUserInformation();
+      console.log(' from log in')
       dispatch(setUserInfo({ WardId, IsWard, IsMunicipality, wardNumber }));
       navigate("/portal");
     }
@@ -70,7 +71,7 @@ export const Login = (props) => {
   return (
     <Fragment>
       <form onSubmit={formSubmissionHandler}>
-        <div className="flex flex-row items-center justify-center lg:justify-start">
+        <div className="flex flex-row items-center justify-center lg:justify-start mt-20">
           <p className="text-lg mb-0 mr-4 font-bold">SIGN IN</p>
         </div>
 

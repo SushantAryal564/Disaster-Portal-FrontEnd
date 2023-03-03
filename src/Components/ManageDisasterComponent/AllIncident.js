@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { AiFillInfoCircle } from "react-icons/ai";
 import { BiAlarm } from "react-icons/bi";
+
 function AllIncident({ changeMarkerDataState }) {
   let now = new Date();
   let today = now.toISOString().substr(0, 10);
@@ -19,6 +20,7 @@ function AllIncident({ changeMarkerDataState }) {
   }, []);
   return (
     <div>
+      
       {wardAllIncident.map((data) => {
         return (
           <div className="border-gray-200 border-b-2 p-3 hover:bg-gray-200 py-4">

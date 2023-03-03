@@ -164,17 +164,15 @@
     }
   }
 
-
-
-
+  
   .marker-flood{
     
     width: 10px;
     height: 10px;
     border-radius: 50%;
     border: 2px solid black; 
-    background: rgb(12, 87, 237);
-     animation: pulse .5s infinite; 
+    background: rgb(27, 12, 237);
+     animation: pulse2 .5s infinite; 
     box-shadow: 2px 2px 2px #333;
     padding: 3px;
   }
@@ -207,6 +205,37 @@
     100% {
       /* opacity: 0.6; */
       box-shadow: 0 0 20px rgb(255, 22, 22);
+      /* transform: scale(1); */
+    }
+  }
+  @keyframes pulse2 {
+    0% {
+      /* opacity: 0.2; */
+      /* transform: scale(1); */
+      box-shadow: 0 0 10px rgba(64, 0, 255, 0.854);
+      width: 11px;
+    height: 11px;
+    border:1px
+   
+    }
+    20% {
+        /* opacity: 0.3; */
+        box-shadow: 0 0 20px rgb(11, 123, 251);
+        /* transform: scale(1); */
+      }
+    30% {
+        /* opacity: 0.4; */
+        /* transform: scale(1); */
+        box-shadow: 0 0 10px rgb(7, 52, 255);
+      }
+    50% {
+      /* opacity: .5; */
+      /* transform: scale(1.2); */
+      box-shadow: 0 0 20px rgb(11, 4, 52);
+    }
+    100% {
+      /* opacity: 0.6; */
+      box-shadow: 0 0 20px rgb(22, 208, 255);
       /* transform: scale(1); */
     }
   }

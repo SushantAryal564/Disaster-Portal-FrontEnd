@@ -5,8 +5,8 @@ import { AiFillInfoCircle } from "react-icons/ai";
 import { BiAlarm } from "react-icons/bi";
 const ActiveManage = ({ changeMarkerDataState }) => {
   const [wardIncident, setWardIncident] = useState([]);
-  const wardId = localStorage.getItem("WardId");
-
+  const wardId = localStorage.getItem("wardNumber");
+ console.log(wardId,'ward id')
   let now = new Date();
   let oneMonthAgo = new Date(
     now.getFullYear(),
@@ -19,15 +19,23 @@ const ActiveManage = ({ changeMarkerDataState }) => {
   const [startDate, setStartDate] = useState(lastMonth);
   const [endDate, setEndDate] = useState(today);
   const WardIncident = async (wardId, startDate, endDate) => {
+    var i=`http://127.0.0.1:8000/api/v1/disaster/disasterEventwithoutgeom/?name=&Ward=${wardId}&type=&is_closed=false`
+    console.log('------------',i)
     let data = await fetch(
-      `http://127.0.0.1:8000/api/v1/disaster/disasterEventwithoutgeom/?name=&Ward=${wardId}&type=&is_closed=false&startTime__gte=${startDate}T18%3A00%3A00Z&startTime__gt=&startTime=&startTime__lte=${endDate}T18%3A00%3A00Z`
+      `http://127.0.0.1:8000/api/v1/disaster/disasterEventwithoutgeom/?name=&ward=${wardId}&type=&is_closed=false`
+
     );
+    var rem=`&startTime__gte=${startDate}T18%3A00%3A00Z&startTime__gt=&startTime=&startTime__lte=${endDate}T18%3A00%3A00Z`
+    
     let wardIncident = await data.json();
+
     changeMarkerDataState(wardIncident);
     setWardIncident(wardIncident);
+    console.log(wardIncident,'Active INicdents')
   };
   useEffect(() => {
     WardIncident(wardId, lastMonth, today);
+
   }, []);
 
   const handleSubmit = (event) => {
