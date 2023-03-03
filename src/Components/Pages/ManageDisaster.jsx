@@ -94,6 +94,12 @@ const ManageDisaster = () => {
     featureGroup.clearLayers();
     setPolygonCoords(null);
   }
+  useEffect(()=>{
+    setCurrentTab("activeManage");
+    ChangeManageDisasterPanel(
+      <ActiveManage changeMarkerDataState={setDisasterData} />
+    );
+  },[])
   return (
     <Layout>
       <div className="flex">
@@ -206,9 +212,9 @@ const ManageDisaster = () => {
 
           {/* LOAD BUILDING POLYGON MANAGE DATE */}
           
-          {currenttab === "manageData" ? <ManageDisasterLegend  disasterData={disasterData} currenttab={currenttab}/> : null}
-          {currenttab === "activeManage" ?<ManageDisasterLegend currenttab={disasterData}/>: null}
-          {currenttab === "allIncidents" ?<ManageDisasterLegend currenttab={disasterData}/> : null}
+          {currenttab === "manageData" ? <ManageDisasterLegend  currenttab={currenttab}/> : null}
+        {currenttab === "activeManage"&& disasterData ?<ManageDisasterLegend  disasterData={disasterData}   currenttab={currenttab}/>: null}
+          {currenttab === "allincident" ?<ManageDisasterLegend   disasterData={disasterData} currenttab={currenttab}/> : null}
         
           
           
@@ -230,7 +236,9 @@ const ManageDisaster = () => {
             </FeatureGroup>
 
           ) : null}
-
+        {/* conditionaly rendder this when current tab is manageData */}
+        {currenttab === "manageData" ? (
+          <BuildingjsonLoader/>):''}
 
         </MapContainer>
       </div>

@@ -33,14 +33,7 @@ function BuildingjsonLoader() {
     layer.on({
       click: (event) => {
         dispatch(addbuilding(event.target.feature.properties));
-        if (prevLayer) {
-          prevLayer.setStyle({
-            fillColor: "red",
-            color: "red",
-            weight: 1,
-            fillOpacity: 0.7,
-          });
-        }
+      
 
         layer.setStyle({
           fillColor: "blue",
@@ -48,22 +41,30 @@ function BuildingjsonLoader() {
           weight: 1,
           fillOpacity: 0.7,
         });
-        console.log('building polygon ins clickde_____________________-------------------------------------------------------------------------------')
+
+       
         if (prevLayer==layer) {
-          dispatch(removebuilding())
-          console.log('same polygon -unselecting...')
           prevLayer.setStyle({
             fillColor: "red",
             color: "red",
             weight: 1,
             fillOpacity: 0.7,
           }
-          
           );
-          prevLayer=''
+          dispatch(removebuilding())
+          // console.log('same polygon -unselecting...')
+         
+          // prevLayer=''
+          layer.setStyle({
+            fillColor: "blue",
+            color: "blue",
+            weight: 1,
+            fillOpacity: 0.7,
+          });
+  
           return
         }
-        
+       
         prevLayer = layer;
       },
     });

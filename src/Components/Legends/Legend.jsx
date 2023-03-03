@@ -112,12 +112,19 @@ export const DamageAndLossLegend = ({ changeDamagestate }) => {
     </div>
   );
 };
-export const ManageDisasterLegend = ({currenttab}) => {
+export const ManageDisasterLegend = ({currenttab,disasterData}) => {
+  console.log('disaster data',disasterData)
   const legendItem = new Array(
     ...new Set(useSelector((state) => state.feature.allfeature))
   );
-  console.log(legendItem);
-
+  // console.log(legendItem);
+  if (disasterData)
+  var disleg=disasterData
+  .map(element => element.type.title)
+  .filter((title, index, array) => array.indexOf(title) === index)||[];
+  console.log('asd',disleg)
+  // ManageDisasterLegend()
+//  const disasterData = disasterData.filter((element, index, array) => array.indexOf(element) === index);
   return (
     <div>
       <div
@@ -129,7 +136,7 @@ export const ManageDisasterLegend = ({currenttab}) => {
           zIndex: 9999,
         }}
       >
-        <h6 className="bg-white text-black p-[0.5px] mb-2"> Legend</h6>
+        <h6 className="bg-white text-black p-[0.5px] mb-2 mx-2"> Legend</h6>
         {/* ANLYSIS DYAMIC LEGEND */}
         {currenttab==='disasterAnalysis'?<>
         {legendItem.map((item) => {
@@ -137,6 +144,7 @@ export const ManageDisasterLegend = ({currenttab}) => {
           let color = `rgb(${colorRGB[0]}, ${colorRGB[1]}, ${colorRGB[2]})`;
           return (
             <div className="m-2 items-center justify-between pb-1 border-b-2">
+              <span className=" my-2 text-[11px] text-gray-400 italic">Click on disaster to generate legend</span>
               <div>
                 {" "}
                 <span
@@ -195,6 +203,52 @@ export const ManageDisasterLegend = ({currenttab}) => {
             </div>
         
         </>:''}
+
+      {disasterData && currenttab==='activeManage' || currenttab==='allIncidents'
+      ?<>
+     
+
+      {disleg.map((item) => {
+          return (
+            <>
+            <div className="m-2 flex items-center justify-between pb-1 border-b-2">
+              <div className="flex items-center justify-start">
+                <img
+                className="w-4 mx-2"
+                src={`http://127.0.0.1:8000/${item}.svg`}
+                
+              />   {item}</div>
+              <div className={getIcon(item)}></div>
+            
+              {/* {getIcon(item)} */}
+              
+            </div>
+            </>
+          );
+        })}
+      </>:''}
+      {disleg && disasterData && currenttab==='allincident'
+      ?<>
+      {disleg.map((item) => {
+        console.log('JHKHKKHKKJKHkj')
+          return (
+            <>
+            <div className="m-2 flex items-center justify-between pb-1 border-b-2">
+              <div className="flex items-center justify-start">
+                <img
+                className="w-4 mx-2"
+                src={`http://127.0.0.1:8000/${item}.svg`}
+                
+              />   {item}</div>
+              <div className={getIcon(item)}></div>
+            
+              {/* {getIcon(item)} */}
+              
+            </div>
+            </>
+          );
+        })}
+      </>:''}
 
       </div>
     </div>

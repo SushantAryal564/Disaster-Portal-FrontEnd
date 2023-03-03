@@ -70,6 +70,13 @@ pop-width {
   animation: blink 1s infinite;
 }
 
+.legend {
+  width: 20%;
+  background-color: white;
+  padding: 10px;
+  color: black;
+  border-radius: 5px;
+}
 .legendd {
   width: 20%;
   background-color: white;
