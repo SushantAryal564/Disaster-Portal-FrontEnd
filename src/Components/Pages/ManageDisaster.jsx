@@ -192,11 +192,19 @@ const ManageDisaster = () => {
           scrollWheelZoom={scrollWheelZoom}
           className="mt-1 z-10"
         >
-          <LayerControler currenttab={currenttab} disasterData={disasterData} />
+          {/* LOADS THE BOUNDARY OF LOGGED IN WARD */}
           <WardjsonLoader />
+          {/* FOR RENDERING MARKER INTO THE MAP COMPONENT BELOW IS USED*/}
+          <LayerControler currenttab={currenttab} disasterData={disasterData} />
+          
+                    
+          {/* LEGEND FOR DIFFEREnT TABS */}
           {currenttab === "disasterAnalysis" ? <ManageDisasterLegend /> : ""}
           {currenttab === "manageData" ? <BuildingjsonLoader /> : null}
           <ManageDisasterLegend />
+          
+          
+          {/* MANAGE DATA EDIT POLYGON */}
           {currenttab === "manageData" ? (
             <FeatureGroup ref={featureGroupRef}>
               <EditControl
@@ -212,7 +220,10 @@ const ManageDisaster = () => {
                 FeatureGroup={featureGroupRef.current}
               />
             </FeatureGroup>
+
           ) : null}
+
+
         </MapContainer>
       </div>
     </Layout>
