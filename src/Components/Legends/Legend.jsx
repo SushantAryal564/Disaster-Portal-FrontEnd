@@ -112,7 +112,7 @@ export const DamageAndLossLegend = ({ changeDamagestate }) => {
     </div>
   );
 };
-export const ManageDisasterLegend = ({}) => {
+export const ManageDisasterLegend = ({currenttab}) => {
   const legendItem = new Array(
     ...new Set(useSelector((state) => state.feature.allfeature))
   );
@@ -121,7 +121,7 @@ export const ManageDisasterLegend = ({}) => {
   return (
     <div>
       <div
-        className="legend"
+        className="legendd"
         style={{
           position: "absolute",
           bottom: "20px",
@@ -130,6 +130,8 @@ export const ManageDisasterLegend = ({}) => {
         }}
       >
         <h6 className="bg-white text-black p-[0.5px] mb-2"> Legend</h6>
+        {/* ANLYSIS DYAMIC LEGEND */}
+        {currenttab==='disasterAnalysis'?<>
         {legendItem.map((item) => {
           let colorRGB = GetColor(item);
           let color = `rgb(${colorRGB[0]}, ${colorRGB[1]}, ${colorRGB[2]})`;
@@ -153,6 +155,47 @@ export const ManageDisasterLegend = ({}) => {
             </div>
           );
         })}
+        </>:""}
+
+        {currenttab==='manageData'?<>
+        
+        <div className="m-2 items-center justify-between pb-1 border-b-2">
+              <div>
+                {" "}
+                <span
+                  style={{
+                    background: 'red',
+                    color: 'red',
+                    width: "2px",
+                    margin: "5px",
+                    display: "inline",
+                  }}
+                >
+                  sdf
+                </span>
+                Building
+              </div>
+            </div>
+            <div className="m-2 items-center justify-between pb-1 border-b-2">
+              <div>
+                {" "}
+                <span
+                  style={{
+                    background: 'blue',
+                    color: 'blue',
+                    width: "2px",
+                    margin: "5px",
+                    display: "inline",
+                  }}
+                >
+                  sdf
+                </span>
+                Selected Building
+              </div>
+            </div>
+        
+        </>:''}
+
       </div>
     </div>
   );

@@ -30,10 +30,11 @@ import { removebuilding } from "../../store/Slices/buildingSlice";
 const ManageDisaster = () => {
   const featureGroupRef = useRef();
   const [polygonCoords, setPolygonCoords] = useState([]);
-  const [slidebarState, setSlidebarState] = useState(false);
+  const [slidebarState, setSlidebarState] = useState(true);
   const dispatch = useDispatch();
   const [disasterData, setDisasterData] = useState([]);
   const [currenttab, setCurrentTab] = useState("activeIncident");
+  console.log('current tab',currenttab)
   const [ManageDisasterPanel, ChangeManageDisasterPanel] = useState(
     <ActiveManage changeMarkerDataState={setDisasterData} />
   );
@@ -200,9 +201,15 @@ const ManageDisaster = () => {
           
                     
           {/* LEGEND FOR DIFFERENT TABS */}
-          {currenttab === "disasterAnalysis" ? <ManageDisasterLegend /> : ""}
-          {currenttab === "manageData" ? <BuildingjsonLoader /> : null}
-          <ManageDisasterLegend />
+          {currenttab === "disasterAnalysis" ? <ManageDisasterLegend currenttab={currenttab}/> : ""}
+          {currenttab === "manageData" ? <ManageDisasterLegend currenttab={currenttab}/> : ""}
+
+          {/* LOAD BUILDING POLYGON MANAGE DATE */}
+          
+          {currenttab === "manageData" ? <ManageDisasterLegend  disasterData={disasterData} currenttab={currenttab}/> : null}
+          {currenttab === "activeManage" ?<ManageDisasterLegend currenttab={disasterData}/>: null}
+          {currenttab === "allIncidents" ?<ManageDisasterLegend currenttab={disasterData}/> : null}
+        
           
           
           {/* MANAGE DATA EDIT POLYGON */}

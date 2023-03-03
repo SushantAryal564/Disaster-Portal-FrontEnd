@@ -7,6 +7,7 @@ import {
   AccordionBody,
 } from "@material-tailwind/react";
 import { BiAlarm } from "react-icons/bi";
+import { useMap } from "react-leaflet";
 function Icon({ id, open }) {
   return (
     <svg
@@ -31,6 +32,7 @@ export default function Accordian({ AllDisaster, latlngHandler }) {
   const handleOpen = (value) => {
     setOpen(open === value ? 0 : value);
   };
+
   console.log(AllDisaster);
   const disaster = AllDisaster.map((disaster) => (
     <Accordion
@@ -56,7 +58,7 @@ export default function Accordian({ AllDisaster, latlngHandler }) {
           </div>
         </div>
       </AccordionHeader>
-      <AccordionBody></AccordionBody>
+      <AccordionBody>CHART AND STATS HERE</AccordionBody>
     </Accordion>
   ));
   return <Fragment>{disaster}</Fragment>;
