@@ -9,6 +9,8 @@ var flood = L.icon({
   popupAnchor: [1, -34],
   shadowSize: [41, 41],
 });
+
+//return DIV ICON CASE FOR DIFFERENT DISASTER
 export const getIcon = (disastertype) => {
 if (disastertype=='Fire'){
   return new L.DivIcon({

@@ -9,11 +9,12 @@ import { Fragment } from "react";
 import { current } from "@reduxjs/toolkit";
 function BuildingjsonLoader() {
   const dispatch = useDispatch();
-  const wardID = localStorage.getItem("WardId");
+  const wardID = localStorage.getItem("wardNumber");
 
   const building = useSelector((state) => {
     return state.buildings.allbuilding;
   });
+  console.log('buiding data rendere',building)
   var prevLayer = "";
   useEffect(() => {
     dispatch(buildingAsyncGETThunk(wardID));

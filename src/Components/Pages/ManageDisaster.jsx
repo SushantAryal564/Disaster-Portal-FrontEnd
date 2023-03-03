@@ -161,6 +161,7 @@ const ManageDisaster = () => {
                   setCurrentTab("manageData");
                   ChangeManageDisasterPanel(
                     <ManageData
+                     changeMarkerDataState={setDisasterData}
                       setCurrentTab={setCurrentTab}
                       polygonCoords={polygonCoords}
                     />
@@ -198,7 +199,7 @@ const ManageDisaster = () => {
           <LayerControler currenttab={currenttab} disasterData={disasterData} />
           
                     
-          {/* LEGEND FOR DIFFEREnT TABS */}
+          {/* LEGEND FOR DIFFERENT TABS */}
           {currenttab === "disasterAnalysis" ? <ManageDisasterLegend /> : ""}
           {currenttab === "manageData" ? <BuildingjsonLoader /> : null}
           <ManageDisasterLegend />

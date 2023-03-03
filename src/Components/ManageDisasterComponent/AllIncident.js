@@ -9,7 +9,7 @@ function AllIncident({ changeMarkerDataState }) {
   const wardId = localStorage.getItem("WardId");
   const WardIncident = async () => {
     let data = await fetch(
-      `http://127.0.0.1:8000/api/v1/disaster/disasterEventwithoutgeom/?name=&Ward=${wardId}&type=&is_closed=&startTime__gte=&startTime__gt=&startTime=&startTime__lte=${today}T18%3A00%3A00Z`
+      `http://127.0.0.1:8000/api/v1/disaster/disasterEventwithoutgeom/?name=&Ward=${wardId}`
     );
     let wardIncident = await data.json();
     changeMarkerDataState(wardIncident);

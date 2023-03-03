@@ -15,7 +15,7 @@ function Dashboard() {
   const disasterData = useSelector((state) => {
     return state.disaster.data;
   });
-
+  // console.log(data,'I am from dashboard')
   return (
     <React.Fragment>
       {disasterData.map((data) => {

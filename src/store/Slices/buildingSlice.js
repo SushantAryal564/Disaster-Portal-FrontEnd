@@ -8,7 +8,7 @@ export const buildingAsyncGETThunk = createAsyncThunk(
     );
     const data = await response.json();
     console.log(data);
-    console.log("************************");
+    console.log("************************,building data",data);
     return data;
   }
 );

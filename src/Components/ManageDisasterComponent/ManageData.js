@@ -2,7 +2,7 @@ import * as Yup from "yup";
 import { useFormik } from "formik";
 import { useSelector } from "react-redux";
 import { useEffect, useState } from "react";
-function ManageData({ polygonCoords }) {
+function ManageData({ polygonCoords , changeMarkerDataState}) {
   const buildingdata = useSelector((state) => {
     return state.buildings.selectedBuilding;
   });
@@ -44,6 +44,7 @@ function ManageData({ polygonCoords }) {
     email:  "",
   }
   useEffect(() => {
+    changeMarkerDataState([]);
     console.log('builidng daata changed')
     // if(buildingdata){
    setsavedValue({

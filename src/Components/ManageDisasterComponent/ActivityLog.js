@@ -19,7 +19,7 @@ function ActivityLog({ changeMarkerDataState }) {
   let access_token = localStorage.getItem("access_token");
   const WardActiveDisaster = async () => {
     let data = await fetch(
-      `http://127.0.0.1:8000/api/v1/disaster/disasterEventwithoutgeom/?name=&Ward=${wardId}&type=&is_closed=false&startTime__gte=&startTime__gt=&startTime=&startTime__lte=`
+      `http://127.0.0.1:8000/api/v1/disaster/disasterEventwithoutgeom/?name=&Ward=${wardId}`
     );
     let wardActiveIncident = await data.json();
     setWardDisasterData(wardActiveIncident);
@@ -27,7 +27,7 @@ function ActivityLog({ changeMarkerDataState }) {
   };
   const WardPastDisaster = async () => {
     let data = await fetch(
-      `http://127.0.0.1:8000/api/v1/disaster/disasterEventwithoutgeom/?name=&Ward=${wardId}&type=&is_closed=true&startTime__gte=&startTime__gt=&startTime=&startTime__lte=`
+      `http://127.0.0.1:8000/api/v1/disaster/disasterEventwithoutgeom/?name=&Ward=${wardId}`
     );
     let wardAllIncident = await data.json();
     setWardDisasterData(wardAllIncident);
