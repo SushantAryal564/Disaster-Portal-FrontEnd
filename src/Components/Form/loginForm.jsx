@@ -59,7 +59,7 @@ export const Login = (props) => {
       dispatch(setUserToken({ access_token: access_token }));
 
       let { WardId, IsWard, IsMunicipality, wardNumber } = getUserInformation();
-      console.log(' from log in')
+      console.log(' from log in, id WARD' ,WardId,'ward number', wardNumber)
       dispatch(setUserInfo({ WardId, IsWard, IsMunicipality, wardNumber }));
       navigate("/portal");
     }
