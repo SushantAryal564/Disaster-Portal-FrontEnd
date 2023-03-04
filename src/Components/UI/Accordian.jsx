@@ -10,6 +10,7 @@ import { BiAlarm } from "react-icons/bi";
 import { useMap } from "react-leaflet";
 import BarChart from "./Chart";
 import { featureGroup } from "leaflet";
+// import {  ChartRe } from "./ChartRe";
 function Icon({ id, open }) {
   return (
     <svg
@@ -49,20 +50,32 @@ const water = useSelector((state) => {
 const fores = useSelector((state) => {
   return state?.feature?.waterbody
 });
+console.log(amen,'asd')
 let data2=[]
-
+let classCounts={}
 if (builddata && builddata[0]){
-data2 = [{ name: 'Buildings', value:builddata[0].features.length},...data2]
+data2 = [{ name: 'Building(s)', value:builddata[0].features.length},...data2]
 }
 if (water&&water[0]){
-  data2=[...data2,{ name: 'Water', value:water[0].features.length}]
+  data2=[...data2,{ name: 'Waterbody', value:water[0].features.length}]
 }
 if (fores&& fores[0]){
   data2=[...data2,{ name: 'Forest', value:fores[0].features.length}]
 }
 if (amen&& amen[0]){
   data2=[...data2,{ name: 'Amenities', value:amen[0].features.length}]
+  amen[0].features.forEach((feature) => {
+    const cls = feature.properties.classes;
+    if (!classCounts[cls]) {
+      classCounts[cls] = 1;
+    } else {
+      classCounts[cls]++;
+    }
+  });
 }
+console.log(classCounts)
+
+
 // const forestdata = useSelector((state) => {
 //   return state.feature.forest[0].features.length||0;
 //   });
@@ -139,6 +152,15 @@ if (amen&& amen[0]){
          <div className="flex">
            <div className="mt-2 p-2 ">
            <BarChart data={data2} ></BarChart>
+           <div class="grid grid-cols-3 mt-3">
+                  {Object.keys(classCounts).map((className) => (
+                    <div className='bg-blue-900 text-white  py-4 border-r-4 border-white' key={className}>
+                    <span className="px-4 text-xl,">{className}(s):{classCounts[className]}</span>
+                </div>
+              ))}
+              
+              </div>
+           {/* <ChartRe></ChartRe> */}
             </div>
             {/* <div>asds</div> */}
            
