@@ -22,9 +22,7 @@ const NavigationBar = () => {
     <div className="shadow-md w-full">
       <div className="md:flex	 items-center justify-between md:pr-2 pr-15">
         <div className="font-bold text-xl cursor-pointer flex items-center  text-gray-800">
-          <span className="text-sm text-white bg-teal-500 p-2">
-            {/* <ion-icon name="flame-sharp"></ion-icon> */} LMC Disaster Portal
-          </span>
+         
         </div>
         <div
           onClick={() => setopen(!open)}
@@ -38,9 +36,9 @@ const NavigationBar = () => {
           }`}
         >
           {Links.map((link) => (
-            <div className="md:ml-8 text-lg md:my-0 my-7 " key={key++}>
+            <div className="md:ml-0 text-sm md:my-0 my-7" key={key++}>
               <NavLink
-                className="text-gray-800 hover:text-gray-400 duration-500"
+                className=" border-l-2 border-indigo-900 py-2 px-2  no-underline bg-green-500 text-white  text-xs hover:shadow-xl duration-500"
                 to={link.links}
               >
                 {link.name}
@@ -49,7 +47,7 @@ const NavigationBar = () => {
           ))}
           {access_token ? (
             <Link
-              className="bg-red-600 text-xl text-white font-[Aerial] font-bold py-0.5 px-2 rounded md:ml-8 hover:shadow-xl duration-500"
+              className="border-l-2 border-indigo-900 py-2 px-2  no-underline bg-red-500 text-white  text-xs hover:shadow-xl duration-500"
               to="/login"
               onClick={logoutHandler}
             >
@@ -57,7 +55,7 @@ const NavigationBar = () => {
             </Link>
           ) : (
             <Link
-              className="bg-red-600 text-xl text-white font-[Aerial] font-bold py-0.5 px-2 rounded md:ml-8 hover:shadow-xl duration-500"
+              className="py-2 no-underline bg-red-500 text-white px-2 text-xs  hover:shadow-xl duration-500"
               to="/login"
             >
               LogIn

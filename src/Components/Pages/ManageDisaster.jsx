@@ -109,7 +109,7 @@ const ManageDisaster = () => {
           } duration-300 h-[90vh] relative`}
         >
           <div className="flex">
-            <div className="flex justify-evenly">
+            <div className="flex justify-center">
               <div
                 onClick={() => {
                   setCurrentTab("activeManage");
@@ -117,7 +117,7 @@ const ManageDisaster = () => {
                     <ActiveManage changeMarkerDataState={setDisasterData} />
                   );
                 }}
-                className="bg-red-400"
+                className="bg-green-500 text-white  text-xs py-1 px-1 border-indigo-900 border-r-2 border-white"
               >
                 Active Incident
               </div>
@@ -131,7 +131,7 @@ const ManageDisaster = () => {
                     />
                   );
                 }}
-                className="bg-blue-400"
+                className="bg-green-500 text-white  text-xs py-1 px-1 border-indigo-900 border-r-2 border-white"
               >
                 All Incident
               </div>
@@ -145,7 +145,7 @@ const ManageDisaster = () => {
                     />
                   );
                 }}
-                className="bg-green-400"
+                className="bg-green-500 text-white  text-xs py-1 px-1 border-indigo-900 border-r-2 border-white"
               >
                 Activity Log
               </div>
@@ -159,11 +159,11 @@ const ManageDisaster = () => {
                     />
                   );
                 }}
-                className="bg-pink-400"
+                className="bg-green-500 text-white  text-xs py-1 px-1 border-indigo-900 border-r-2 border-white"
               >
                 Analysis
               </div>
-              <div
+              <div className="bg-green-500 text-white  text-xs py-1 px-1 border-indigo-900 border-r-2 border-white"
                 onClick={() => {
                   setCurrentTab("manageData");
                   ChangeManageDisasterPanel(

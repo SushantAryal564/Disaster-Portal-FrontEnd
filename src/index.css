@@ -78,15 +78,15 @@
 
 
   .marker-cluster-custom {
-    background: #c50101;
-    border: 1px solid #ededed;
+    background: #e62727;
+    border: 2px solid #ededed;
     border-radius: 50%;
     color: #ededed;
     height: 40px;
     line-height: 30px;
     text-align: center;
     width: 40px;
-    animation: pulse 1s ease-in-out infinite;
+    animation: pulse3 1s ease-in-out infinite;
     box-shadow: 0 0 10px rgba(255, 22, 22, 0.5);
 
   }

@@ -8,6 +8,7 @@ import {
 } from "@material-tailwind/react";
 import { BiAlarm } from "react-icons/bi";
 import { useMap } from "react-leaflet";
+import BarChart from "./Chart";
 function Icon({ id, open }) {
   return (
     <svg
@@ -28,7 +29,14 @@ function Icon({ id, open }) {
 export default function Accordian({ AllDisaster, latlngHandler }) {
   const dispatch = useDispatch();
   const [open, setOpen] = useState(0);
-
+  // barchat data
+  const data = [
+    { name: 'Buildings', value: 10 },
+    { name: 'Parks', value: 20 },
+    { name: 'WaterBody', value: 15 },
+    { name: 'Forest', value: 5 },
+  ]
+  //
   const handleOpen = (value) => {
     setOpen(open === value ? 0 : value);
   };
@@ -58,7 +66,15 @@ export default function Accordian({ AllDisaster, latlngHandler }) {
           </div>
         </div>
       </AccordionHeader>
-      <AccordionBody>CHART AND STATS HERE</AccordionBody>
+      <AccordionBody>
+        {/* <div className="text-bold text-md px-3">Buildings In the Area</div> */}
+         <div className="p-2 flex">
+         <div className="border-2  flex-center border-gray-300 p-2">
+          <BarChart data={data} ></BarChart>
+          </div>
+          <div> asd</div>
+          </div>
+      </AccordionBody>
     </Accordion>
   ));
   return <Fragment>{disaster}</Fragment>;
