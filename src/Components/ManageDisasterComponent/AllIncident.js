@@ -21,7 +21,8 @@ function AllIncident({ changeMarkerDataState }) {
   return (
     <div>
       
-      {wardAllIncident.map((data) => {
+      {wardAllIncident?<>
+        {wardAllIncident.map((data) => {
         console.log('Each daata in dashboard',data)
         return (
           <div className="border-gray-200 border-b-2 p-1 hover:bg-gray-200 py-2">
@@ -58,6 +59,7 @@ function AllIncident({ changeMarkerDataState }) {
           </div>
         );
       })}
+      </>:''}
     </div>
   );
 }

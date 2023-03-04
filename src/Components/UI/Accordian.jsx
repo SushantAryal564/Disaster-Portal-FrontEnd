@@ -1,5 +1,5 @@
 import { Fragment, useState } from "react";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { removeAll } from "../../store/Slices/featureSlice";
 import {
   Accordion,
@@ -9,6 +9,7 @@ import {
 import { BiAlarm } from "react-icons/bi";
 import { useMap } from "react-leaflet";
 import BarChart from "./Chart";
+import { featureGroup } from "leaflet";
 function Icon({ id, open }) {
   return (
     <svg
@@ -30,18 +31,61 @@ export default function Accordian({ AllDisaster, latlngHandler }) {
   const dispatch = useDispatch();
   const [open, setOpen] = useState(0);
   // barchat data
-  const data2 = [
-    { name: 'Buildings', value: 10 },
-    { name: 'Parks', value: 20 },
-    { name: 'WaterBody', value: 15 },
-    { name: 'Forest', value: 5 },
-  ]
-  //
+
+  
+const builddata = useSelector((state) => {
+
+  return state?.feature?.building
+  
+});
+const amen = useSelector((state) => {
+
+  return state?.feature?.amenities
+  
+});
+const water = useSelector((state) => {
+  return state?.feature?.waterbody
+});
+const fores = useSelector((state) => {
+  return state?.feature?.waterbody
+});
+let data2=[]
+
+if (builddata && builddata[0]){
+data2 = [{ name: 'Buildings', value:builddata[0].features.length},...data2]
+}
+if (water&&water[0]){
+  data2=[...data2,{ name: 'Water', value:water[0].features.length}]
+}
+if (fores&& fores[0]){
+  data2=[...data2,{ name: 'Forest', value:fores[0].features.length}]
+}
+if (amen&& amen[0]){
+  data2=[...data2,{ name: 'Amenities', value:amen[0].features.length}]
+}
+// const forestdata = useSelector((state) => {
+//   return state.feature.forest[0].features.length||0;
+//   });
+// const waterdata = useSelector((state) => {
+//     return state.feature.waterbody[0].features.length||0;
+//     });
+// const amenities = useSelector((state) => {
+//       return state.feature.amenities[0].features.length||0;
+//       });
+
+// console.log(buildingdata,'-accordinag building data')
+
+// data2 = [
+//   { name: 'Buildings', value:0},
+// //   { name: 'Amenities', value: amenities||0 },
+// //  { name: 'WaterBody', value: waterdata|0 },
+// //   { name: 'Forest', value: forestdata ||0},
+// ]
   const handleOpen = (value) => {
     setOpen(open === value ? 0 : value);
   };
 
-  console.log(AllDisaster);
+
   const disaster = AllDisaster.map((data) => (
     <Accordion
       open={open === data.id}
@@ -53,9 +97,9 @@ export default function Accordian({ AllDisaster, latlngHandler }) {
           dispatch(removeAll());
           latlngHandler([data.lat, data.long]);
         }}
-        className="text-sm py-0 px-2 py-2"
+        className="text-sm py-0 px-2 py-2 border-gray-200 border-b-2  border-t-2"
       >
-        <div className="border-gray-200 border-b-2 p-1 hover:bg-gray-200 py-2">
+        <div className=" p-1 hover:bg-gray-200 py-2">
             <div className="text-md font-medium flex flex-row ">
               <div className="text-red-500 text-sm flex flex-col">
                 <span className="px-3">
@@ -91,11 +135,15 @@ export default function Accordian({ AllDisaster, latlngHandler }) {
       <AccordionBody>
         {/* <div className="text-bold text-md px-3">Buildings In the Area</div> */}
          <div className="m-2 ">
-         <div className="">
-          <span className=" text-gray-500 bold  text-green-900">Infrastructre in the Area</span>
-          <BarChart data={data2} ></BarChart>
+         <span className="text-gray-500 text-bold underline text-[12px] mb-2 mx-2 text-green-900">INFRASTRUCTURES IN DISASTER AREA</span>
+         <div className="flex">
+           <div className="mt-2 p-2 ">
+           <BarChart data={data2} ></BarChart>
+            </div>
+            {/* <div>asds</div> */}
+           
           </div>
-          <div> </div>
+          
           </div>
       </AccordionBody>
     </Accordion>

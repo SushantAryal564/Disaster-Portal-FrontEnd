@@ -88,7 +88,8 @@ const ActiveManage = ({ changeMarkerDataState }) => {
           Submit
         </button>
       </div>
-    {wardIncident.map((data) => {
+    {wardIncident?
+    <>{wardIncident.map((data) => {
         console.log('Each daata in dashboard',data)
         return (
           <div className="border-gray-200 border-b-2 p-1 hover:bg-gray-200 py-2">
@@ -124,7 +125,7 @@ const ActiveManage = ({ changeMarkerDataState }) => {
             </div>
           </div>
         );
-      })}
+      })}</>:''}
     </React.Fragment>
   );
 };
