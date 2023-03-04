@@ -78,19 +78,20 @@ const BarChart = ({
 
   return (
     <>
-      <div className="border-3 border-indigo-600 ml-3">
-        <span className="text-md mb-6 text-bold">{title}</span>
-        <div className="my-4"></div>
-        <div className="py-2  text-black">
+      <div className="">
+        {/* <span className="">{title}</span> */}
+        <div className=""></div>
+        <div className="">
+            {/* {title} */}
           <svg ref={svgRef}>
             <g className="x-axis" />
             <g className="y-axis" />
             <text
-              x={width / 2}
-              y={20}
+              x={width }
+              y={40}
               textAnchor="middle"
               fontWeight="bold"
-              fontSize="20px"
+              fontSize="10px"
               fill="#333"
             ></text>
           </svg>

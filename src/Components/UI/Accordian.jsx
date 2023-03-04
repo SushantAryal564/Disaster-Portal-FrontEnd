@@ -30,7 +30,7 @@ export default function Accordian({ AllDisaster, latlngHandler }) {
   const dispatch = useDispatch();
   const [open, setOpen] = useState(0);
   // barchat data
-  const data = [
+  const data2 = [
     { name: 'Buildings', value: 10 },
     { name: 'Parks', value: 20 },
     { name: 'WaterBody', value: 15 },
@@ -42,37 +42,60 @@ export default function Accordian({ AllDisaster, latlngHandler }) {
   };
 
   console.log(AllDisaster);
-  const disaster = AllDisaster.map((disaster) => (
+  const disaster = AllDisaster.map((data) => (
     <Accordion
-      open={open === disaster.id}
-      icon={<Icon id={disaster.id} open={open} />}
+      open={open === data.id}
+      icon={<Icon id={data.id} open={open} />}
     >
       <AccordionHeader
         onClick={() => {
-          handleOpen(disaster.id);
+          handleOpen(data.id);
           dispatch(removeAll());
-          latlngHandler([disaster.lat, disaster.long]);
+          latlngHandler([data.lat, data.long]);
         }}
         className="text-sm py-0 px-2 py-2"
       >
-        <div className="flex flex-col	">
-          <div>
-            <img src={disaster?.type?.icon} className="h-5 inline pr-2" />
-            {disaster.name}
+        <div className="border-gray-200 border-b-2 p-1 hover:bg-gray-200 py-2">
+            <div className="text-md font-medium flex flex-row ">
+              <div className="text-red-500 text-sm flex flex-col">
+                <span className="px-3">
+                  {" "}
+                  <img
+                className="w-9 h-6 pt-1 mt-1"
+                src={`http://127.0.0.1:8000/${data?.type?.title}.svg`}
+                
+              />  
+                </span>
+                <p className="text-xs text-black mx-6 my-1">{data?.type?.title || "none"}</p>
+              </div>
+              <span className="font-normal ml-2 mt-1 pt-1 text-sm">
+                <div className="font-semibold text-xs"> {data.name}</div>
+                <div>
+                  <div className="text-xs  text-gray-500 flex justify-start ">
+                   
+                    <div className="flex items-center my-1">
+                      <span>
+                        <BiAlarm />
+                      </span>
+                      <span className="mx-2">{data.date_event.slice(0,10)}</span>
+                      <span className="ml-2">{data.date_event.slice(11,16)}</span>
+                      <span className="ml-2">WARD-{data.Ward.ward}</span>
+                      <span className="ml-3">{data.ADDRESS||'Dhapakhel,Gems School'}</span>
+                    </div>
+                  </div>
+                </div>
+              </span>
+            </div>
           </div>
-          <div className="px-0 flex justify-center text-xs gap-2">
-            <BiAlarm size={18} className="inline" />
-            {disaster.startTime}
-          </div>
-        </div>
       </AccordionHeader>
       <AccordionBody>
         {/* <div className="text-bold text-md px-3">Buildings In the Area</div> */}
-         <div className="p-2 flex">
-         <div className="border-2  flex-center border-gray-300 p-2">
-          <BarChart data={data} ></BarChart>
+         <div className="m-2 ">
+         <div className="">
+          <span className=" text-gray-500 bold  text-green-900">Infrastructre in the Area</span>
+          <BarChart data={data2} ></BarChart>
           </div>
-          <div> asd</div>
+          <div> </div>
           </div>
       </AccordionBody>
     </Accordion>
