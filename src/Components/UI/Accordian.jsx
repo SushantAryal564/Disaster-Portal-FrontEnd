@@ -10,6 +10,7 @@ import { BiAlarm } from "react-icons/bi";
 import { useMap } from "react-leaflet";
 import BarChart from "./Chart";
 import { featureGroup } from "leaflet";
+import { GetColor } from "./GetColor";
 // import {  ChartRe } from "./ChartRe";
 function Icon({ id, open }) {
   return (
@@ -148,16 +149,18 @@ console.log(classCounts)
       <AccordionBody>
         {/* <div className="text-bold text-md px-3">Buildings In the Area</div> */}
          <div className="m-2 ">
-         <span className="text-gray-500 text-bold underline text-[12px] mb-2 mx-2 text-green-900">INFRASTRUCTURES IN DISASTER AREA</span>
+         <span className="text-gray-500 text-bold  text-[12px] mb-2 mx-2 bg-blue-700 text-white">INFRASTRUCTURES IN DISASTER AREA</span>
          <div className="flex">
            <div className="mt-2 p-2 ">
            <BarChart data={data2} ></BarChart>
            <div class="grid grid-cols-3 mt-3">
-                  {Object.keys(classCounts).map((className) => (
-                    <div className='bg-blue-900 text-white  py-4 border-r-4 border-white' key={className}>
+                  {Object.keys(classCounts).map((className) => {
+                       let colorRGB = GetColor(className);
+                    return(<div className='text-black  py-4 border-r-4 border-white' key={className} style={{background:`rgb(${colorRGB[0]}, ${colorRGB[1]}, ${colorRGB[2]})`}}>
                     <span className="px-4 text-xl,">{className}(s):{classCounts[className]}</span>
-                </div>
-              ))}
+                </div>)
+                  }
+              )}
               
               </div>
            {/* <ChartRe></ChartRe> */}

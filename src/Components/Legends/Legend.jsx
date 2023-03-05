@@ -144,7 +144,7 @@ export const ManageDisasterLegend = ({currenttab,disasterData}) => {
           let color = `rgb(${colorRGB[0]}, ${colorRGB[1]}, ${colorRGB[2]})`;
           return (
             <div className="m-2 items-center justify-between pb-1 border-b-2">
-              <span className=" my-2 text-[11px] text-gray-400 italic">Click on disaster to generate legend</span>
+       
               <div>
                 {" "}
                 <span

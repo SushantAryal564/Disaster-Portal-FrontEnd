@@ -34,7 +34,7 @@ function LayerControler({ disasterData, currenttab }) {
   }, [analysisResultAmenities, setjson]);
   
   useEffect(() => {
-    if (latlng) leafletMap.setView([latlng[1], latlng[0]], 16);
+    if (latlng) leafletMap.setView([latlng[1], latlng[0]], 17);
   });
   
   const styleGEOJSON = (feature) => {
