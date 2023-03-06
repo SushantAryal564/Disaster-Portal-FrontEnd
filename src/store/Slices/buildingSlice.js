@@ -28,9 +28,6 @@ export const buildingSlice = createSlice({
     removebuilding(state, action) {
       state.selectedBuilding = null;
     },
-    chageSelection(state, action) {
-      state.isSelected = !state.isSelected;
-    },
   },
   extraReducers(builder) {
     builder
@@ -47,6 +44,5 @@ export const buildingSlice = createSlice({
       });
   },
 });
-export const { addbuilding, chageSelection, removebuilding } =
-  buildingSlice.actions;
+export const { addbuilding, removebuilding } = buildingSlice.actions;
 export default buildingSlice.reducer;

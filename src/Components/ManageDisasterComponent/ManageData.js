@@ -6,21 +6,18 @@ function ManageData({ polygonCoords }) {
   const buildingdata = useSelector((state) => {
     return state.buildings.selectedBuilding;
   });
-  const [clicked, setClicked] = useState(false);
   async function postPolygonData(data) {
     try {
-      if (!osm_id) {
-        const response = await fetch(
-          "http://127.0.0.1:8000/api/v1/analysis/allbuilding/",
-          {
-            method: "POST",
-            headers: {
-              "Content-Type": "application/json",
-            },
-            body: JSON.stringify({ way: polygonCoords, ...data }),
-          }
-        );
-      }
+      const response = await fetch(
+        "http://127.0.0.1:8000/api/v1/analysis/allbuilding/",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ way: polygonCoords, ...data }),
+        }
+      );
     } catch (error) {}
   }
   if (buildingdata) {
@@ -32,19 +29,35 @@ function ManageData({ polygonCoords }) {
       housemetricnumber,
       type,
       email,
-      address,
     } = buildingdata;
   }
-  const formik = useFormik({
-    initialValues: {
+  console.log("MANAGE DATA--->selected building", buildingdata);
+  const [savedValue, setsavedValue] = useState(null);
+  var initialValues = {
+    osm_id: "",
+    phoneNumber1: "",
+    phoneNumber2: "",
+    housemetricnumber: "",
+    buildingtype: "",
+    people: "",
+    email: "",
+  };
+  useEffect(() => {
+    console.log("builidng daata changed");
+    // if(buildingdata){
+    setsavedValue({
       osm_id: osm_id || "",
       phoneNumber1: phoneNumber1 || "",
       phoneNumber2: phoneNumber2 || "",
-      housemetricnumber: housemetricnumber || "",
-      buildingtype: type || "",
       people: people || "",
-      email: email || "",
-    },
+      houseMetricNumber: housemetricnumber || "",
+      buildingtype: type || "",
+    });
+  }, [buildingdata]);
+  console.log("managed data rendere", "Saved Valued-", savedValue);
+  const formik = useFormik({
+    initialValues: savedValue || initialValues,
+    enableReinitialize: true,
     validationSchema: Yup.object({
       name: Yup.string(),
       type: Yup.string(),
@@ -56,7 +69,7 @@ function ManageData({ polygonCoords }) {
         "Enter valid house metric Number"
       ),
       address: Yup.string().min(5, "Enter valid address"),
-      buildingtype: Yup.string().min(5, "Enter valid type"),
+      buildingtype: Yup.string().min(5, "Enter valid address"),
       email: Yup.string().email("Invalid email address"),
     }),
     onSubmit: (values) => {
@@ -64,22 +77,8 @@ function ManageData({ polygonCoords }) {
       // postPolygonData(values)
     },
   });
-  const isSelected = useSelector((state) => {
-    return state.buildings.isSelected;
-  });
+
   let formIsValid = true;
-  console.log(osm_id, type);
-  useEffect(() => {
-    formik.setValues({
-      osm_id: osm_id || "",
-      phoneNumber1: phoneNumber1 || "",
-      phoneNumber2: phoneNumber2 || "",
-      people: people || "",
-      houseMetricNumber: housemetricnumber || "",
-      type: type || "",
-    });
-  }, [buildingdata, isSelected]);
-  useEffect(() => {}, [isSelected]);
 
   if (
     (formik.errors.name || formik.touched.name) &&
@@ -113,7 +112,7 @@ function ManageData({ polygonCoords }) {
                   type="text"
                   onChange={formik.handleChange}
                   onBlur={formik.handleBlur}
-                  value={housemetricnumber || ""}
+                  // value={formik.values.housemetricnumber}
                 />
                 <label class="after:content[' '] pointer-events-none absolute left-0 top-1 flex h-full w-full select-none text-xs font-normal leading-tight text-blue-gray-500 transition-all after:absolute after:bottom-0 after:block after:w-full after:scale-x-0 after:border-b-2 after:border-red-500 after:transition-transform after:duration-300 peer-placeholder-shown:leading-tight peer-placeholder-shown:text-blue-gray-500 peer-focus:text-xs peer-focus:leading-tight peer-focus:text-red-500 peer-focus:after:scale-x-100 peer-focus:after:border-red-500 peer-disabled:text-transparent peer-disabled:peer-placeholder-shown:text-blue-gray-500 font-bold">
                   House Metric Number
@@ -135,7 +134,7 @@ function ManageData({ polygonCoords }) {
                 type="text"
                 onChange={formik.handleChange}
                 onBlur={formik.handleBlur}
-                value={address || ""}
+                // value={formik.values.address}
               />
               <label class="after:content[' '] pointer-events-none absolute left-0 -top-3 flex h-full w-full select-none text-xs font-normal leading-tight text-blue-gray-500 transition-all after:absolute after:-bottom-0 after:block after:w-full after:scale-x-0 after:border-b-2 after:border-red-500 after:transition-transform after:duration-300 peer-placeholder-shown:leading-tight peer-placeholder-shown:text-blue-gray-500 peer-focus:text-xs peer-focus:leading-tight peer-focus:text-red-500 peer-focus:after:scale-x-100 peer-focus:after:border-red-500 peer-disabled:text-transparent peer-disabled:peer-placeholder-shown:text-blue-gray-500 font-bold">
                 ADDRESS
@@ -157,7 +156,7 @@ function ManageData({ polygonCoords }) {
                   type="text"
                   onChange={formik.handleChange}
                   onBlur={formik.handleBlur}
-                  value={formik.values.buildingtype || type || null}
+                  value={formik.values.buildingtype}
                 />
                 <label class="after:content[' '] pointer-events-none absolute left-0 top-1 flex h-full w-full select-none text-xs font-normal leading-tight text-blue-gray-500 transition-all after:absolute after:bottom-0 after:block after:w-full after:scale-x-0 after:border-b-2 after:border-red-500 after:transition-transform after:duration-300 peer-placeholder-shown:leading-tight peer-placeholder-shown:text-blue-gray-500 peer-focus:text-xs peer-focus:leading-tight peer-focus:text-red-500 peer-focus:after:scale-x-100 peer-focus:after:border-red-500 peer-disabled:text-transparent peer-disabled:peer-placeholder-shown:text-blue-gray-500 font-bold">
                   Building Type
@@ -178,7 +177,7 @@ function ManageData({ polygonCoords }) {
                   type="number"
                   onChange={formik.handleChange}
                   onBlur={formik.handleBlur}
-                  value={people || ""}
+                  value={formik.values.people}
                 />
                 <label class="after:content[' '] pointer-events-none absolute left-0 top-1 flex h-full w-full select-none text-xs font-normal leading-tight text-blue-gray-500 transition-all after:absolute after:bottom-0 after:block after:w-full after:scale-x-0 after:border-b-2 after:border-red-500 after:transition-transform after:duration-300 peer-placeholder-shown:leading-tight peer-placeholder-shown:text-blue-gray-500 peer-focus:text-xs peer-focus:leading-tight peer-focus:text-red-500 peer-focus:after:scale-x-100 peer-focus:after:border-red-500 peer-disabled:text-transparent peer-disabled:peer-placeholder-shown:text-blue-gray-500 font-bold">
                   Number of People
@@ -201,7 +200,7 @@ function ManageData({ polygonCoords }) {
                   type="text"
                   onChange={formik.handleChange}
                   onBlur={formik.handleBlur}
-                  value={phoneNumber1 || ""}
+                  // value={formik.values.phoneNumber1}
                 />
                 <label class="after:content[' '] pointer-events-none absolute left-0 top-1 flex h-full w-full select-none text-xs font-normal leading-tight text-blue-gray-500 transition-all after:absolute after:bottom-0 after:block after:w-full after:scale-x-0 after:border-b-2 after:border-red-500 after:transition-transform after:duration-300 peer-placeholder-shown:leading-tight peer-placeholder-shown:text-blue-gray-500 peer-focus:text-xs peer-focus:leading-tight peer-focus:text-red-500 peer-focus:after:scale-x-100 peer-focus:after:border-red-500 peer-disabled:text-transparent peer-disabled:peer-placeholder-shown:text-blue-gray-500 font-bold">
                   Phone Number 1
@@ -222,7 +221,7 @@ function ManageData({ polygonCoords }) {
                   type="text"
                   onChange={formik.handleChange}
                   onBlur={formik.handleBlur}
-                  value={phoneNumber2 || ""}
+                  // value={formik.values.phoneNumber2}
                 />
                 <label class="after:content[' '] pointer-events-none absolute left-0 top-1 flex h-full w-full select-none text-xs font-normal leading-tight text-blue-gray-500 transition-all after:absolute after:bottom-0 after:block after:w-full after:scale-x-0 after:border-b-2 after:border-red-500 after:transition-transform after:duration-300 peer-placeholder-shown:leading-tight peer-placeholder-shown:text-blue-gray-500 peer-focus:text-xs peer-focus:leading-tight peer-focus:text-red-500 peer-focus:after:scale-x-100 peer-focus:after:border-red-500 peer-disabled:text-transparent peer-disabled:peer-placeholder-shown:text-blue-gray-500 font-bold">
                   Phone Number 2
@@ -244,7 +243,7 @@ function ManageData({ polygonCoords }) {
                 type="text"
                 onChange={formik.handleChange}
                 onBlur={formik.handleBlur}
-                value={email || ""}
+                // value={formik.values.email}
               />
               <label class="after:content[' '] pointer-events-none absolute left-0 -top-3 flex h-full w-full select-none text-xs font-normal leading-tight text-blue-gray-500 transition-all after:absolute after:-bottom-0 after:block after:w-full after:scale-x-0 after:border-b-2 after:border-red-500 after:transition-transform after:duration-300 peer-placeholder-shown:leading-tight peer-placeholder-shown:text-blue-gray-500 peer-focus:text-xs peer-focus:leading-tight peer-focus:text-red-500 peer-focus:after:scale-x-100 peer-focus:after:border-red-500 peer-disabled:text-transparent peer-disabled:peer-placeholder-shown:text-blue-gray-500 font-bold">
                 Email Address

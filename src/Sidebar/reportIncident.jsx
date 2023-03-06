@@ -10,6 +10,23 @@ function ReportAnAncident({ setReportActivated }) {
   const [position, setPosition] = useState([
     27.66445354418368, 85.31856628971687,
   ]);
+  const [calculatedWard,setcalculatedWard]=useState()
+  const getWard=async()=>{
+    const data = await fetch(
+      `http://127.0.0.1:8000/api/v1/analysis/getward/?lat=${position[0]}&lng=${position[1]}`
+    );
+
+    let ward = await data.json();
+    setcalculatedWard(ward);
+
+ }
+ console.log(calculatedWard?.ward,'is current ward')
+  
+  useEffect(()=>{
+    getWard()
+  }
+  ,[position])
+
   console.log(position);
   const [disaster, setDisaster] = useState([]);
   const [Region, SetRegion] = useState([]);
@@ -253,20 +270,20 @@ function ReportAnAncident({ setReportActivated }) {
                 htmlFor="region"
                 className="text-xs font-normal leading-tight text-blue-gray-500 transition-all after:absolute after:-bottom-2.5 after:block after:w-full after:scale-x-0 after:border-b-2 after:border-red-500 after:transition-transform after:duration-300 peer-placeholder-shown:leading-tight font-bold "
               >
-                REGION
+                WARD
               </label>
-              <Select
-                className="input hover:text-black "
-                onChange={(value) =>
-                  formik.setFieldValue("region", value.value)
-                }
+              <input
+                className="h-9 border rounded border-stone-300 w-40 hover:border-red-500 hover:text-black	 "
+                // onChange={(value) =>
+                //   formik.setFieldValue("region", value.value)
+                // }
                 styles={colourStyles}
-                value={formik.values.regionNameOptions}
-                options={regionNameOptions}
+                value={calculatedWard?.ward ?calculatedWard?.ward:'Error'}
+                // options={regionNameOptions}
               />
-              {formik.errors.region ? (
+              {calculatedWard?.message? (
                 <div className="text-red-600 text-xs">
-                  {formik.errors.region}
+                  {calculatedWard?.message}
                 </div>
               ) : null}
             </div>

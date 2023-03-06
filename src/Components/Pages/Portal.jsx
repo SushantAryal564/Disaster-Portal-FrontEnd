@@ -210,6 +210,7 @@ export const Portal = () => {
             {jsonWard ? (
               <GeoJSONLayer
                 data={jsonWard}
+                checked
                 name="Lalitpur Metropolitian Ward"
               />
             ) : (
