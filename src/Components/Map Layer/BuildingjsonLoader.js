@@ -12,11 +12,12 @@ import { current } from "@reduxjs/toolkit";
 
 function BuildingjsonLoader({ prevLayer }) {
   const dispatch = useDispatch();
-  const wardID = localStorage.getItem("WardId");
+  const wardID = localStorage.getItem("wardNumber");
 
   const building = useSelector((state) => {
     return state.buildings.allbuilding;
   });
+  var prevLayer = "";
   useEffect(() => {
     dispatch(buildingAsyncGETThunk(wardID));
   }, [wardID]);
@@ -42,6 +43,7 @@ function BuildingjsonLoader({ prevLayer }) {
             fillOpacity: 0.7,
           });
         }
+
         layer.setStyle({
           fillColor: "blue",
           color: "blue",

@@ -7,6 +7,8 @@ export const buildingAsyncGETThunk = createAsyncThunk(
       `http://127.0.0.1:8000/api/v1/analysis/allbuilding/?ward=${wardID}`
     );
     const data = await response.json();
+    console.log(data);
+    console.log("************************");
     return data;
   }
 );

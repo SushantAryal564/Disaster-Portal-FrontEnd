@@ -77,3 +77,10 @@ pop-width {
   color: black;
   border-radius: 5px;
 }
+.legendd {
+  width: 20%;
+  background-color: white;
+  padding: 10px;
+  color: black;
+  border-radius: 5px;
+}
