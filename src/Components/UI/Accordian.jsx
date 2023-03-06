@@ -149,7 +149,7 @@ console.log(classCounts)
       <AccordionBody>
         {/* <div className="text-bold text-md px-3">Buildings In the Area</div> */}
          <div className="m-2 ">
-         <span className="text-gray-500 text-bold  text-[12px] mb-2 mx-2 bg-blue-700 text-white">INFRASTRUCTURES IN DISASTER AREA</span>
+         <span className="text-gray-500 text-bold  text-[12px] mb-2 mx-2 bg-blue-700 text-white py-2 px-2">INFRASTRUCTURES IN DISASTER AREA</span>
          <div className="flex">
            <div className="mt-2 p-2 ">
            <BarChart data={data2} ></BarChart>

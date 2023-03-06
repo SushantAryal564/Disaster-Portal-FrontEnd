@@ -7,6 +7,7 @@ function ActivityLog({ changeMarkerDataState }) {
   const [DisasterId, setDisasterID] = useState(0);
   const [activity, setActivity] = useState("");
   const [date, setDate] = useState("");
+  const[reloder,setreloder]=useState(true)
   let formIsValid = false;
   if (activity.trim() !== "" || date !== "") {
     formIsValid = true;
@@ -60,9 +61,14 @@ function ActivityLog({ changeMarkerDataState }) {
         },
         body: JSON.stringify(data),
       }
+    
     );
     const responseData = await response.json();
+    setActivity('')
+    setDate('')
+    setreloder(!reloder)
     return responseData;
+
   };
   const ActivityFormSubmitHandler = (e) => {
     e.preventDefault();
@@ -75,7 +81,7 @@ function ActivityLog({ changeMarkerDataState }) {
   };
   useEffect(() => {
     WardActiveDisaster(wardId);
-  }, []);
+  }, [reloder]);
   const activeIncidentLogHandler = () => {
     WardActiveDisaster();
   };
@@ -87,16 +93,24 @@ function ActivityLog({ changeMarkerDataState }) {
     setDisasterID(id);
     DisasterActivity(id);
   };
+
+  // useEffect(()=>{
+  //   DisasterActivityLogHandler(wardId)
+  // },[reloder])
+  
   const ActivityLogLayout =
     DisasterActivityLog == []
       ? ""
       : DisasterActivityLog.map((data) => {
           return (
-            <div>
-              <div>{data.action_name}</div>
-              <div>{data.time_of_action}</div>
+            <ul className="max-w-md divide-y divide-gray-200 dark:divide-gray-700">
+               <li class="pb-3 sm:pb-4">
+               <div>{data.action_name}</div>
+              <div className="text-xs text-gray-500">{data.time_of_action}</div>
               <div>{data.logCreator}</div>
-            </div>
+               </li>
+              
+            </ul>
           );
         });
   const DisasterEventLayout = WardDisasterData?.map((data) => {
@@ -144,10 +158,10 @@ function ActivityLog({ changeMarkerDataState }) {
         {/* <div onClick={activeIncidentLogHandler}>Active Incident Log</div>
         <div onClick={allIncidentLogHandler}>Past Incident Log</div> */}
       </div>
-      <div className="grid grid-cols-8 ">
+      <div className="grid grid-cols-8">
         <div className="col-span-4">{DisasterEventLayout}</div>
-        <div className="col-span-4">
-          Activity Log List
+        <div className="col-span-4 ">
+          <div className="bg-gray-200 mt-2 text-white px-2 py-2"><center>Activity Log List</center></div>
          <div>{ActivityLogLayout}</div>
           <div>
            
@@ -198,8 +212,7 @@ function ActivityLog({ changeMarkerDataState }) {
                     type="button"
                     onClick={ActivityFormSubmitHandler}
                     disabled={!formIsValid}
-                  >
-                    Submit
+                  >Submit
                   </button>
                 </div>
               </div>
