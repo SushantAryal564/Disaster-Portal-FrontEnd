@@ -7,6 +7,7 @@ function ActivityLog({ changeMarkerDataState }) {
   const [DisasterId, setDisasterID] = useState(0);
   const [activity, setActivity] = useState("");
   const [date, setDate] = useState("");
+  const[reloder,setreloder]=useState(true)
   let formIsValid = false;
   if (activity.trim() !== "" || date !== "") {
     formIsValid = true;
@@ -19,7 +20,7 @@ function ActivityLog({ changeMarkerDataState }) {
   let access_token = localStorage.getItem("access_token");
   const WardActiveDisaster = async () => {
     let data = await fetch(
-      `http://127.0.0.1:8000/api/v1/disaster/disasterEventwithoutgeom/?name=&Ward=${wardId}&type=&is_closed=false&startTime__gte=&startTime__gt=&startTime=&startTime__lte=`
+      `http://127.0.0.1:8000/api/v1/disaster/disasterEventwithoutgeom/?name=&Ward=${wardId}`
     );
     let wardActiveIncident = await data.json();
     setWardDisasterData(wardActiveIncident);
@@ -27,7 +28,7 @@ function ActivityLog({ changeMarkerDataState }) {
   };
   const WardPastDisaster = async () => {
     let data = await fetch(
-      `http://127.0.0.1:8000/api/v1/disaster/disasterEventwithoutgeom/?name=&Ward=${wardId}&type=&is_closed=true&startTime__gte=&startTime__gt=&startTime=&startTime__lte=`
+      `http://127.0.0.1:8000/api/v1/disaster/disasterEventwithoutgeom/?name=&Ward=${wardId}`
     );
     let wardAllIncident = await data.json();
     setWardDisasterData(wardAllIncident);
@@ -60,9 +61,14 @@ function ActivityLog({ changeMarkerDataState }) {
         },
         body: JSON.stringify(data),
       }
+    
     );
     const responseData = await response.json();
+    setActivity('')
+    setDate('')
+    setreloder(!reloder)
     return responseData;
+
   };
   const ActivityFormSubmitHandler = (e) => {
     e.preventDefault();
@@ -75,7 +81,7 @@ function ActivityLog({ changeMarkerDataState }) {
   };
   useEffect(() => {
     WardActiveDisaster(wardId);
-  }, []);
+  }, [reloder]);
   const activeIncidentLogHandler = () => {
     WardActiveDisaster();
   };
@@ -87,70 +93,89 @@ function ActivityLog({ changeMarkerDataState }) {
     setDisasterID(id);
     DisasterActivity(id);
   };
+
+  // useEffect(()=>{
+  //   DisasterActivityLogHandler(wardId)
+  // },[reloder])
+  
   const ActivityLogLayout =
     DisasterActivityLog == []
       ? ""
       : DisasterActivityLog.map((data) => {
           return (
-            <div>
-              <div>{data.action_name}</div>
-              <div>{data.time_of_action}</div>
+            <ul className="max-w-md divide-y divide-gray-200 dark:divide-gray-700">
+               <li class="pb-3 sm:pb-4">
+               <div>{data.action_name}</div>
+              <div className="text-xs text-gray-500">{data.time_of_action}</div>
               <div>{data.logCreator}</div>
-            </div>
+               </li>
+              
+            </ul>
           );
         });
-  const DisasterEventLayout = WardDisasterData.map((data) => {
+  const DisasterEventLayout = WardDisasterData?.map((data) => {
+    console.log('Each daata in dashboard',data)
     return (
-      <div
-        className="border-gray-200 border-b-2 p-3 hover:bg-gray-200 py-4"
-        onClick={() => {
-          DisasterActivityLogHandler(data.id);
-        }}
-      >
+      <div className="border-gray-200 border-b-2 p-1 hover:bg-gray-200 py-2" onClick={() => {
+        DisasterActivityLogHandler(data.id);
+      }}>
         <div className="text-md font-medium flex flex-row ">
           <div className="text-red-500 text-sm flex flex-col">
             <span className="px-3">
               {" "}
-              <AiFillInfoCircle size={20} />
+              <img
+            className="w-9 h-6 pt-1 mt-1"
+            src={`http://127.0.0.1:8000/${data?.type?.title}.svg`}
+            
+          />  
             </span>
-            <p className="text-xs">{data?.type?.title || "none"}</p>
+            <p className="text-xs text-black mx-6 my-1">{data?.type?.title || "none"}</p>
           </div>
-          <span className="font-normal ml-5 pt-1 text-sm">
+          <span className="font-normal ml-2 mt-1 pt-1 text-sm">
             <div className="font-semibold text-xs"> {data.name}</div>
             <div>
               <div className="text-xs  text-gray-500 flex justify-start ">
-                <span className="">{data.date}</span>
-                <div className="flex items-center px-2">
+               
+                <div className="flex items-center my-1">
                   <span>
                     <BiAlarm />
                   </span>
-                  <span className="pl-1">{data.time || "none"}</span>
+                  <span className="mx-2">{data.date_event.slice(0,10)}</span>
+                  <span className="ml-2">{data.date_event.slice(11,16)}</span>
+                  <span className="ml-2">WARD-{data.Ward.ward}</span>
+                  <span className="ml-3">{data.ADDRESS||'Dhapakhel,Gems School'}</span>
                 </div>
               </div>
             </div>
           </span>
         </div>
       </div>
-    );
-  });
+    )});
+  
   return (
     <Fragment>
       <div className="flex justify-between px-10">
-        <div onClick={activeIncidentLogHandler}>Active Incident Log</div>
-        <div onClick={allIncidentLogHandler}>Past Incident Log</div>
+        {/* <div onClick={activeIncidentLogHandler}>Active Incident Log</div>
+        <div onClick={allIncidentLogHandler}>Past Incident Log</div> */}
       </div>
-      <div className="grid grid-cols-6 gap-1">
-        <div className="col-span-2">{DisasterEventLayout}</div>
-        <div className="col-span-4">
-          <div>{ActivityLogLayout}</div>
+      <div className="grid grid-cols-8">
+        <div className="col-span-4">{DisasterEventLayout}</div>
+        <div className="col-span-4 ">
+          <div className="bg-gray-200 mt-2 text-white px-2 py-2"><center>Activity Log List</center></div>
+         <div>{ActivityLogLayout}</div>
           <div>
-            <form className="w-full max-w-lg">
+           
+          </div>
+        </div>
+        
+      </div>
+      <form className="w-full max-w-lg">
               <div class="w-full px-3">
                 <label
                   class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"
                   for="grid-password"
                 >
-                  Response Activity
+                  Update Response Activity
                 </label>
                 <textarea
                   class="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
@@ -187,17 +212,13 @@ function ActivityLog({ changeMarkerDataState }) {
                     type="button"
                     onClick={ActivityFormSubmitHandler}
                     disabled={!formIsValid}
-                  >
-                    Submit
+                  >Submit
                   </button>
                 </div>
               </div>
             </form>
-          </div>
-        </div>
-      </div>
     </Fragment>
   );
-}
 
+  }
 export default ActivityLog;

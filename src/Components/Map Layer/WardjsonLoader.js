@@ -7,8 +7,10 @@ import { Fragment } from "react";
 function WardjsonLoader() {
   const leafletMap = useMap();
   const [WardJSON, setWardJSON] = useState();
-  const wardId = localStorage.getItem("WardId");
+  const wardId = localStorage.getItem("wardNumber");
+  //DISCLAMIER--this end point takes wardnumber not ID altho variavble is wardID ,it is actually wardNUMBER,wardId = localStorage.getItem("wardNumber");
   const getWardJSONData = async () => {
+    console.log('***',`http://127.0.0.1:8000/api/v1/spatial/wards/${wardId}/`)
     const data = await fetch(
       `http://127.0.0.1:8000/api/v1/spatial/wards/${wardId}/`
     );
@@ -32,7 +34,7 @@ function WardjsonLoader() {
           WardJSON.properties.centroid.coordinates[1],
           WardJSON.properties.centroid.coordinates[0],
         ],
-        16
+        15
       );
     }
   }, [WardJSON]);

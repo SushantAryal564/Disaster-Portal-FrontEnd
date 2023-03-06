@@ -4,7 +4,7 @@ export const GetBuildingWithInBuffer = createAsyncThunk(
   "GetBuildingWithInBuffer",
   async (latlng) => {
     const response = await fetch(
-      `http://127.0.0.1:8000/api/v1/analysis/building/?lat=${latlng[1]}&lon=${latlng[0]}&buffer_distance=100`
+      `http://127.0.0.1:8000/api/v1/analysis/building/?lat=${latlng[1]}&lon=${latlng[0]}&buffer_distance=300`
     );
     const data = await response.json();
     return data;
@@ -14,7 +14,7 @@ export const GetForestWithInBuffer = createAsyncThunk(
   "GetForestWithInBuffer",
   async (latlng) => {
     const response = await fetch(
-      `http://127.0.0.1:8000/api/v1/analysis/forest/?lat=${latlng[1]}&lon=${latlng[0]}&buffer_distance=100`
+      `http://127.0.0.1:8000/api/v1/analysis/forest/?lat=${latlng[1]}&lon=${latlng[0]}&buffer_distance=300`
     );
     const data = await response.json();
     return data;
@@ -24,7 +24,7 @@ export const GetWaterbodyWithInBuffer = createAsyncThunk(
   "GetWaterbodyWithInBuffer",
   async (latlng) => {
     const response = await fetch(
-      `http://127.0.0.1:8000/api/v1/analysis/waterbody/?lat=${latlng[1]}&lon=${latlng[0]}&buffer_distance=100`
+      `http://127.0.0.1:8000/api/v1/analysis/waterbody/?lat=${latlng[1]}&lon=${latlng[0]}&buffer_distance=300`
     );
     const data = await response.json();
     return data;
@@ -34,7 +34,7 @@ export const GetAmenitiesWithInBuffer = createAsyncThunk(
   "GetAmenitiesWithInBuffer",
   async (latlng) => {
     const response = await fetch(
-      `http://127.0.0.1:8000/api/v1/analysis/amenities/?lat=${latlng[1]}&lon=${latlng[0]}&buffer_distance=100`
+      `http://127.0.0.1:8000/api/v1/analysis/amenities/?lat=${latlng[1]}&lon=${latlng[0]}&buffer_distance=300`
     );
     const data = await response.json();
     return data;

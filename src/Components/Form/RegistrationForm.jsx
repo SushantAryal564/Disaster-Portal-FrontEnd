@@ -50,7 +50,7 @@ const SignupForm = (props) => {
   }
   return (
     <Fragment>
-      <div className="h-96 self-center">
+      {/* <div className="h-96 self-center">
         <form onSubmit={formik.handleSubmit}>
           <div className="flex flex-row items-center justify-center lg:justify-start">
             <p className="text-lg mb-0 mr-4 font-bold">SIGN UP</p>
@@ -148,7 +148,7 @@ const SignupForm = (props) => {
             </p>
           </div>
         </form>
-      </div>
+      </div> */}
     </Fragment>
   );
 };

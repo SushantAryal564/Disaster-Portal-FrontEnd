@@ -10,16 +10,25 @@ var flood = L.icon({
   shadowSize: [41, 41],
 });
 
+//return DIV ICON CASE FOR DIFFERENT DISASTER
+export const getIcon = (disastertype) => {
+if (disastertype=='Fire'){
+  return new L.DivIcon({
+    className:'marker-fire'
+  })}
+  if (disastertype=='Flood'){
+    return new L.DivIcon({
+      className:'marker-flood'
+    })}
+  return new L.DivIcon({
+    className:'marker-fire'
+  })
+
+};
+
 function Markers({ disaster: event }) {
-  const getIcon = (disastertype) => {
-    return L.icon({
-      iconUrl: `http://127.0.0.1:8000/images/${disastertype}.svg`,
-      iconSize: [25, 41],
-      iconAnchor: [12, 41],
-      popupAnchor: [1, -34],
-      shadowSize: [41, 41],
-    });
-  };
+  console.log(event.disastertype,'type--------..',event)
+ 
 
   return (
     <Marker

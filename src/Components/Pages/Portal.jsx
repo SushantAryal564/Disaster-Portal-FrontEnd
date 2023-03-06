@@ -20,6 +20,7 @@ import DataArchieve from "../../Sidebar/dataArchive";
 import Situation from "../../Sidebar/situation";
 import Feedback from "@mui/icons-material/Feedback";
 import MarkerClusterGroup from "react-leaflet-cluster";
+import L from 'leaflet';
 import { DamageAndLossLegend } from "../Legends/Legend";
 import {
   DASHBOARD,
@@ -113,7 +114,7 @@ export const Portal = () => {
   const realtimedatawater = useSelector((state) => state.live.water);
   const realtimepollution = useSelector((state) => state.live.pollution);
   const dataIncident = useSelector((state) => state.disasterIncident.data);
-  const position = [27.67571580617923, 85.3183283194577];
+  const position = [27.65707,85.31330];
   let disasterinDashboard = [
     ...new Set(datadisaster.map((data) => data?.type?.title)),
   ];
@@ -157,6 +158,16 @@ export const Portal = () => {
       fillOpacity: 0.7,
     };
   };
+  
+  console.log('mere ko dhekle re',jsonWard)
+  const createClusterCustomIcon = function (cluster) {
+    return L.divIcon({
+      html: `<span>${cluster.getChildCount()}</span>`,
+      className: 'marker-cluster-custom',
+      iconSize: L.point(35, 35, true),
+    });
+  };
+  
   return (
     <Layout>
       {reportActivated ? (
@@ -183,11 +194,11 @@ export const Portal = () => {
             onClick={changeSlidebarState}
           />
         </div>
-        <MapContainer
+        <MapContainer  className="markercluster-map mt-1 z-10"
           center={position}
-          zoom={14}
+          zoom={13}
           scrollWheelZoom={scrollWheelZoom}
-          className="mt-1 z-10"
+          
         >
           <LayersControl position="topright">
             <LayersControl.BaseLayer name="OSM Streets">
@@ -216,11 +227,45 @@ export const Portal = () => {
               ""
             )}
           </LayersControl>
+
           <ResetViewControl title="Reset view" position="topright" />
+          {jsonWard ? (
+            <GeoJSON
+              data={jsonWard}
+              style={{
+                fillColor: "white",
+                weight: 1,
+                opacity: .8,
+                color: "blue",
+                dashArray: "4",
+                fillOpacity: 0.1,
+                // lineJoin:'mitter',
+                // smoothFactor:1,
+                // label: "ward" ,
+                // labelFont: "12px Arial",
+                // labelPosition: "top",
+                // labelAlign: "center",
+              }}
+          
+              onEachFeature={(feature, layer) => {
+                layer.bindTooltip("W"+feature.properties.ward, {
+                  permanent: true,
+                  direction: "left",
+                  className: "ward-label"
+                }).openTooltip();
+              }}
+            />
+          ) : (
+            ""
+          )}
+
           {component === DAMAGELOSS && (
             <GeoJSON data={jsonWard} style={styleFeature} />
           )}
-          <MarkerClusterGroup>
+          <MarkerClusterGroup  
+          showCoverageOnHover={false}
+          spiderfyDistanceMultiplier={2}
+          iconCreateFunction={createClusterCustomIcon} >
             {component === DASHBOARD
               ? datadisaster.map((event) => {
                   return <Markers disaster={event} key={event.id} />;
