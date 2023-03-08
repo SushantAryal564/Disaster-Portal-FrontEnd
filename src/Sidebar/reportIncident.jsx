@@ -5,31 +5,28 @@ import CloseIcon from "@mui/icons-material/Close";
 import Select, { StylesConfig } from "react-select";
 import L from "leaflet";
 import { useMap } from "react-leaflet";
+import { GeoJSON } from "react-leaflet";
 import { MapContainer, TileLayer, Marker, Popup } from "react-leaflet";
 function ReportAnAncident({ setReportActivated }) {
   const [position, setPosition] = useState([
     27.66445354418368, 85.31856628971687,
   ]);
-  const [calculatedWard,setcalculatedWard]=useState()
-  const getWard=async()=>{
+  const [calculatedWard, setcalculatedWard] = useState();
+  const getWard = async () => {
     const data = await fetch(
-      `http://127.0.0.1:8000/api/v1/analysis/getward/?lat=${position[0]}&lng=${position[1]}`
+      `http://127.0.0.1:8000/api/v1/spatial/getward/?lat=${position[0]}&lng=${position[1]}`
     );
 
     let ward = await data.json();
     setcalculatedWard(ward);
+  };
 
- }
- console.log(calculatedWard?.ward,'is current ward')
-  
-  useEffect(()=>{
-    getWard()
-  }
-  ,[position])
+  useEffect(() => {
+    getWard();
+  }, [position]);
 
-  console.log(position);
   const [disaster, setDisaster] = useState([]);
-  const [Region, SetRegion] = useState([]);
+  const [Region, SetRegion] = useState();
   const disasterTypeGET = async () => {
     const data = await fetch(
       "http://127.0.0.1:8000/api/v1/disaster/disasterType/"
@@ -43,17 +40,11 @@ function ReportAnAncident({ setReportActivated }) {
     SetRegion(region.features);
   };
   useEffect(() => {
-    disasterTypeGET();
     RegionNameGET();
+    disasterTypeGET();
   }, []);
   const disasterTypeOptions = disaster.map((disaster) => {
     return { value: disaster.title, label: disaster.title };
-  });
-  const regionNameOptions = Region.map((region) => {
-    return {
-      value: "Lalitpur" + " " + region.properties.ward,
-      label: "Lalitpur" + " " + region.properties.ward,
-    };
   });
   function updatePosition(event) {
     setPosition([event.target.getLatLng().lat, event.target.getLatLng().lng]);
@@ -82,6 +73,7 @@ function ReportAnAncident({ setReportActivated }) {
       region: "",
       latitude: "",
       longitude: "",
+      ward: "",
     },
     validationSchema: Yup.object({
       incidentOn: Yup.date()
@@ -192,6 +184,8 @@ function ReportAnAncident({ setReportActivated }) {
                 onChange={(value) =>
                   formik.setFieldValue("hazard", value.value)
                 }
+                id="hazard"
+                name="hazard"
                 value={formik.values.disasterTypeOptions}
                 options={disasterTypeOptions}
               />
@@ -250,6 +244,7 @@ function ReportAnAncident({ setReportActivated }) {
               <input
                 type="file"
                 name="image"
+                id="image"
                 onChange={(event) => {
                   formik.setFieldValue("image", event.currentTarget.files[0]);
                 }}
@@ -273,15 +268,13 @@ function ReportAnAncident({ setReportActivated }) {
                 WARD
               </label>
               <input
-                className="h-9 border rounded border-stone-300 w-40 hover:border-red-500 hover:text-black	 "
-                // onChange={(value) =>
-                //   formik.setFieldValue("region", value.value)
-                // }
+                id="ward"
+                name="ward"
+                className="h-9 border rounded border-stone-300 w-40 hover:border-red-500 hover:text-black px-2	 "
                 styles={colourStyles}
-                value={calculatedWard?.ward ?calculatedWard?.ward:'Error'}
-                // options={regionNameOptions}
-              />
-              {calculatedWard?.message? (
+                value={calculatedWard?.ward ? calculatedWard?.ward : "Error"}
+              ></input>
+              {calculatedWard?.message ? (
                 <div className="text-red-600 text-xs">
                   {calculatedWard?.message}
                 </div>
@@ -298,7 +291,7 @@ function ReportAnAncident({ setReportActivated }) {
                 id="longitude"
                 name="longitude"
                 type="number"
-                className="h-9 border rounded border-stone-300 w-40 hover:border-red-500 hover:text-black		"
+                className="h-9 border rounded border-stone-300 w-40 hover:border-red-500 hover:text-black px-2		"
                 onChange={formik.handleChange}
                 onBlur={formik.handleBlur}
                 value={(formik.values.longitude = position[1].toFixed(5))}
@@ -321,7 +314,7 @@ function ReportAnAncident({ setReportActivated }) {
                   id="latitude"
                   name="latitude"
                   type="number"
-                  className="h-9 border rounded border-stone-300	w-40 hover:border-red-500 hover:text-black	"
+                  className="h-9 border rounded border-stone-300	w-40 hover:border-red-500 hover:text-black px-2"
                   onChange={formik.handleChange}
                   onBlur={formik.handleBlur}
                   value={(formik.values.latitude = position[0].toFixed(5))}
@@ -343,6 +336,17 @@ function ReportAnAncident({ setReportActivated }) {
               zoomControl={false}
             >
               <TileLayer url="https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}" />
+              {Region ? (
+                <GeoJSON
+                  data={Region}
+                  style={{
+                    weight: 2,
+                    opacity: 0.8,
+                    color: "red",
+                    fillOpacity: 0,
+                  }}
+                ></GeoJSON>
+              ) : null}
               <Marker
                 draggable={true}
                 eventHandlers={{ dragend: updatePosition }}
@@ -353,6 +357,7 @@ function ReportAnAncident({ setReportActivated }) {
                   <b>Is this the place?</b>
                 </Popup>
               </Marker>
+
               <CustomZoomControl />
             </MapContainer>
           </div>
