@@ -51,7 +51,7 @@ function ReportAnAncident({ setReportActivated }) {
   }
   const ReportSendToBackend = async (values) => {
     const response = await fetch(
-      "http://127.0.0.1:8000/api/v1/response/activity/",
+      "http://127.0.0.1:8000/api/v1/disaster/reportanincident/",
       {
         method: "POST",
         headers: {
@@ -65,7 +65,7 @@ function ReportAnAncident({ setReportActivated }) {
   };
   const formik = useFormik({
     initialValues: {
-      description: "",
+      title: "",
       hazard: "",
       incidentOn: "",
       streetAddress: "",
@@ -73,7 +73,6 @@ function ReportAnAncident({ setReportActivated }) {
       region: "",
       latitude: "",
       longitude: "",
-      ward: "",
     },
     validationSchema: Yup.object({
       incidentOn: Yup.date()
@@ -86,14 +85,31 @@ function ReportAnAncident({ setReportActivated }) {
       longitude: Yup.number().required("Required"),
     }),
     onSubmit: (values) => {
-      console.log(values);
-      alert(JSON.stringify(values, null, 2));
+      const disasterobject = disaster.find(
+        (disaster) => disaster.title === values.hazard
+      );
+      const hazardid = disasterobject.id;
+      const wardobject = Region.find(
+        (ward) => ward.properties.ward === values.region
+      );
+      const wardid = wardobject.id;
+      const disasterData = {
+        description: values.title,
+        lat: values.latitude,
+        long: values.longitude,
+        hazard: hazardid,
+        Ward: wardid,
+        startTime: values.incidentOn + ":00Z",
+        name: values.hazard + " in " + values.streetAddress,
+      };
+      console.log(disasterData);
+      ReportSendToBackend(disasterData);
     },
   });
   let formIsValid = true;
   if (
-    formik.errors.description ||
-    formik.touched.description ||
+    formik.errors.title ||
+    formik.touched.title ||
     formik.errors.hazard ||
     formik.touched.hazard ||
     formik.errors.incidentOn ||
@@ -153,21 +169,19 @@ function ReportAnAncident({ setReportActivated }) {
             <div class="relative h-11 w-full min-w-[200px]">
               <input
                 className="peer h-full w-full border-b border-blue-gray-200 bg-transparent pt-4 pb-1.5 font-sans text-sm font-normal text-blue-gray-700 outline outline-0 transition-all placeholder-shown:border-blue-gray-200 focus:border-red-500 focus:outline-0 disabled:border-0 disabled:bg-blue-gray-50"
-                id="description"
-                name="description"
+                id="title"
+                name="title"
                 type="text"
                 onChange={formik.handleChange}
                 onBlur={formik.handleBlur}
-                value={formik.values.description}
+                value={formik.values.title}
               />
               <label class="after:content[' '] pointer-events-none absolute left-0 -top-2.5 flex h-full w-full select-none text-xs font-normal leading-tight text-blue-gray-500 transition-all after:absolute after:-bottom-2.5 after:block after:w-full after:scale-x-0 after:border-b-2 after:border-red-500 after:transition-transform after:duration-300 peer-placeholder-shown:leading-tight peer-placeholder-shown:text-blue-gray-500 peer-focus:text-xs peer-focus:leading-tight peer-focus:text-red-500 peer-focus:after:scale-x-100 peer-focus:after:border-red-500 peer-disabled:text-transparent peer-disabled:peer-placeholder-shown:text-blue-gray-500 font-bold">
-                DESCRIPTION
+                Description
               </label>
             </div>
-            {formik.errors.description && formik.touched.description ? (
-              <div className="text-red-600 text-xs">
-                {formik.errors.description}
-              </div>
+            {formik.errors.title && formik.touched.title ? (
+              <div className="text-red-600 text-xs">{formik.errors.title}</div>
             ) : null}
           </div>
           <div className="pt-3 flex gap-10 ">
@@ -181,9 +195,9 @@ function ReportAnAncident({ setReportActivated }) {
               <Select
                 className="input hover:text-black"
                 styles={colourStyles}
-                onChange={(value) =>
-                  formik.setFieldValue("hazard", value.value)
-                }
+                onChange={(value) => {
+                  return formik.setFieldValue("hazard", value.value);
+                }}
                 id="hazard"
                 name="hazard"
                 value={formik.values.disasterTypeOptions}
@@ -268,11 +282,15 @@ function ReportAnAncident({ setReportActivated }) {
                 WARD
               </label>
               <input
-                id="ward"
-                name="ward"
+                id="region"
+                name="region"
                 className="h-9 border rounded border-stone-300 w-40 hover:border-red-500 hover:text-black px-2	 "
                 styles={colourStyles}
-                value={calculatedWard?.ward ? calculatedWard?.ward : "Error"}
+                value={
+                  (formik.values.region = calculatedWard?.ward
+                    ? calculatedWard.ward
+                    : "Error")
+                }
               ></input>
               {calculatedWard?.message ? (
                 <div className="text-red-600 text-xs">
