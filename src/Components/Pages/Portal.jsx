@@ -20,7 +20,7 @@ import DataArchieve from "../../Sidebar/dataArchive";
 import Situation from "../../Sidebar/situation";
 import Feedback from "@mui/icons-material/Feedback";
 import MarkerClusterGroup from "react-leaflet-cluster";
-import L from 'leaflet';
+import L from "leaflet";
 import { DamageAndLossLegend } from "../Legends/Legend";
 import {
   DASHBOARD,
@@ -145,7 +145,7 @@ export const Portal = () => {
   const realtimedatawater = useSelector((state) => state.live.water);
   const realtimepollution = useSelector((state) => state.live.pollution);
   const dataIncident = useSelector((state) => state.disasterIncident.data);
-  const position = [27.65707,85.31330];
+  const position = [27.65707, 85.3133];
   let disasterinDashboard = [
     ...new Set(datadisaster.map((data) => data?.type?.title)),
   ];
@@ -189,16 +189,16 @@ export const Portal = () => {
       fillOpacity: 0.7,
     };
   };
-  
-  console.log('mere ko dhekle re',jsonWard)
+
+  console.log("mere ko dhekle re", jsonWard);
   const createClusterCustomIcon = function (cluster) {
     return L.divIcon({
       html: `<span>${cluster.getChildCount()}</span>`,
-      className: 'marker-cluster-custom',
+      className: "marker-cluster-custom",
       iconSize: L.point(35, 35, true),
     });
   };
-  
+
   return (
     <Layout>
       {reportActivated ? (
@@ -225,7 +225,8 @@ export const Portal = () => {
             onClick={changeSlidebarState}
           />
         </div>
-        <MapContainer  className="markercluster-map mt-1 z-10"
+        <MapContainer
+          className="markercluster-map mt-1 z-10"
           center={position}
           zoom={13}
           scrollWheelZoom={scrollWheelZoom}
@@ -273,6 +274,7 @@ export const Portal = () => {
             {jsonWard ? (
               <GeoJSONLayer
                 data={jsonWard}
+                checked
                 name="Lalitpur Metropolitian Ward"
               />
             ) : (
@@ -287,7 +289,7 @@ export const Portal = () => {
               style={{
                 fillColor: "white",
                 weight: 1,
-                opacity: .8,
+                opacity: 0.8,
                 color: "blue",
                 dashArray: "4",
                 fillOpacity: 0.1,
@@ -298,13 +300,14 @@ export const Portal = () => {
                 // labelPosition: "top",
                 // labelAlign: "center",
               }}
-          
               onEachFeature={(feature, layer) => {
-                layer.bindTooltip("W"+feature.properties.ward, {
-                  permanent: true,
-                  direction: "left",
-                  className: "ward-label"
-                }).openTooltip();
+                layer
+                  .bindTooltip("W" + feature.properties.ward, {
+                    permanent: true,
+                    direction: "left",
+                    className: "ward-label",
+                  })
+                  .openTooltip();
               }}
             />
           ) : (
@@ -314,10 +317,11 @@ export const Portal = () => {
           {component === DAMAGELOSS && (
             <GeoJSON data={jsonWard} style={styleFeature} />
           )}
-          <MarkerClusterGroup  
-          showCoverageOnHover={false}
-          spiderfyDistanceMultiplier={2}
-          iconCreateFunction={createClusterCustomIcon} >
+          <MarkerClusterGroup
+            showCoverageOnHover={false}
+            spiderfyDistanceMultiplier={2}
+            iconCreateFunction={createClusterCustomIcon}
+          >
             {component === DASHBOARD
               ? datadisaster.map((event) => {
                   return <Markers disaster={event} key={event.id} />;

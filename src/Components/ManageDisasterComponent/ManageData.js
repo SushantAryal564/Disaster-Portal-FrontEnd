@@ -2,7 +2,7 @@ import * as Yup from "yup";
 import { useFormik } from "formik";
 import { useSelector } from "react-redux";
 import { useEffect, useState } from "react";
-function ManageData({ polygonCoords , changeMarkerDataState}) {
+function ManageData({ polygonCoords, changeMarkerDataState }) {
   const buildingdata = useSelector((state) => {
     return state.buildings.selectedBuilding;
   });
@@ -30,24 +30,22 @@ function ManageData({ polygonCoords , changeMarkerDataState}) {
       type,
       email,
     } = buildingdata;
-    
   }
-  console.log("MANAGE DATA--->selected building",buildingdata)
-  const [savedValue,setsavedValue]=useState(null)
-  var initialValues={
+  console.log("MANAGE DATA--->selected building", buildingdata);
+  const [savedValue, setsavedValue] = useState(null);
+  var initialValues = {
     osm_id: "",
     phoneNumber1: "",
-    phoneNumber2:  "",
-    housemetricnumber:  "",
-    buildingtype:  "",
+    phoneNumber2: "",
+    housemetricnumber: "",
+    buildingtype: "",
     people: "",
-    email:  "",
-  }
+    email: "",
+  };
   useEffect(() => {
-    changeMarkerDataState([]);
-    console.log('builidng daata changed')
+    console.log("builidng daata changed");
     // if(buildingdata){
-   setsavedValue({
+    setsavedValue({
       osm_id: osm_id || "",
       phoneNumber1: phoneNumber1 || "",
       phoneNumber2: phoneNumber2 || "",
@@ -56,9 +54,9 @@ function ManageData({ polygonCoords , changeMarkerDataState}) {
       buildingtype: type || "",
     });
   }, [buildingdata]);
-console.log('managed data rendere','Saved Valued-',savedValue)
+  console.log("managed data rendere", "Saved Valued-", savedValue);
   const formik = useFormik({
-    initialValues: savedValue||initialValues,
+    initialValues: savedValue || initialValues,
     enableReinitialize: true,
     validationSchema: Yup.object({
       name: Yup.string(),
@@ -81,7 +79,6 @@ console.log('managed data rendere','Saved Valued-',savedValue)
   });
 
   let formIsValid = true;
- 
 
   if (
     (formik.errors.name || formik.touched.name) &&

@@ -8,7 +8,7 @@ export const buildingAsyncGETThunk = createAsyncThunk(
     );
     const data = await response.json();
     console.log(data);
-    console.log("************************,building data",data);
+    console.log("************************");
     return data;
   }
 );
@@ -16,6 +16,7 @@ export const buildingAsyncGETThunk = createAsyncThunk(
 const initialState = {
   allbuilding: null,
   selectedBuilding: null,
+  isSelected: false,
   status: "idle",
   error: null,
 };
@@ -45,5 +46,5 @@ export const buildingSlice = createSlice({
       });
   },
 });
-export const { addbuilding ,removebuilding} = buildingSlice.actions;
+export const { addbuilding, removebuilding } = buildingSlice.actions;
 export default buildingSlice.reducer;
