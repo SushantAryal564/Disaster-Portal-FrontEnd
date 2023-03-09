@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, Fragment } from "react";
 import { GeoJSON } from "react-leaflet";
 import Layout from "../Layout/Layout";
 import {
@@ -177,7 +177,7 @@ export const Portal = () => {
   };
 
   return (
-    <Layout>
+    <Fragment>
       {reportActivated ? (
         <div className="absolute  w-[100%] h-[100%] z-[25] backdrop-brightness-[0.6] "></div>
       ) : null}
@@ -203,7 +203,7 @@ export const Portal = () => {
           />
         </div>
         <MapContainer
-          className="markercluster-map mt-1 z-10"
+          className="markercluster-map z-10"
           center={position}
           zoom={13}
           scrollWheelZoom={scrollWheelZoom}
@@ -326,7 +326,7 @@ export const Portal = () => {
           ""
         )}
       </div>
-    </Layout>
+    </Fragment>
   );
 };
 export default Portal;

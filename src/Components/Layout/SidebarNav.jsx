@@ -4,26 +4,38 @@ import HelpIcon from "@mui/icons-material/Help";
 import AccessTimeFilledIcon from "@mui/icons-material/AccessTimeFilled";
 import ReportIcon from "@mui/icons-material/Report";
 import InfoIcon from "@mui/icons-material/Info";
+import LoginIcon from "@mui/icons-material/Login";
 import ButtonDisaster from "../UI/ButtonDisaster";
+import LogoutIcon from "@mui/icons-material/Logout";
 import ArticleIcon from "@mui/icons-material/Article";
 import AssignmentIcon from "@mui/icons-material/Assignment";
 import FeedbackIcon from "@mui/icons-material/Feedback";
 import AccessTimeIcon from "@mui/icons-material/AccessTime";
+import SettingsApplicationsIcon from "@mui/icons-material/SettingsApplications";
 import { useDispatch } from "react-redux";
+import { getToken } from "../../services/localStorageService";
 import { setComponent } from "../../store/Slices/hope";
+import { Link } from "react-router-dom";
 import {
   DASHBOARD,
   INCIDENT,
   DAMAGELOSS,
   RISKINFO,
   REALTIME,
-  REPORT,
   DATA,
   SITUATION,
   FEEDBACK,
 } from "./../../store/constant";
+import { removeToken } from "../../services/localStorageService";
+import { unSetUserToken } from "../../store/Slices/authSlice";
+import { useEffect } from "react";
 export const SideBar = ({ changeReportState }) => {
+  const { access_token } = getToken();
   const dispatch = useDispatch();
+  const logoutHandler = () => {
+    removeToken();
+    dispatch(unSetUserToken(null));
+  };
   const handletoggleDashboard = (event) => {
     dispatch(setComponent(DASHBOARD));
   };
@@ -48,6 +60,7 @@ export const SideBar = ({ changeReportState }) => {
   const handletoggleDataFeedback = (event) => {
     dispatch(setComponent(FEEDBACK));
   };
+  useEffect(() => {}, [access_token]);
   const buttonInfo = [
     {
       name: DASHBOARD,
@@ -91,7 +104,7 @@ export const SideBar = ({ changeReportState }) => {
     },
   ];
   return (
-    <div className="w-20 border border-dashed shadow-md  flex flex-col  justify-start">
+    <div className="w-20 h-5/6 border border-dashed shadow-md  flex flex-col  justify-start">
       {buttonInfo.map((button) => (
         <ButtonDisaster
           name={button.name}
@@ -99,8 +112,14 @@ export const SideBar = ({ changeReportState }) => {
           handler={button.handler}
         />
       ))}
+      <button className=" bg-gray-50 border w-full text-center text-xs self-center pt-2 pb-2 font-semibold  text-slate-600 cursor-pointer hover:text-[#e35163]">
+        <div className="text-center pb-2">
+          <SettingsApplicationsIcon sx={{ fontSize: 33 }} />
+        </div>
+        MANAGE DISASTER
+      </button>
       <button
-        className=" bg-gray-50 border w-full text-center text-xs self-center pt-2 pb-2 font-semibold  text-slate-600 cursor-pointer hover:text-[#e35163]"
+        className=" bg-gray-50 border w-full text-center text-xs self-center pt-3 pb-3 font-semibold  text-slate-600 cursor-pointer hover:text-[#e35163]"
         onClick={changeReportState}
       >
         <div className="text-center pb-2">
@@ -108,6 +127,28 @@ export const SideBar = ({ changeReportState }) => {
         </div>
         Report
       </button>
+      {access_token ? (
+        <Link
+          className=" bg-gray-50 border w-full text-center text-xs self-center pt-2 pb-2 font-semibold  text-slate-600 cursor-pointer hover:text-[#e35163] no-underline"
+          onClick={logoutHandler}
+          to="/login"
+        >
+          <div className="text-center pb-2">
+            <LogoutIcon sx={{ fontSize: 33 }} />
+          </div>
+          LOGOUT
+        </Link>
+      ) : (
+        <Link
+          className=" bg-gray-50 border w-full text-center text-xs self-center pt-2 pb-2 font-semibold  text-slate-600 cursor-pointer hover:text-[#e35163] no-underline"
+          to="/login"
+        >
+          <div className="text-center pb-2">
+            <LoginIcon sx={{ fontSize: 33 }} />
+          </div>
+          LOGIN
+        </Link>
+      )}
     </div>
   );
 };
