@@ -45,7 +45,7 @@ export const disasterSlice = createSlice({
       })
       .addCase(disasterAsyncGETThunk.fulfilled, (state, action) => {
         state.status = "succeeded";
-        state.data = state.data.concat(action.payload);
+        state.data = action.payload;
       })
       .addCase(disasterAsyncGETThunk.rejected, (state, action) => {
         state.status = "failed";
