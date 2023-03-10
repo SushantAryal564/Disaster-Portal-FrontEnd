@@ -7,7 +7,7 @@ import L from "leaflet";
 import { useMap } from "react-leaflet";
 import { GeoJSON } from "react-leaflet";
 import { MapContainer, TileLayer, Marker, Popup } from "react-leaflet";
-function ReportAnAncident({ setReportActivated }) {
+function ReportAnAncident({ setReportActivated, reportActivated }) {
   const [position, setPosition] = useState([
     27.66445354418368, 85.31856628971687,
   ]);
@@ -60,8 +60,8 @@ function ReportAnAncident({ setReportActivated }) {
         body: JSON.stringify(values),
       }
     );
-    const responseData = await response.json();
-    return responseData;
+    // const responseData = await response.json();
+    // return responseData;
   };
   const formik = useFormik({
     initialValues: {
@@ -85,20 +85,20 @@ function ReportAnAncident({ setReportActivated }) {
       longitude: Yup.number().required("Required"),
     }),
     onSubmit: (values) => {
-      console.log("title error", formik.errors.title);
-      console.log("title touched", formik.touched.title);
-      console.log("hazard error", formik.errors.hazard);
-      console.log("hazard touched", formik.hazard.title);
-      console.log("incidenton error", formik.errors.incidentOn);
-      console.log("incident touched", formik.errors.incidentOn);
-      console.log("streetAddress error", formik.errors.streetAddress);
-      console.log("streetAddress touched", formik.touched.streetAddress);
-      console.log("region error", formik.errors.region);
-      console.log("region touched", formik.touched.region);
-      console.log("latitude error", formik.errors.latitude);
-      console.log("latitude touched", formik.touched.latitude);
-      console.log("longitude error", formik.errors.longitude);
-      console.log("longitude touched", formik.touched.longitude);
+      // console.log("title error", formik.errors.title);
+      // console.log("title touched", formik.touched.title);
+      // console.log("hazard error", formik.errors.hazard);
+      // console.log("hazard touched", formik.hazard.title);
+      // console.log("incidenton error", formik.errors.incidentOn);
+      // console.log("incident touched", formik.errors.incidentOn);
+      // console.log("streetAddress error", formik.errors.streetAddress);
+      // console.log("streetAddress touched", formik.touched.streetAddress);
+      // console.log("region error", formik.errors.region);
+      // console.log("region touched", formik.touched.region);
+      // console.log("latitude error", formik.errors.latitude);
+      // console.log("latitude touched", formik.touched.latitude);
+      // console.log("longitude error", formik.errors.longitude);
+      // console.log("longitude touched", formik.touched.longitude);
       const disasterobject = disaster.find(
         (disaster) => disaster.title === values.hazard
       );
@@ -116,8 +116,10 @@ function ReportAnAncident({ setReportActivated }) {
         startTime: values.incidentOn + ":00Z",
         name: values.hazard + " in " + values.streetAddress,
       };
-      console.log(disasterData);
       ReportSendToBackend(disasterData);
+      setReportActivated(false);
+      console.log("*************");
+      console.log(reportActivated);
     },
   });
   let formIsValid = true;

@@ -18,7 +18,7 @@ const ButtonDisaster = ({ name, Icon, handler }) => {
   };
   return (
     <button
-      className=" bg-gray-50 border w-full text-center text-xs self-center pt-2 pb-2 font-semibold  text-slate-600 cursor-pointer hover:text-[#e35163]"
+      className=" bg-gray-50 border w-full text-center text-xs self-center pt-1 pb-1 font-semibold  text-slate-600 cursor-pointer hover:text-[#e35163]"
       onClick={changeSlidebarState}
     >
       <div className="text-center pb-2">

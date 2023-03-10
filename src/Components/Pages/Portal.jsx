@@ -1,7 +1,13 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, Fragment } from "react";
 import { GeoJSON } from "react-leaflet";
 import Layout from "../Layout/Layout";
-import { LayersControl, MapContainer, Marker, TileLayer,WMSTileLayer } from "react-leaflet";
+import {
+  LayersControl,
+  MapContainer,
+  Marker,
+  TileLayer,
+  WMSTileLayer,
+} from "react-leaflet";
 import { GeoJSONLayer } from "../Map Layer/GeoJSONLayer";
 import { SideBar } from "../Layout/SidebarNav";
 import ResetViewControl from "@20tab/react-leaflet-resetview";
@@ -34,37 +40,9 @@ import {
   FEEDBACK,
 } from "./../../store/constant";
 
-
 import { DashboardLegend, RealTimeLegend } from "../Legends/Legend";
 import { Wms } from "./Wms";
-//
-// TESTING
 
-// const props = {
-//   token: "public",
-//   version: "1.3",
-//   format: "image/png",
-//   transparent: true,
-//   tiles: true,
-//   uppercase: true,
-//   layers: "background,named_cyclones,named_cyclones_tracks,foreground",
-//   foo: [123, 5566]
-// };
-// //
-const params = {
-  service: 'WMS',
-  version: '1.1.0',
-  request: 'GetMap',
-  layers: 'new:lalitpurWard',
-  bbox: '85.28225102736309,27.604625839910625,85.35470477580483,27.693294771336657',
-  width: '627',
-  height: '768',
-  srs: 'EPSG:4326',
-  styles: 'ward',
-  // format: 'image/png',
-
-};
-//
 export const Portal = () => {
   const [reportActivated, setReportActivated] = useState(false);
   const dispatch = useDispatch();
@@ -96,7 +74,7 @@ export const Portal = () => {
   const changeComponent = (compName) => {
     switch (compName) {
       case DASHBOARD:
-        return <Dashboard />;
+        return <Dashboard reportActivated={reportActivated} />;
       case INCIDENT:
         return <Incident />;
       case DAMAGELOSS:
@@ -190,7 +168,6 @@ export const Portal = () => {
     };
   };
 
-  console.log("mere ko dhekle re", jsonWard);
   const createClusterCustomIcon = function (cluster) {
     return L.divIcon({
       html: `<span>${cluster.getChildCount()}</span>`,
@@ -200,7 +177,7 @@ export const Portal = () => {
   };
 
   return (
-    <Layout>
+    <Fragment>
       {reportActivated ? (
         <div className="absolute  w-[100%] h-[100%] z-[25] backdrop-brightness-[0.6] "></div>
       ) : null}
@@ -226,20 +203,12 @@ export const Portal = () => {
           />
         </div>
         <MapContainer
-          className="markercluster-map mt-1 z-10"
+          className="markercluster-map z-10"
           center={position}
           zoom={13}
           scrollWheelZoom={scrollWheelZoom}
           maxZoom={20}
-          
         >
-        
-        {/* <WMSTileLayer url="https://apps.ecmwf.int/wms/?" {...props}>
-          {undefined}
-        </WMSTileLayer > */}
-        {/* <WMSTileLayer url="http://localhost:8080/geoserver/new/wms?service=WMS&version=1.1.0&request=GetMap&layers=new%3AlalitpurWard&bbox=85.28225102736309%2C27.604625839910625%2C85.35470477580483%2C27.693294771336657&width=627&height=768&srs=EPSG%3A4326&styles=&format=application/openlayers
-        " >{undefined}</WMSTileLayer> */}
-
           <LayersControl position="topright">
             <LayersControl.BaseLayer name="OSM Streets">
               <TileLayer url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png" />
@@ -247,21 +216,15 @@ export const Portal = () => {
             <LayersControl.BaseLayer name="World Imagery">
               <TileLayer url="https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}" />
             </LayersControl.BaseLayer>
-            <LayersControl.BaseLayer  checked name="Grey Imagery">
+            <LayersControl.BaseLayer checked name="Grey Imagery">
               <TileLayer url="https://tiles.stadiamaps.com/tiles/alidade_smooth/{z}/{x}/{y}{r}.png" />
             </LayersControl.BaseLayer>
 
-            <LayersControl.BaseLayer  name="WMS">
-            {/* <TileLayer url="https://tiles.stadiamaps.com/tiles/alidade_smooth/{z}/{x}/{y}{r}.png" /> */}
-             
-            
+            <LayersControl.BaseLayer name="WMS">
+              {/* <TileLayer url="https://tiles.stadiamaps.com/tiles/alidade_smooth/{z}/{x}/{y}{r}.png" /> */}
             </LayersControl.BaseLayer>
 
-            {component == RISKINFO
-              ? <Wms/>
-              : ""}
-               
-
+            {component == RISKINFO ? <Wms /> : ""}
 
             {jsonLalitpurMetro ? (
               <GeoJSONLayer
@@ -352,19 +315,18 @@ export const Portal = () => {
           {component === DAMAGELOSS && (
             <DamageAndLossLegend changeDamagestate={setdamageindex} />
           )}
-         
-            
-        
-     
         </MapContainer>
         <SideBar changeReportState={changeReportState} />
         {reportActivated ? (
-          <ReportAnAncident setReportActivated={setReportActivated} />
+          <ReportAnAncident
+            setReportActivated={setReportActivated}
+            reportActivated={reportActivated}
+          />
         ) : (
           ""
         )}
       </div>
-    </Layout>
+    </Fragment>
   );
 };
 export default Portal;

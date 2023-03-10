@@ -1,6 +1,6 @@
 export const DASHBOARD = "DASHBOARD";
 export const INCIDENT = "INCIDENT";
-export const DAMAGELOSS = "DAMAGE&LOSS";
+export const DAMAGELOSS = "DAMAGE";
 export const RISKINFO = "RISKINFO";
 export const REALTIME = "REALTIME";
 export const REPORT = "REPORT";
