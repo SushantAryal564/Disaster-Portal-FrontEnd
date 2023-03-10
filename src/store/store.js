@@ -14,6 +14,7 @@ import manageDisasterReducer from "./Slices/manageDisasterSlice";
 import latlngreducer from "./Slices/latlng";
 import featureReducer from "./Slices/featureSlice";
 import buildingReducer from "./Slices/buildingSlice";
+import riskinfoReducer from "./Slices/riskinfoSlice";
 const store = configureStore({
   reducer: {
     disaster: disasterReducer,
@@ -31,6 +32,7 @@ const store = configureStore({
     latlng: latlngreducer,
     feature: featureReducer,
     buildings: buildingReducer,
+    riskinfo:riskinfoReducer,
   },
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware().concat(userAuthApi.middleware),
