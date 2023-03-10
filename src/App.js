@@ -22,10 +22,9 @@ function App() {
   }, [WardId]);
   return (
     <Routes>
-      <Route path="/" element={<Home />} />
+      <Route path="/" element={<Portal />} />
       <Route path="/login" element={<LoginSignUp />} />
       <Route path="/managedisaster" element={<ManageDisaster />} />
-      <Route path="/portal" element={<Portal />} />
     </Routes>
   );
 }

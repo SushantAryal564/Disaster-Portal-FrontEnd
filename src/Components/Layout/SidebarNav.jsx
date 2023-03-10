@@ -104,7 +104,7 @@ export const SideBar = ({ changeReportState }) => {
     },
   ];
   return (
-    <div className="w-20 h-5/6 border border-dashed shadow-md  flex flex-col  justify-start">
+    <div className="w-16 h-5/6 border border-dashed shadow-md  flex flex-col  justify-start">
       {buttonInfo.map((button) => (
         <ButtonDisaster
           name={button.name}
@@ -112,41 +112,44 @@ export const SideBar = ({ changeReportState }) => {
           handler={button.handler}
         />
       ))}
-      <button className=" bg-gray-50 border w-full text-center text-xs self-center pt-2 pb-2 font-semibold  text-slate-600 cursor-pointer hover:text-[#e35163]">
+      <Link
+        className=" bg-[#ffffff] border w-full text-center text-[0.7rem] self-center pt-2 pb-2 font-semibold  text-slate-600 cursor-pointer hover:text-[#e35163] no-underline"
+        to={access_token ? "/managedisaster" : "/login"}
+      >
         <div className="text-center pb-2">
-          <SettingsApplicationsIcon sx={{ fontSize: 33 }} />
+          <SettingsApplicationsIcon sx={{ fontSize: 25 }} />
         </div>
-        MANAGE DISASTER
-      </button>
+        Manage Disaster
+      </Link>
       <button
-        className=" bg-gray-50 border w-full text-center text-xs self-center pt-3 pb-3 font-semibold  text-slate-600 cursor-pointer hover:text-[#e35163]"
+        className=" bg-[#ffffff]  border w-full text-center text-xs self-center pt-3 pb-3 font-semibold  text-slate-600 cursor-pointer hover:text-[#e35163]"
         onClick={changeReportState}
       >
         <div className="text-center pb-2">
-          <ReportIcon sx={{ fontSize: 33 }} />
+          <ReportIcon sx={{ fontSize: 25 }} />
         </div>
         Report
       </button>
       {access_token ? (
         <Link
-          className=" bg-gray-50 border w-full text-center text-xs self-center pt-2 pb-2 font-semibold  text-slate-600 cursor-pointer hover:text-[#e35163] no-underline"
+          className=" bg-[#ffffff]  border w-full text-center text-xs self-center pt-2 pb-2 font-semibold  text-slate-600 cursor-pointer hover:text-[#e35163] no-underline"
           onClick={logoutHandler}
           to="/login"
         >
           <div className="text-center pb-2">
-            <LogoutIcon sx={{ fontSize: 33 }} />
+            <LogoutIcon sx={{ fontSize: 25 }} />
           </div>
-          LOGOUT
+          Logout
         </Link>
       ) : (
         <Link
-          className=" bg-gray-50 border w-full text-center text-xs self-center pt-2 pb-2 font-semibold  text-slate-600 cursor-pointer hover:text-[#e35163] no-underline"
+          className=" bg-[#ffffff] w-full text-center text-xs self-center pt-2 pb-2 font-semibold  text-slate-600 cursor-pointer hover:text-[#e35163] no-underline"
           to="/login"
         >
           <div className="text-center pb-2">
-            <LoginIcon sx={{ fontSize: 33 }} />
+            <LoginIcon sx={{ fontSize: 25 }} />
           </div>
-          LOGIN
+          Login
         </Link>
       )}
     </div>
