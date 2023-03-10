@@ -41,7 +41,7 @@ import {
 } from "./../../store/constant";
 
 import { DashboardLegend, RealTimeLegend } from "../Legends/Legend";
-import { Wms } from "./Wms";
+import { Wms } from "../../RiskInfo/Wms";
 
 export const Portal = () => {
   const [reportActivated, setReportActivated] = useState(false);
@@ -203,7 +203,7 @@ export const Portal = () => {
           />
         </div>
         <MapContainer
-          className="markercluster-map z-10"
+          className="markercluster-map z-10 mr-[4rem]"
           center={position}
           zoom={13}
           scrollWheelZoom={scrollWheelZoom}

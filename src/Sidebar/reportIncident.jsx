@@ -356,7 +356,7 @@ function ReportAnAncident({ setReportActivated, reportActivated }) {
           </div>
           <div style={{ height: "275px" }} className="mt-3">
             <MapContainer
-              style={{ height: "100%", minHeight: "100%" }}
+              style={{ height: "100%", minHeight: "100%", width: "100%" }}
               center={[27.66445354418368, 85.31856628971687]}
               zoom={13}
               scrollWheelZoom={true}

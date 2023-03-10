@@ -108,7 +108,7 @@ export const SideBar = ({ changeReportState }) => {
     },
   ];
   return (
-    <div className="w-24 h-screen border border-dashed shadow-md  flex flex-col  justify-start scrollbar scrollbar-thumb-gray-300 scrollbar-track-gray-100 scrollbar-w-0 scrollbar-rounded-rounded-md">
+    <div className="w-16 absolute right-0 z-50 h-screen border border-dashed shadow-md  flex flex-col  justify-start scrollbar scrollbar-thumb-gray-300 scrollbar-track-gray-100 scrollbar-w-0 scrollbar-rounded-rounded-md">
       {buttonInfo.map((button) => (
         <ButtonDisaster
           name={button.name}
@@ -137,7 +137,7 @@ export const SideBar = ({ changeReportState }) => {
       </button>
       {access_token ? (
         <Link
-          className=" bg-[#ffffff]   w-full text-center text-xs self-center pt-2 pb-2 font-semibold  text-slate-600 cursor-pointer hover:text-[#e35163] no-underline"
+          className=" bg-[#ffffff]  w-full text-center text-xs self-center pt-2 pb-2 font-semibold  text-slate-600 cursor-pointer hover:text-[#e35163] no-underline"
           onClick={logoutHandler}
           to="/login"
         >
