@@ -1,7 +1,10 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 
+
 const initialState = {
-  currentpanel:'population'
+  currentpanel:'population',
+  crticalInfraBuindingToggle:true,
+  amenitiesToggle:false
 };
 export const riskinfoSlice = createSlice({
   name: "riskinfo",
@@ -9,9 +12,16 @@ export const riskinfoSlice = createSlice({
   reducers: {
     setpanel: (state, action) => {
         state.currentpanel=action.payload
+
+      },
+    setbuldingToggle: (state, action) => {
+        state.crticalInfraBuindingToggle=!state.crticalInfraBuindingToggle
+      },
+      setamenitiesToggle: (state, action) => {
+        state.amenitiesToggle=!state.amenitiesToggle
       },
   }, 
 });
 
-export const { setpanel } = riskinfoSlice.actions;
+export const { setpanel,setbuldingToggle,setamenitiesToggle} = riskinfoSlice.actions;
 export default riskinfoSlice.reducer;

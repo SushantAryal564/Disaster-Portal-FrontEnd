@@ -37,6 +37,9 @@ import {
 
 import { DashboardLegend, RealTimeLegend } from "../Legends/Legend";
 import { Wms } from "./Wms";
+import { WmsCriti } from "./WmsCriticalInfras";
+import { WmsAmenities } from "./Amenities";
+
 //
 // TESTING
 
@@ -92,6 +95,13 @@ export const Portal = () => {
   const changeReportState = () => {
     setReportActivated(!reportActivated);
   };
+//risk info selector
+  const selectedPanel=useSelector(state=>state.riskinfo.currentpanel)
+  const criticalInfraBuildingToggle=useSelector(state=>state.riskinfo.crticalInfraBuindingToggle)
+  const amenitiesToggle=useSelector(state=>state.riskinfo.amenitiesToggle)
+//
+
+
   console.log(reportActivated);
   const changeComponent = (compName) => {
     switch (compName) {
@@ -248,7 +258,8 @@ export const Portal = () => {
               <TileLayer url="https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}" />
             </LayersControl.BaseLayer>
             <LayersControl.BaseLayer  checked name="Grey Imagery">
-              <TileLayer url="https://tiles.stadiamaps.com/tiles/alidade_smooth/{z}/{x}/{y}{r}.png" />
+             {component!==RISKINFO?<TileLayer url="https://tiles.stadiamaps.com/tiles/alidade_smooth/{z}/{x}/{y}{r}.png" />: <TileLayer url='https://tiles.stadiamaps.com/tiles/alidade_smooth_dark/{z}/{x}/{y}{r}.png'/>} 
+              
             </LayersControl.BaseLayer>
 
             <LayersControl.BaseLayer  name="WMS">
@@ -257,10 +268,10 @@ export const Portal = () => {
             
             </LayersControl.BaseLayer>
 
-            {component == RISKINFO
-              ? <Wms/>
-              : ""}
+           
+               {component==RISKINFO && selectedPanel=='criticalinfrastructure' && criticalInfraBuildingToggle?<WmsCriti/>:''}
                
+               {component==RISKINFO && selectedPanel=='criticalinfrastructure' && amenitiesToggle?<WmsAmenities/>:''}
 
 
             {jsonLalitpurMetro ? (
@@ -283,6 +294,7 @@ export const Portal = () => {
           </LayersControl>
 
           <ResetViewControl title="Reset view" position="topright" />
+         
           {jsonWard ? (
             <GeoJSON
               data={jsonWard}
@@ -290,7 +302,7 @@ export const Portal = () => {
                 fillColor: "white",
                 weight: 1,
                 opacity: 0.8,
-                color: "blue",
+                color: 'blue',
                 dashArray: "4",
                 fillOpacity: 0.1,
                 // lineJoin:'mitter',
@@ -313,7 +325,32 @@ export const Portal = () => {
           ) : (
             ""
           )}
-
+           {component==RISKINFO && jsonWard?<GeoJSON
+              data={jsonWard}
+              style={{
+                fillColor: "white",
+                weight: 1,
+                opacity: 0.8,
+                color: 'white',
+                dashArray: "4",
+                fillOpacity: 0.1,
+                // lineJoin:'mitter',
+                // smoothFactor:1,
+                // label: "ward" ,
+                // labelFont: "12px Arial",
+                // labelPosition: "top",
+                // labelAlign: "center",
+              }}
+              onEachFeature={(feature, layer) => {
+                layer
+                  .bindTooltip("W" + feature.properties.ward, {
+                    permanent: true,
+                    direction: "left",
+                    className: "ward-label",
+                  })
+                  .openTooltip();
+              }}
+            />:''}
           {component === DAMAGELOSS && (
             <GeoJSON data={jsonWard} style={styleFeature} />
           )}
