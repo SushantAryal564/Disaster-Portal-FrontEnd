@@ -27,7 +27,7 @@ import Situation from "../../Sidebar/situation";
 import Feedback from "@mui/icons-material/Feedback";
 import MarkerClusterGroup from "react-leaflet-cluster";
 import L from "leaflet";
-import { DamageAndLossLegend } from "../Legends/Legend";
+import { DamageAndLossLegend, RiskInfoLegend } from "../Legends/Legend";
 import {
   DASHBOARD,
   INCIDENT,
@@ -309,6 +309,7 @@ export const Portal = () => {
               })
             : ""}
           {component === REALTIME && <RealTimeLegend />}
+          {component === RISKINFO && <RiskInfoLegend />}
           {component === DASHBOARD && (
             <DashboardLegend legendItem={disasterinDashboard} />
           )}
