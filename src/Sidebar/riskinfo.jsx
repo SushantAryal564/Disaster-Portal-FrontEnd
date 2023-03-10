@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { Option } from "../RiskInfo/Option";
-import { Population } from "../RiskInfo/Population";
+import { Deomography, Population } from "../RiskInfo/Demography";
 import { Hazard } from "../RiskInfo/Hazard";
 import { Imagery } from "../RiskInfo/Imagery";
 import { CriticalInfrastructure } from "../RiskInfo/CriticalInfrastructure";
@@ -33,7 +33,7 @@ function RiskInfo() {
         <ChevronRightIcon onClick={IncreaseClickHandler} />
       </div>
       <div>
-        {pageNumber === 1 ? <Population /> : ""}
+        {pageNumber === 1 ? <Deomography /> : ""}
         {pageNumber === 2 ? <Imagery /> : ""}
         {pageNumber === 3 ? <Hazard /> : ""}
         {pageNumber === 4 ? <CriticalInfrastructure /> : ""}

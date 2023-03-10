@@ -39,7 +39,7 @@ import {
   SITUATION,
   FEEDBACK,
 } from "./../../store/constant";
-
+import { ScaleControl } from "react-leaflet";
 import { DashboardLegend, RealTimeLegend } from "../Legends/Legend";
 import { Wms } from "../../RiskInfo/Wms";
 
@@ -184,7 +184,7 @@ export const Portal = () => {
       <div className="flex">
         <div
           className={`${
-            slidebarState ? "w-2/5" : "w-0"
+            slidebarState ? "w-2/5 " : "w-0"
           } duration-300 h-[90vh] relative`}
         >
           {ComponentToRender}
@@ -276,7 +276,7 @@ export const Portal = () => {
           ) : (
             ""
           )}
-
+          <ScaleControl metric={true} position="bottomleft" />
           {component === DAMAGELOSS && (
             <GeoJSON data={jsonWard} style={styleFeature} />
           )}
