@@ -12,28 +12,28 @@ var flood = L.icon({
 
 //return DIV ICON CASE FOR DIFFERENT DISASTER
 export const getIcon = (disastertype) => {
-if (disastertype=='Fire'){
-  return new L.DivIcon({
-    className:'marker-fire'
-  })}
-  if (disastertype=='Flood'){
+  if (disastertype == "Fire") {
     return new L.DivIcon({
-      className:'marker-flood'
-    })}
+      className: "marker-fire",
+    });
+  }
+  if (disastertype == "Flood") {
+    return new L.DivIcon({
+      className: "marker-flood",
+    });
+  }
   return new L.DivIcon({
-    className:'marker-fire'
-  })
-
+    className: "marker-fire",
+  });
 };
 
 function Markers({ disaster: event }) {
-  console.log(event.disastertype,'type--------..',event)
- 
+  console.log(event.disastertype, "type--------..", event);
 
   return (
     <Marker
       key={`disaster-${event.id}`}
-      position={[event.long || 23, event.lat || 83]}
+      position={[event.lat || 83, event.long || 23]}
       icon={getIcon(event?.type?.title)}
     >
       <Popup>

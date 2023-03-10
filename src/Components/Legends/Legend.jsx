@@ -27,10 +27,7 @@ export const RealTimeLegend = () => {
           zIndex: 9999,
         }}
       >
-        <h3 className="bg-white text-black p-1 mb-2">
-          {" "}
-          Real Time Module Legend
-        </h3>
+        <h3 className="bg-white text-black p-1 mb-2"> Legend</h3>
         <p className="m-2">
           Selected Stations:{" "}
           <span className="blinking-marker-selected-legend ">
@@ -250,6 +247,55 @@ export const ManageDisasterLegend = ({currenttab,disasterData}) => {
         })}
       </>:''}
 
+      </div>
+    </div>
+  );
+};
+export const ManageDataLegend = ({ changeDamagestate }) => {
+  return (
+    <div>
+      <div
+        className="legend"
+        style={{
+          position: "absolute",
+          bottom: "20px",
+          right: "20px",
+          zIndex: 9999,
+        }}
+      >
+        <h6 className="bg-white text-black p-[0.5px] mb-2"> Legend</h6>
+        <div className="m-2 items-center justify-between pb-1 border-b-2">
+          <div>
+            {" "}
+            <span
+              style={{
+                background: "red",
+                color: "red",
+                width: "4px",
+                margin: "5px",
+                display: "inline",
+              }}
+            >
+              sdf
+            </span>
+            buildings
+          </div>
+          <div>
+            {" "}
+            <span
+              style={{
+                background: "blue",
+                color: "blue",
+                width: "4px",
+                margin: "5px",
+                display: "inline",
+              }}
+            >
+              sdf
+            </span>
+            Selected Building
+          </div>
+        </div>
       </div>
     </div>
   );

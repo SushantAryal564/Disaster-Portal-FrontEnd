@@ -5,31 +5,28 @@ import CloseIcon from "@mui/icons-material/Close";
 import Select, { StylesConfig } from "react-select";
 import L from "leaflet";
 import { useMap } from "react-leaflet";
+import { GeoJSON } from "react-leaflet";
 import { MapContainer, TileLayer, Marker, Popup } from "react-leaflet";
 function ReportAnAncident({ setReportActivated }) {
   const [position, setPosition] = useState([
     27.66445354418368, 85.31856628971687,
   ]);
-  const [calculatedWard,setcalculatedWard]=useState()
-  const getWard=async()=>{
+  const [calculatedWard, setcalculatedWard] = useState();
+  const getWard = async () => {
     const data = await fetch(
-      `http://127.0.0.1:8000/api/v1/analysis/getward/?lat=${position[0]}&lng=${position[1]}`
+      `http://127.0.0.1:8000/api/v1/spatial/getward/?lat=${position[0]}&lng=${position[1]}`
     );
 
     let ward = await data.json();
     setcalculatedWard(ward);
+  };
 
- }
- console.log(calculatedWard?.ward,'is current ward')
-  
-  useEffect(()=>{
-    getWard()
-  }
-  ,[position])
+  useEffect(() => {
+    getWard();
+  }, [position]);
 
-  console.log(position);
   const [disaster, setDisaster] = useState([]);
-  const [Region, SetRegion] = useState([]);
+  const [Region, SetRegion] = useState();
   const disasterTypeGET = async () => {
     const data = await fetch(
       "http://127.0.0.1:8000/api/v1/disaster/disasterType/"
@@ -43,24 +40,32 @@ function ReportAnAncident({ setReportActivated }) {
     SetRegion(region.features);
   };
   useEffect(() => {
-    disasterTypeGET();
     RegionNameGET();
+    disasterTypeGET();
   }, []);
   const disasterTypeOptions = disaster.map((disaster) => {
     return { value: disaster.title, label: disaster.title };
   });
-  const regionNameOptions = Region.map((region) => {
-    return {
-      value: region.properties.palika + " " + region.properties.ward,
-      label: region.properties.palika + " " + region.properties.ward,
-    };
-  });
   function updatePosition(event) {
     setPosition([event.target.getLatLng().lat, event.target.getLatLng().lng]);
   }
+  const ReportSendToBackend = async (values) => {
+    const response = await fetch(
+      "http://127.0.0.1:8000/api/v1/disaster/reportanincident/",
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(values),
+      }
+    );
+    const responseData = await response.json();
+    return responseData;
+  };
   const formik = useFormik({
     initialValues: {
-      description: "",
+      title: "",
       hazard: "",
       incidentOn: "",
       streetAddress: "",
@@ -80,33 +85,57 @@ function ReportAnAncident({ setReportActivated }) {
       longitude: Yup.number().required("Required"),
     }),
     onSubmit: (values) => {
-      console.log("I am here");
-      alert(JSON.stringify(values, null, 2));
+      console.log("title error", formik.errors.title);
+      console.log("title touched", formik.touched.title);
+      console.log("hazard error", formik.errors.hazard);
+      console.log("hazard touched", formik.hazard.title);
+      console.log("incidenton error", formik.errors.incidentOn);
+      console.log("incident touched", formik.errors.incidentOn);
+      console.log("streetAddress error", formik.errors.streetAddress);
+      console.log("streetAddress touched", formik.touched.streetAddress);
+      console.log("region error", formik.errors.region);
+      console.log("region touched", formik.touched.region);
+      console.log("latitude error", formik.errors.latitude);
+      console.log("latitude touched", formik.touched.latitude);
+      console.log("longitude error", formik.errors.longitude);
+      console.log("longitude touched", formik.touched.longitude);
+      const disasterobject = disaster.find(
+        (disaster) => disaster.title === values.hazard
+      );
+      const hazardid = disasterobject.id;
+      const wardobject = Region.find(
+        (ward) => ward.properties.ward === values.region
+      );
+      const wardid = wardobject.id;
+      const disasterData = {
+        description: values.title,
+        lat: values.latitude,
+        long: values.longitude,
+        hazard: hazardid,
+        Ward: wardid,
+        startTime: values.incidentOn + ":00Z",
+        name: values.hazard + " in " + values.streetAddress,
+      };
+      console.log(disasterData);
+      ReportSendToBackend(disasterData);
     },
   });
   let formIsValid = true;
+
   if (
-    formik.errors.description ||
-    formik.touched.description ||
-    formik.errors.hazard ||
-    formik.touched.hazard ||
-    formik.errors.incidentOn ||
-    formik.touched.incidentOn ||
-    formik.errors.streetAddress ||
-    formik.touched.streetAddress ||
-    formik.errors.image ||
-    formik.touched.image ||
-    formik.errors.region ||
-    formik.touched.region ||
-    formik.errors.latitude ||
-    formik.touched.latitude ||
-    formik.errors.longitude ||
-    formik.touched.longitude
+    (formik.errors.title || formik.touched.title) &&
+    (formik.errors.hazard || formik.touched.hazard) &&
+    (formik.errors.incidentOn || formik.touched.incidentOn) &&
+    (formik.errors.streetAddress || formik.touched.streetAddress) &&
+    (formik.errors.region || formik.touched.region) &&
+    (formik.errors.latitude || formik.touched.latitude) &&
+    (formik.errors.longitude || formik.touched.longitude)
   ) {
     formIsValid = false;
   } else {
     formIsValid = true;
   }
+  console.log(formIsValid);
   const colourStyles = {
     control: (styles, state) => ({
       ...styles,
@@ -147,21 +176,19 @@ function ReportAnAncident({ setReportActivated }) {
             <div class="relative h-11 w-full min-w-[200px]">
               <input
                 className="peer h-full w-full border-b border-blue-gray-200 bg-transparent pt-4 pb-1.5 font-sans text-sm font-normal text-blue-gray-700 outline outline-0 transition-all placeholder-shown:border-blue-gray-200 focus:border-red-500 focus:outline-0 disabled:border-0 disabled:bg-blue-gray-50"
-                id="description"
-                name="description"
+                id="title"
+                name="title"
                 type="text"
                 onChange={formik.handleChange}
                 onBlur={formik.handleBlur}
-                value={formik.values.description}
+                value={formik.values.title}
               />
               <label class="after:content[' '] pointer-events-none absolute left-0 -top-2.5 flex h-full w-full select-none text-xs font-normal leading-tight text-blue-gray-500 transition-all after:absolute after:-bottom-2.5 after:block after:w-full after:scale-x-0 after:border-b-2 after:border-red-500 after:transition-transform after:duration-300 peer-placeholder-shown:leading-tight peer-placeholder-shown:text-blue-gray-500 peer-focus:text-xs peer-focus:leading-tight peer-focus:text-red-500 peer-focus:after:scale-x-100 peer-focus:after:border-red-500 peer-disabled:text-transparent peer-disabled:peer-placeholder-shown:text-blue-gray-500 font-bold">
-                DESCRIPTION
+                Description
               </label>
             </div>
-            {formik.errors.description && formik.touched.description ? (
-              <div className="text-red-600 text-xs">
-                {formik.errors.description}
-              </div>
+            {formik.errors.title && formik.touched.title ? (
+              <div className="text-red-600 text-xs">{formik.errors.title}</div>
             ) : null}
           </div>
           <div className="pt-3 flex gap-10 ">
@@ -175,9 +202,11 @@ function ReportAnAncident({ setReportActivated }) {
               <Select
                 className="input hover:text-black"
                 styles={colourStyles}
-                onChange={(value) =>
-                  formik.setFieldValue("hazard", value.value)
-                }
+                onChange={(value) => {
+                  return formik.setFieldValue("hazard", value.value);
+                }}
+                id="hazard"
+                name="hazard"
                 value={formik.values.disasterTypeOptions}
                 options={disasterTypeOptions}
               />
@@ -236,6 +265,7 @@ function ReportAnAncident({ setReportActivated }) {
               <input
                 type="file"
                 name="image"
+                id="image"
                 onChange={(event) => {
                   formik.setFieldValue("image", event.currentTarget.files[0]);
                 }}
@@ -259,15 +289,17 @@ function ReportAnAncident({ setReportActivated }) {
                 WARD
               </label>
               <input
-                className="h-9 border rounded border-stone-300 w-40 hover:border-red-500 hover:text-black	 "
-                // onChange={(value) =>
-                //   formik.setFieldValue("region", value.value)
-                // }
+                id="region"
+                name="region"
+                className="h-9 border rounded border-stone-300 w-40 hover:border-red-500 hover:text-black px-2	 "
                 styles={colourStyles}
-                value={calculatedWard?.ward ?calculatedWard?.ward:'Error'}
-                // options={regionNameOptions}
-              />
-              {calculatedWard?.message? (
+                value={
+                  (formik.values.region = calculatedWard?.ward
+                    ? calculatedWard.ward
+                    : "Error")
+                }
+              ></input>
+              {calculatedWard?.message ? (
                 <div className="text-red-600 text-xs">
                   {calculatedWard?.message}
                 </div>
@@ -284,7 +316,7 @@ function ReportAnAncident({ setReportActivated }) {
                 id="longitude"
                 name="longitude"
                 type="number"
-                className="h-9 border rounded border-stone-300 w-40 hover:border-red-500 hover:text-black		"
+                className="h-9 border rounded border-stone-300 w-40 hover:border-red-500 hover:text-black px-2		"
                 onChange={formik.handleChange}
                 onBlur={formik.handleBlur}
                 value={(formik.values.longitude = position[1].toFixed(5))}
@@ -307,7 +339,7 @@ function ReportAnAncident({ setReportActivated }) {
                   id="latitude"
                   name="latitude"
                   type="number"
-                  className="h-9 border rounded border-stone-300	w-40 hover:border-red-500 hover:text-black	"
+                  className="h-9 border rounded border-stone-300	w-40 hover:border-red-500 hover:text-black px-2"
                   onChange={formik.handleChange}
                   onBlur={formik.handleBlur}
                   value={(formik.values.latitude = position[0].toFixed(5))}
@@ -329,6 +361,17 @@ function ReportAnAncident({ setReportActivated }) {
               zoomControl={false}
             >
               <TileLayer url="https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}" />
+              {Region ? (
+                <GeoJSON
+                  data={Region}
+                  style={{
+                    weight: 2,
+                    opacity: 0.8,
+                    color: "red",
+                    fillOpacity: 0,
+                  }}
+                ></GeoJSON>
+              ) : null}
               <Marker
                 draggable={true}
                 eventHandlers={{ dragend: updatePosition }}
@@ -339,6 +382,7 @@ function ReportAnAncident({ setReportActivated }) {
                   <b>Is this the place?</b>
                 </Popup>
               </Marker>
+
               <CustomZoomControl />
             </MapContainer>
           </div>
