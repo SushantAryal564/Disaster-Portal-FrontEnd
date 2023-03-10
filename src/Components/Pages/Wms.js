@@ -51,6 +51,7 @@ export const Wms = () => {
             transparent: true,
             version: "1.1.0",
             styles: "wardsld",
+            noWrap: true,
           }}
         ></WMSTileLayer>
       </Pane>

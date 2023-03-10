@@ -15,6 +15,7 @@ import SettingsApplicationsIcon from "@mui/icons-material/SettingsApplications";
 import { useDispatch } from "react-redux";
 import { getToken } from "../../services/localStorageService";
 import { setComponent } from "../../store/Slices/hope";
+import { useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import {
   DASHBOARD,
@@ -30,6 +31,9 @@ import { removeToken } from "../../services/localStorageService";
 import { unSetUserToken } from "../../store/Slices/authSlice";
 import { useEffect } from "react";
 export const SideBar = ({ changeReportState }) => {
+  const sidebarSelected = useSelector((state) => {
+    return state.component;
+  });
   const { access_token } = getToken();
   const dispatch = useDispatch();
   const logoutHandler = () => {
@@ -104,16 +108,17 @@ export const SideBar = ({ changeReportState }) => {
     },
   ];
   return (
-    <div className="w-16 h-5/6 border border-dashed shadow-md  flex flex-col  justify-start">
+    <div className="w-24 h-screen border border-dashed shadow-md  flex flex-col  justify-start scrollbar scrollbar-thumb-gray-300 scrollbar-track-gray-100 scrollbar-w-0 scrollbar-rounded-rounded-md">
       {buttonInfo.map((button) => (
         <ButtonDisaster
           name={button.name}
           Icon={button.icon}
           handler={button.handler}
+          sidebarSelected={sidebarSelected}
         />
       ))}
       <Link
-        className=" bg-[#ffffff] border w-full text-center text-[0.7rem] self-center pt-2 pb-2 font-semibold  text-slate-600 cursor-pointer hover:text-[#e35163] no-underline"
+        className=" bg-[#ffffff]  w-full text-center text-[0.7rem] self-center pt-2 pb-2 font-semibold  text-slate-600 cursor-pointer hover:text-[#e35163] no-underline"
         to={access_token ? "/managedisaster" : "/login"}
       >
         <div className="text-center pb-2">
@@ -122,7 +127,7 @@ export const SideBar = ({ changeReportState }) => {
         Manage Disaster
       </Link>
       <button
-        className=" bg-[#ffffff]  border w-full text-center text-xs self-center pt-3 pb-3 font-semibold  text-slate-600 cursor-pointer hover:text-[#e35163]"
+        className=" bg-[#ffffff]   w-full text-center text-xs self-center pt-4 pb-4 font-semibold  text-slate-600 cursor-pointer hover:text-[#e35163]"
         onClick={changeReportState}
       >
         <div className="text-center pb-2">
@@ -132,7 +137,7 @@ export const SideBar = ({ changeReportState }) => {
       </button>
       {access_token ? (
         <Link
-          className=" bg-[#ffffff]  border w-full text-center text-xs self-center pt-2 pb-2 font-semibold  text-slate-600 cursor-pointer hover:text-[#e35163] no-underline"
+          className=" bg-[#ffffff]   w-full text-center text-xs self-center pt-2 pb-2 font-semibold  text-slate-600 cursor-pointer hover:text-[#e35163] no-underline"
           onClick={logoutHandler}
           to="/login"
         >
