@@ -21,7 +21,7 @@ export const Wms = (layer) => {
     format: 'image/png',
     transparent: true,
     version: '1.1.0',
-    styles:'buj'}}></WMSTileLayer>
+    styles:'bu'}}></WMSTileLayer>
     </Pane>
     </>
   )

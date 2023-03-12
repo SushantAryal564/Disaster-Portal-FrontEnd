@@ -21,7 +21,7 @@ import Situation from "../../Sidebar/situation";
 import Feedback from "@mui/icons-material/Feedback";
 import MarkerClusterGroup from "react-leaflet-cluster";
 import L from "leaflet";
-import { DamageAndLossLegend } from "../Legends/Legend";
+import { CriticalInfraLegend, DamageAndLossLegend } from "../Legends/Legend";
 import {
   DASHBOARD,
   INCIDENT,
@@ -38,8 +38,8 @@ import {
 import { DashboardLegend, RealTimeLegend } from "../Legends/Legend";
 import { Wms } from "./Wms";
 import { WmsCriti } from "./WmsCriticalInfras";
-import { WmsAmenities } from "./Amenities";
-
+import { WmsAmenities } from "./AmenitiesWms";
+import { useMapEvents } from 'react-leaflet/hooks'
 //
 // TESTING
 
@@ -100,9 +100,21 @@ export const Portal = () => {
   const criticalInfraBuildingToggle=useSelector(state=>state.riskinfo.crticalInfraBuindingToggle)
   const amenitiesToggle=useSelector(state=>state.riskinfo.amenitiesToggle)
 //
+//CLICKGETTER-TO GET LATLONG
+const [clickLocation, setClickLocation] = useState(null);
+     
+     console.log('hey this is it',clickLocation)
+    
+     const handleMapClick = (e) => {
+    setClickLocation(e.latlng);
+    console.log(`Latitude: ${e.latlng.lat}, Longitude: ${e.latlng.lng}`);
+  };
+  console.log(clickLocation,'current-----------------------------)))))))))))000')
 
 
-  console.log(reportActivated);
+//????????????????????????
+
+console.log(reportActivated);
   const changeComponent = (compName) => {
     switch (compName) {
       case DASHBOARD:
@@ -241,7 +253,7 @@ export const Portal = () => {
           zoom={13}
           scrollWheelZoom={scrollWheelZoom}
           maxZoom={20}
-          
+          onClick={handleMapClick}
         >
         
         {/* <WMSTileLayer url="https://apps.ecmwf.int/wms/?" {...props}>
@@ -269,7 +281,9 @@ export const Portal = () => {
             </LayersControl.BaseLayer>
 
            
-               {component==RISKINFO && selectedPanel=='criticalinfrastructure' && criticalInfraBuildingToggle?<WmsCriti/>:''}
+               {component==RISKINFO && selectedPanel=='criticalinfrastructure' && criticalInfraBuildingToggle?<WmsCriti  
+
+              />:''}
                
                {component==RISKINFO && selectedPanel=='criticalinfrastructure' && amenitiesToggle?<WmsAmenities/>:''}
 
@@ -295,45 +309,49 @@ export const Portal = () => {
 
           <ResetViewControl title="Reset view" position="topright" />
          
-          {jsonWard ? (
+
+
+
+          {jsonWard  && component!==RISKINFO? (
             <GeoJSON
-              data={jsonWard}
-              style={{
-                fillColor: "white",
-                weight: 1,
-                opacity: 0.8,
-                color: 'blue',
-                dashArray: "4",
-                fillOpacity: 0.1,
-                // lineJoin:'mitter',
-                // smoothFactor:1,
-                // label: "ward" ,
-                // labelFont: "12px Arial",
-                // labelPosition: "top",
-                // labelAlign: "center",
-              }}
-              onEachFeature={(feature, layer) => {
-                layer
-                  .bindTooltip("W" + feature.properties.ward, {
-                    permanent: true,
-                    direction: "left",
-                    className: "ward-label",
-                  })
-                  .openTooltip();
-              }}
-            />
+            data={jsonWard}
+            style={{
+              fillColor: `rgb(177, 177, 167)`,
+              weight: 1,
+              opacity: 0.8,
+              color: 'blue',
+              dashArray: "4",
+              fillOpacity: 0,
+              // lineJoin:'mitter',
+              // smoothFactor:1,
+              // label: "ward" ,
+              // labelFont: "12px Arial",
+              // labelPosition: "top",
+              // labelAlign: "center",
+            }}
+            onEachFeature={(feature, layer) => {
+              layer
+                .bindTooltip("W" + feature.properties.ward, {
+                  permanent: true,
+                  direction: "left",
+                  className: "ward-label",
+                })
+                .openTooltip();
+            }}
+          />
           ) : (
             ""
           )}
-           {component==RISKINFO && jsonWard?<GeoJSON
+
+           {component===RISKINFO && jsonWard?<GeoJSON
               data={jsonWard}
               style={{
                 fillColor: "white",
-                weight: 1,
-                opacity: 0.8,
+                weight: .5,
+                opacity: 1,
                 color: 'white',
-                dashArray: "4",
-                fillOpacity: 0.1,
+                dashArray: "1",
+                fillOpacity: 0,
                 // lineJoin:'mitter',
                 // smoothFactor:1,
                 // label: "ward" ,
@@ -341,16 +359,8 @@ export const Portal = () => {
                 // labelPosition: "top",
                 // labelAlign: "center",
               }}
-              onEachFeature={(feature, layer) => {
-                layer
-                  .bindTooltip("W" + feature.properties.ward, {
-                    permanent: true,
-                    direction: "left",
-                    className: "ward-label",
-                  })
-                  .openTooltip();
-              }}
-            />:''}
+              
+            />: ''}
           {component === DAMAGELOSS && (
             <GeoJSON data={jsonWard} style={styleFeature} />
           )}
@@ -389,7 +399,8 @@ export const Portal = () => {
           {component === DAMAGELOSS && (
             <DamageAndLossLegend changeDamagestate={setdamageindex} />
           )}
-         
+          
+          {component ===RISKINFO && selectedPanel=='criticalinfrastructure' ?<CriticalInfraLegend/>:''}
             
         
      

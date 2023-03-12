@@ -1,9 +1,10 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
 .leaflet-tooltip{
     background-color: rgba(255, 255, 255, 0) !important ;
-    color: rgb(46, 5, 255) !important;
+    color: rgb(82, 23, 177) !important;
     padding-left: 1px! important;
     padding-right: 1px! important;
     max-height: 15px !important ;
@@ -16,6 +17,25 @@
       -ms-user-select: none;
           user-select: none; */
           z-index: 1000;
+}
+.ward-label2 {
+  border: 0px;
+  background-color: #ffffff;
+  color: rgba(255, 254, 254, 0.993) !important;
+  padding: 0px ! important;
+  /* background-color: rgba(217, 113, 113, 0.9); */
+  /* border-radius: 50%; */
+   font-size: 7px;
+  /* width: 50px;
+  height: 50px; */
+  /* display: flex; */
+  /* justify-content: center; */
+  /* align-items: flex-start; */
+  max-height: 25px;
+  
+  pointer-events: none;
+  max-width: 25px;
+  /* max-height: 10px */
 }
 
 .ward-label {

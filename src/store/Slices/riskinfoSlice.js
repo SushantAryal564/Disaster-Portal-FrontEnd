@@ -3,8 +3,8 @@ import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 
 const initialState = {
   currentpanel:'population',
-  crticalInfraBuindingToggle:true,
-  amenitiesToggle:false
+  crticalInfraBuindingToggle:false,
+  amenitiesToggle:true
 };
 export const riskinfoSlice = createSlice({
   name: "riskinfo",

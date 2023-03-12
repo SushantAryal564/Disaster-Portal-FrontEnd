@@ -300,3 +300,33 @@ export const ManageDataLegend = ({ changeDamagestate }) => {
     </div>
   );
 };
+
+
+// http://localhost:8080/geoserver/wms?REQUEST=GetLegendGraphic&VERSION=1.0.0&FORMAT=image/png&WIDTH=20&HEIGHT=20&LAYER=new:amenities&style=amenities
+
+export const CriticalInfraLegend = ({  }) => {
+  console.log('Critical Infrastucture LENGDN')
+  const criticalInfraBuildingToggle=useSelector(state=>state.riskinfo.crticalInfraBuindingToggle)
+  const amenitiesToggle=useSelector(state=>state.riskinfo.amenitiesToggle)
+  return (
+    <div>
+      <div
+        className="legend"
+        style={{
+          position: "absolute",
+          bottom: "20px",
+          right: "20px",
+          zIndex: 9999,
+        }}
+      >
+        <h6 className="bg-white text-black p-[0.5px] mb-2"> Legend</h6>
+        <div className="m-2 items-center justify-between pb-1 border-b-2">
+          <div>{}
+            {amenitiesToggle?<img src='http://localhost:8080/geoserver/wms?REQUEST=GetLegendGraphic&VERSION=1.0.0&FORMAT=image/png&WIDTH=20&HEIGHT=20&LAYER=new:amenities&style=amenities'/>:''}
+            {criticalInfraBuildingToggle?<div className="flex"><img src='http://localhost:8080/geoserver/wms?REQUEST=GetLegendGraphic&VERSION=1.0.0&FORMAT=image/png&WIDTH=20&HEIGHT=20&LAYER=new:buildings&style=buildings'/></div>:''}
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+};
