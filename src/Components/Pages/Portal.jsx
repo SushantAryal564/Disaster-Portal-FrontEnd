@@ -42,6 +42,7 @@ import {
 import { ScaleControl } from "react-leaflet";
 import { DashboardLegend, RealTimeLegend } from "../Legends/Legend";
 import { Wms } from "../../RiskInfo/Wms";
+import MapBox from "../Map Layer/MapBox";
 
 export const Portal = () => {
   const [reportActivated, setReportActivated] = useState(false);
@@ -202,121 +203,129 @@ export const Portal = () => {
             onClick={changeSlidebarState}
           />
         </div>
-        <MapContainer
-          className="markercluster-map z-10 mr-[4rem]"
-          center={position}
-          zoom={13}
-          scrollWheelZoom={scrollWheelZoom}
-          maxZoom={20}
-        >
-          <LayersControl position="topright">
-            <LayersControl.BaseLayer name="OSM Streets">
-              <TileLayer url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png" />
-            </LayersControl.BaseLayer>
-            <LayersControl.BaseLayer name="World Imagery">
-              <TileLayer url="https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}" />
-            </LayersControl.BaseLayer>
-            <LayersControl.BaseLayer checked name="Grey Imagery">
-              <TileLayer url="https://tiles.stadiamaps.com/tiles/alidade_smooth/{z}/{x}/{y}{r}.png" />
-            </LayersControl.BaseLayer>
-
-            <LayersControl.BaseLayer name="WMS">
-              {/* <TileLayer url="https://tiles.stadiamaps.com/tiles/alidade_smooth/{z}/{x}/{y}{r}.png" /> */}
-            </LayersControl.BaseLayer>
-
-            {component == RISKINFO ? <Wms /> : ""}
-
-            {jsonLalitpurMetro ? (
-              <GeoJSONLayer
-                data={jsonLalitpurMetro}
-                name="Lalitpur Metropolitian City"
-              />
-            ) : (
-              ""
-            )}
-            {jsonWard ? (
-              <GeoJSONLayer
-                data={jsonWard}
-                checked
-                name="Lalitpur Metropolitian Ward"
-              />
-            ) : (
-              ""
-            )}
-          </LayersControl>
-
-          <ResetViewControl title="Reset view" position="topright" />
-          {jsonWard ? (
-            <GeoJSON
-              data={jsonWard}
-              style={{
-                fillColor: "white",
-                weight: 1,
-                opacity: 0.8,
-                color: "blue",
-                dashArray: "4",
-                fillOpacity: 0.1,
-                // lineJoin:'mitter',
-                // smoothFactor:1,
-                // label: "ward" ,
-                // labelFont: "12px Arial",
-                // labelPosition: "top",
-                // labelAlign: "center",
-              }}
-              onEachFeature={(feature, layer) => {
-                layer
-                  .bindTooltip("W" + feature.properties.ward, {
-                    permanent: true,
-                    direction: "left",
-                    className: "ward-label",
-                  })
-                  .openTooltip();
-              }}
-            />
-          ) : (
-            ""
-          )}
-          <ScaleControl metric={true} position="bottomleft" />
-          {component === DAMAGELOSS && (
-            <GeoJSON data={jsonWard} style={styleFeature} />
-          )}
-          <MarkerClusterGroup
-            showCoverageOnHover={false}
-            spiderfyDistanceMultiplier={2}
-            iconCreateFunction={createClusterCustomIcon}
+        {component === RISKINFO ? (
+          <MapBox />
+        ) : (
+          <MapContainer
+            className="markercluster-map z-10 mr-[4rem]"
+            center={position}
+            zoom={13}
+            scrollWheelZoom={scrollWheelZoom}
+            maxZoom={20}
           >
-            {component === DASHBOARD
-              ? datadisaster.map((event) => {
-                  return <Markers disaster={event} key={event.id} />;
+            <LayersControl position="topright">
+              <LayersControl.BaseLayer name="OSM Streets">
+                <TileLayer url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png" />
+              </LayersControl.BaseLayer>
+              <LayersControl.BaseLayer name="World Imagery">
+                <TileLayer url="https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}" />
+              </LayersControl.BaseLayer>
+              <LayersControl.BaseLayer checked name="Grey Imagery">
+                <TileLayer url="https://tiles.stadiamaps.com/tiles/alidade_smooth/{z}/{x}/{y}{r}.png" />
+              </LayersControl.BaseLayer>
+
+              <LayersControl.BaseLayer name="WMS">
+                {/* <TileLayer url="https://tiles.stadiamaps.com/tiles/alidade_smooth/{z}/{x}/{y}{r}.png" /> */}
+              </LayersControl.BaseLayer>
+
+              {component == RISKINFO ? <Wms /> : ""}
+
+              {jsonLalitpurMetro ? (
+                <GeoJSONLayer
+                  data={jsonLalitpurMetro}
+                  name="Lalitpur Metropolitian City"
+                />
+              ) : (
+                ""
+              )}
+              {jsonWard ? (
+                <GeoJSONLayer
+                  data={jsonWard}
+                  checked
+                  name="Lalitpur Metropolitian Ward"
+                />
+              ) : (
+                ""
+              )}
+            </LayersControl>
+
+            <ResetViewControl title="Reset view" position="topright" />
+            {jsonWard ? (
+              <GeoJSON
+                data={jsonWard}
+                style={{
+                  fillColor: "white",
+                  weight: 1,
+                  opacity: 0.8,
+                  color: "blue",
+                  dashArray: "4",
+                  fillOpacity: 0.1,
+                  // lineJoin:'mitter',
+                  // smoothFactor:1,
+                  // label: "ward" ,
+                  // labelFont: "12px Arial",
+                  // labelPosition: "top",
+                  // labelAlign: "center",
+                }}
+                onEachFeature={(feature, layer) => {
+                  layer
+                    .bindTooltip("W" + feature.properties.ward, {
+                      permanent: true,
+                      direction: "left",
+                      className: "ward-label",
+                    })
+                    .openTooltip();
+                }}
+              />
+            ) : (
+              ""
+            )}
+            <ScaleControl metric={true} position="bottomleft" />
+            {component === DAMAGELOSS && (
+              <GeoJSON data={jsonWard} style={styleFeature} />
+            )}
+            <MarkerClusterGroup
+              showCoverageOnHover={false}
+              spiderfyDistanceMultiplier={2}
+              iconCreateFunction={createClusterCustomIcon}
+            >
+              {component === DASHBOARD
+                ? datadisaster.map((event) => {
+                    return <Markers disaster={event} key={event.id} />;
+                  })
+                : ""}
+              {component === INCIDENT
+                ? dataIncident.map((event) => {
+                    return <Markers disaster={event} key={event.id} />;
+                  })
+                : ""}
+            </MarkerClusterGroup>
+            {component === REALTIME
+              ? realtimedatawater.map((event) => {
+                  console.log("realwater marker");
+                  return (
+                    <MarkersClone disaster={event.results} key={event.id} />
+                  );
                 })
               : ""}
-            {component === INCIDENT
-              ? dataIncident.map((event) => {
-                  return <Markers disaster={event} key={event.id} />;
+            {component === REALTIME
+              ? realtimepollution.map((event) => {
+                  console.log("realpoll marker");
+                  return (
+                    <MarkersClone disaster={event.results} key={event.id} />
+                  );
                 })
               : ""}
-          </MarkerClusterGroup>
-          {component === REALTIME
-            ? realtimedatawater.map((event) => {
-                console.log("realwater marker");
-                return <MarkersClone disaster={event.results} key={event.id} />;
-              })
-            : ""}
-          {component === REALTIME
-            ? realtimepollution.map((event) => {
-                console.log("realpoll marker");
-                return <MarkersClone disaster={event.results} key={event.id} />;
-              })
-            : ""}
-          {component === REALTIME && <RealTimeLegend />}
-          {component === RISKINFO && <RiskInfoLegend />}
-          {component === DASHBOARD && (
-            <DashboardLegend legendItem={disasterinDashboard} />
-          )}
-          {component === DAMAGELOSS && (
-            <DamageAndLossLegend changeDamagestate={setdamageindex} />
-          )}
-        </MapContainer>
+            {component === REALTIME && <RealTimeLegend />}
+            {component === RISKINFO && <RiskInfoLegend />}
+            {component === DASHBOARD && (
+              <DashboardLegend legendItem={disasterinDashboard} />
+            )}
+            {component === DAMAGELOSS && (
+              <DamageAndLossLegend changeDamagestate={setdamageindex} />
+            )}
+          </MapContainer>
+        )}
         <SideBar changeReportState={changeReportState} />
         {reportActivated ? (
           <ReportAnAncident
