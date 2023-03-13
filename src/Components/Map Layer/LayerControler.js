@@ -6,7 +6,6 @@ import { useSelector } from "react-redux";
 import { useMap } from "react-leaflet";
 import { GetColor } from "../UI/GetColor";
 function LayerControler({ disasterData, currenttab }) {
-  
   const leafletMap = useMap();
   const latlng = useSelector((state) => {
     return state.latlng;
@@ -32,11 +31,11 @@ function LayerControler({ disasterData, currenttab }) {
       ) : null
     );
   }, [analysisResultAmenities, setjson]);
-  
+
   useEffect(() => {
-    if (latlng) leafletMap.setView([latlng[1], latlng[0]], 17);
+    if (latlng) leafletMap.setView([latlng[0], latlng[1]], 17);
   });
-  
+
   const styleGEOJSON = (feature) => {
     let type = feature.properties.classes;
     let colorRGB = GetColor(type);
@@ -49,13 +48,12 @@ function LayerControler({ disasterData, currenttab }) {
     };
   };
 
-
   const getGeoJSON = (featureAnalysisResult) => {
     return featureAnalysisResult ? (
       <GeoJSON data={featureAnalysisResult} style={styleGEOJSON}></GeoJSON>
     ) : null;
   };
-  
+
   return (
     <Fragment>
       <LayersControl position="topright">
