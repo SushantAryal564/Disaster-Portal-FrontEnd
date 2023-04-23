@@ -21,7 +21,7 @@ function Dashboard({ reportActivated }) {
       {disasterData.map((data) => {
         console.log("Each daata in dashboard", data);
         return (
-          <div className="border-gray-200 border-b-2 p-1 hover:bg-gray-200 py-2">
+          <div className=" border-gray-200 border-b-2 p-1 hover:bg-gray-200 py-2  ">
             <div className="text-md font-medium flex flex-row ">
               <div className="text-red-500 text-sm flex flex-col">
                 <span className="px-3">
@@ -29,16 +29,17 @@ function Dashboard({ reportActivated }) {
                   <img
                     className="w-9 h-6 pt-1 mt-1"
                     src={`http://127.0.0.1:8000/${data?.type?.title}.svg`}
+                    alt={data}
                   />
                 </span>
                 <p className="text-xs text-black mx-6 my-1">
                   {data?.type?.title || "none"}
                 </p>
               </div>
-              <span className="font-normal ml-2 mt-1 pt-1 text-sm">
+              <span className="font-normal ml-2 mt-1 pt-1 text-sm w-52">
                 <div className="font-semibold text-xs"> {data.name}</div>
                 <div>
-                  <div className="text-xs  text-gray-500 flex justify-start ">
+                  <div className="text-xs text-gray-500 flex justify-start ">
                     <div className="flex items-center my-1">
                       <span>
                         <BiAlarm />

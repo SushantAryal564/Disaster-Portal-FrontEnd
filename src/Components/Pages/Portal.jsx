@@ -193,7 +193,7 @@ export const Portal = () => {
         <div
           className={`${
             slidebarState ? "w-2/5 " : "w-0"
-          } duration-300 h-[90vh] relative`}
+          } duration-300 h-[100vh] relative scrollbar scrollbar-thumb-gray-300 scrollbar-track-gray-100 scrollbar-w-1 scrollbar-rounded-rounded-md`}
         >
           {ComponentToRender}
           <NavigateNextIcon

@@ -10,9 +10,9 @@ function WardjsonLoader() {
   const wardId = localStorage.getItem("wardNumber");
   //DISCLAMIER--this end point takes wardnumber not ID altho variavble is wardID ,it is actually wardNUMBER,wardId = localStorage.getItem("wardNumber");
   const getWardJSONData = async () => {
-    console.log('***',`http://127.0.0.1:8000/api/v1/spatial/wards/${wardId}/`)
+    console.log("***", `http://127.0.0.1:8000/api/v1/spatial/wards/${wardId}/`);
     const data = await fetch(
-      `http://127.0.0.1:8000/api/v1/spatial/wards/${wardId}/`
+      `http://127.0.0.1:8000/api/v1/spatial/ward/${wardId}/`
     );
     const wardjson = await data.json();
     setWardJSON(wardjson);

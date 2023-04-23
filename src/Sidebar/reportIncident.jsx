@@ -85,26 +85,13 @@ function ReportAnAncident({ setReportActivated, reportActivated }) {
       longitude: Yup.number().required("Required"),
     }),
     onSubmit: (values) => {
-      // console.log("title error", formik.errors.title);
-      // console.log("title touched", formik.touched.title);
-      // console.log("hazard error", formik.errors.hazard);
-      // console.log("hazard touched", formik.hazard.title);
-      // console.log("incidenton error", formik.errors.incidentOn);
-      // console.log("incident touched", formik.errors.incidentOn);
-      // console.log("streetAddress error", formik.errors.streetAddress);
-      // console.log("streetAddress touched", formik.touched.streetAddress);
-      // console.log("region error", formik.errors.region);
-      // console.log("region touched", formik.touched.region);
-      // console.log("latitude error", formik.errors.latitude);
-      // console.log("latitude touched", formik.touched.latitude);
-      // console.log("longitude error", formik.errors.longitude);
-      // console.log("longitude touched", formik.touched.longitude);
+      console.log(values, "values");
       const disasterobject = disaster.find(
         (disaster) => disaster.title === values.hazard
       );
       const hazardid = disasterobject.id;
       const wardobject = Region.find(
-        (ward) => ward.properties.ward === values.region
+        (ward) => ward.properties.ward == values.region
       );
       const wardid = wardobject.id;
       const disasterData = {
@@ -118,20 +105,18 @@ function ReportAnAncident({ setReportActivated, reportActivated }) {
       };
       ReportSendToBackend(disasterData);
       setReportActivated(false);
-      console.log("*************");
-      console.log(reportActivated);
     },
   });
   let formIsValid = true;
 
   if (
-    (formik.errors.title || formik.touched.title) &&
-    (formik.errors.hazard || formik.touched.hazard) &&
-    (formik.errors.incidentOn || formik.touched.incidentOn) &&
-    (formik.errors.streetAddress || formik.touched.streetAddress) &&
-    (formik.errors.region || formik.touched.region) &&
-    (formik.errors.latitude || formik.touched.latitude) &&
-    (formik.errors.longitude || formik.touched.longitude)
+    formik.errors.title &&
+    formik.errors.hazard &&
+    formik.errors.incidentOn &&
+    formik.errors.streetAddress &&
+    formik.errors.region &&
+    formik.errors.latitude &&
+    formik.errors.longitude
   ) {
     formIsValid = false;
   } else {
