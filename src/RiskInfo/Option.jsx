@@ -20,7 +20,6 @@ export const Option = () => {
     }
     dispatch(setpanel(currentPanel - 1));
   };
-  console.log(currentPanel);
   return (
     <div className="absolute right-0 pr-3">
       <ChevronLeftIcon onClick={DecreaseClickHandler} />

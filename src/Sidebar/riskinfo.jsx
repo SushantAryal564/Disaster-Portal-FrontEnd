@@ -25,7 +25,6 @@ function RiskInfo() {
       changePageNumber(pageNumber - 1);
     }
   };
-  console.log(pageNumber);
   return (
     <Fragment>
       <div className="absolute right-2 top-3">

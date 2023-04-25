@@ -34,7 +34,6 @@ const ManageDisaster = () => {
   const dispatch = useDispatch();
   const [disasterData, setDisasterData] = useState([]);
   const [currenttab, setCurrentTab] = useState("activeIncident");
-  console.log("current tab", currenttab);
   const [ManageDisasterPanel, ChangeManageDisasterPanel] = useState(
     <ActiveManage changeMarkerDataState={setDisasterData} />
   );
@@ -65,7 +64,6 @@ const ManageDisaster = () => {
     });
 
     setPolygonCoords(polygonWkt);
-    console.log("Polygon:", polygonWkt);
   }
 
   function onEdited(e) {
@@ -73,7 +71,6 @@ const ManageDisaster = () => {
     layers.eachLayer((layer) => {
       const latlngs = layer.getLatLngs()[0];
       const coords = latlngs.map(({ lat, lng }) => [lng, lat]);
-      console.log("New polygon coordinates:", coords);
     });
     const featureGroup = featureGroupRef.current;
     const layerArray = featureGroup.getLayers();
@@ -86,7 +83,6 @@ const ManageDisaster = () => {
       coordinates: [coordsArray],
     });
     setPolygonCoords(multiPolygonWkt);
-    console.log("Polygon WKT:", multiPolygonWkt);
   }
   function onDelete() {
     const featureGroup = featureGroupRef.current;

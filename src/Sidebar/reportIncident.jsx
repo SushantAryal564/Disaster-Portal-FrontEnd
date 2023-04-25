@@ -85,7 +85,6 @@ function ReportAnAncident({ setReportActivated, reportActivated }) {
       longitude: Yup.number().required("Required"),
     }),
     onSubmit: (values) => {
-      console.log(values, "values");
       const disasterobject = disaster.find(
         (disaster) => disaster.title === values.hazard
       );
@@ -122,7 +121,6 @@ function ReportAnAncident({ setReportActivated, reportActivated }) {
   } else {
     formIsValid = true;
   }
-  console.log(formIsValid);
   const colourStyles = {
     control: (styles, state) => ({
       ...styles,

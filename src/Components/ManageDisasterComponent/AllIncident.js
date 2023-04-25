@@ -7,7 +7,6 @@ function AllIncident({ changeMarkerDataState }) {
   let today = now.toISOString().substr(0, 10);
   const [wardAllIncident, setWardAllIncident] = useState([]);
   const wardId = localStorage.getItem("wardNumber");
-  console.log(wardId);
   const WardIncident = async () => {
     let data = await fetch(
       `http://127.0.0.1:8000/api/v1/disaster/disasterEvent/?name=&Ward=${wardId}&type=&is_closed=&startTime__gte=&startTime__gt=&startTime__lt=`
@@ -16,7 +15,6 @@ function AllIncident({ changeMarkerDataState }) {
     changeMarkerDataState(wardIncident);
     setWardAllIncident(wardIncident);
   };
-  console.log(wardAllIncident, "I am here where are you");
   useEffect(() => {
     WardIncident();
   }, []);
@@ -25,7 +23,6 @@ function AllIncident({ changeMarkerDataState }) {
       {wardAllIncident ? (
         <>
           {wardAllIncident.map((data) => {
-            console.log("Each daata in dashboard", data);
             return (
               <div className="border-gray-200 border-b-2 p-1 hover:bg-gray-200 py-2">
                 <div className="text-md font-medium flex flex-row ">

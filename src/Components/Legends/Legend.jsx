@@ -132,7 +132,6 @@ export const ManageDisasterLegend = ({ currenttab, disasterData }) => {
   const legendItem = new Array(
     ...new Set(useSelector((state) => state.feature.allfeature))
   );
-  // console.log(legendItem);
   if (disasterData)
     var disleg =
       disasterData
@@ -252,7 +251,6 @@ export const ManageDisasterLegend = ({ currenttab, disasterData }) => {
         {disleg && disasterData && currenttab === "allincident" ? (
           <>
             {disleg.map((item) => {
-              console.log("JHKHKKHKKJKHkj");
               return (
                 <>
                   <div className="m-2 flex items-center justify-between pb-1 border-b-2">

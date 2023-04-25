@@ -10,7 +10,6 @@ function WardjsonLoader() {
   const wardId = localStorage.getItem("wardNumber");
   //DISCLAMIER--this end point takes wardnumber not ID altho variavble is wardID ,it is actually wardNUMBER,wardId = localStorage.getItem("wardNumber");
   const getWardJSONData = async () => {
-    console.log("***", `http://127.0.0.1:8000/api/v1/spatial/wards/${wardId}/`);
     const data = await fetch(
       `http://127.0.0.1:8000/api/v1/spatial/ward/${wardId}/`
     );
@@ -23,7 +22,6 @@ function WardjsonLoader() {
   // const wardShp = useSelector((state) => {
   //   return state.manageDisaster.data[0];
   // });
-  // console.log(
   //   wardShp.properties.centroid.coordinates[0],
   //   wardShp.properties.centroid.coordinates[1]
   // );

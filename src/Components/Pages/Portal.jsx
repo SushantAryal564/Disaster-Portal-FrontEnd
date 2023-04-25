@@ -56,6 +56,7 @@ export const Portal = () => {
   const dispatch = useDispatch();
   var [jsonLalitpurMetro, setJsonLalitpurMetro] = useState("");
   var [jsonWard, setJsonWard] = useState("");
+  console.log(jsonWard, "jsonWArd");
   const [currentdamageindex, setdamageindex] = useState("incident");
   const totalIncident = useSelector((state) => {
     return state.damageloss.totalIncident;
@@ -78,15 +79,14 @@ export const Portal = () => {
   const changeReportState = () => {
     setReportActivated(!reportActivated);
   };
-  console.log(reportActivated);
   const changeComponent = (compName) => {
     switch (compName) {
       case DASHBOARD:
         return <Dashboard reportActivated={reportActivated} />;
       case INCIDENT:
-        return <Incident />;
+        return <Incident reportActivated={reportActivated} />;
       case DAMAGELOSS:
-        return <DamageLoss />;
+        return <DamageLoss reportActivated={reportActivated} />;
       case RISKINFO:
         return <RiskInfo />;
       case REALTIME:
@@ -193,24 +193,25 @@ export const Portal = () => {
         <div
           className={`${
             slidebarState ? "w-2/5 " : "w-0"
-          } duration-300 h-[100vh] relative scrollbar scrollbar-thumb-gray-300 scrollbar-track-gray-100 scrollbar-w-1 scrollbar-rounded-rounded-md`}
+          } duration-300 h-[100vh] relative overflow-x-scroll scrollbar scrollbar-thumb-gray-300 scrollbar-track-gray-100 scrollbar-w-1 scrollbar-rounded-rounded-md`}
         >
           {ComponentToRender}
-          <NavigateNextIcon
-            style={{
-              maxWidth: "30px",
-              maxHeight: "50px",
-              minWidth: "30px",
-              minHeight: "50px",
-            }}
-            className={`
-              bg-white absolute cursor-pointer -right-[30px] top-1/2 w-7 border-2 z-20  ${
-                slidebarState ? "rotate-180 rounded-l-lg" : "rounded-r-lg"
-              }`}
-            onClick={changeSlidebarState}
-          />
         </div>
-
+        <NavigateNextIcon
+          style={{
+            maxWidth: "30px",
+            maxHeight: "50px",
+            minWidth: "30px",
+            minHeight: "50px",
+          }}
+          className={`
+          bg-white absolute cursor-pointer  top-1/2 w-7 border-2 z-20  ${
+            slidebarState
+              ? "rotate-180 rounded-l-lg left-[27.4%]"
+              : "rounded-r-lg left-[0%]"
+          }`}
+          onClick={changeSlidebarState}
+        />
         <MapContainer
           className="markercluster-map z-10 mr-[4rem]"
           center={position}
@@ -321,13 +322,11 @@ export const Portal = () => {
 
           {component === REALTIME
             ? realtimedatawater.map((event) => {
-                console.log("realwater marker");
                 return <MarkersClone disaster={event.results} key={event.id} />;
               })
             : ""}
           {component === REALTIME
             ? realtimepollution.map((event) => {
-                console.log("realpoll marker");
                 return <MarkersClone disaster={event.results} key={event.id} />;
               })
             : ""}

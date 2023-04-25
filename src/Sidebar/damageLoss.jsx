@@ -1,16 +1,25 @@
 import React, { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { DamageLossAsyncGETThunk } from "../store/Slices/damageLossSlice";
-function DamageLoss() {
+import { GetChartDashboardInfo } from "../store/Slices/chartSlice";
+import CustomBarChart from "../Components/Common/Chart/BarChart";
+
+function DamageLoss({ reportActivated }) {
   const dispatch = useDispatch();
   const [startDate, setStartDate] = useState(null);
   const [endDate, setEndDate] = useState(null);
-  console.log(startDate, endDate);
   const handleSubmit = (event) => {
     event.preventDefault();
     dispatch(DamageLossAsyncGETThunk(startDate, endDate));
   };
-  // let damagelossData = useSelector((state) => state.damageloss.data);
+  const state = useSelector((state) => state.chart.status);
+  useEffect(() => {
+    if (state == "idle") {
+      dispatch(GetChartDashboardInfo());
+    }
+  });
+  const chartData = useSelector((state) => state.chart.data);
+  console.log(chartData, "chartData");
   return (
     <div className="border-2 p-2 text-xs">
       <form onSubmit={handleSubmit}>
@@ -78,6 +87,9 @@ function DamageLoss() {
         >
           Infrastructure Damage
         </button>
+      </div>
+      <div className="w-full h-[500px]">
+        <CustomBarChart data={chartData} />
       </div>
     </div>
   );

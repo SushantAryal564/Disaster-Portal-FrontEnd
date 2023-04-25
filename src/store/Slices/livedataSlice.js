@@ -3,7 +3,6 @@ import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 export const LivePollutionDataAsyncGETThunk = createAsyncThunk(
   "pollutionget",
   async () => {
-    console.log("I am here");
     const response = await fetch(
       "https://bipaddev.yilab.org.np/api/v1/pollution-stations/?name=&created_on__lt=&created_on__gt=&date_time__lt=&date_time__gt=&ward=&municipality=25004&district=&province="
     );
@@ -12,12 +11,10 @@ export const LivePollutionDataAsyncGETThunk = createAsyncThunk(
   }
 );
 export const WaterDataAsyncGETThunk = createAsyncThunk("waterget", async () => {
-  console.log("**************");
   const response = await fetch(
     "https://bipaddev.yilab.org.np/api/v1/river-stations/?status__iexact=&water_level__gt=&water_level__lt=&water_level_on__gt=&water_level_on__lt=&title=&station_series_id=&ward=&municipality=25004&district=28&province="
   );
   const data = await response.json();
-  console.log(data);
   return data;
 });
 const initialState = {

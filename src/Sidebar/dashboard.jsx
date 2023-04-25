@@ -4,6 +4,7 @@ import { AiFillInfoCircle } from "react-icons/ai";
 import { BiAlarm } from "react-icons/bi";
 import { disasterAsyncGETThunk } from "../store/Slices/disasterSlice";
 import { useDispatch } from "react-redux";
+import LMC from "./../assests/LMC.png";
 function Dashboard({ reportActivated }) {
   const dispatch = useDispatch();
   const status = useSelector((state) => state.disaster.status);
@@ -15,11 +16,15 @@ function Dashboard({ reportActivated }) {
   const disasterData = useSelector((state) => {
     return state.disaster.data;
   });
-  // console.log(data,'I am from dashboard')
   return (
     <React.Fragment>
+      <div className="flex justify-between items-center px-10 py-3">
+        <div>DIMS</div>
+        <div>
+          <img src={LMC} alt="LMC" style={{ height: "50px", width: "50px" }} />
+        </div>
+      </div>
       {disasterData.map((data) => {
-        console.log("Each daata in dashboard", data);
         return (
           <div className=" border-gray-200 border-b-2 p-1 hover:bg-gray-200 py-2  ">
             <div className="text-md font-medium flex flex-row ">
@@ -36,7 +41,7 @@ function Dashboard({ reportActivated }) {
                   {data?.type?.title || "none"}
                 </p>
               </div>
-              <span className="font-normal ml-2 mt-1 pt-1 text-sm w-52">
+              <span className="font-normal ml-2 mt-1 pt-1 text-sm">
                 <div className="font-semibold text-xs"> {data.name}</div>
                 <div>
                   <div className="text-xs text-gray-500 flex justify-start ">

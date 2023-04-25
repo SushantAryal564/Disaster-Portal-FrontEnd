@@ -50,12 +50,8 @@ function BuildingjsonLoader({ prevLayer }) {
           weight: 1,
           fillOpacity: 0.7,
         });
-        console.log(
-          "building polygon ins clickde_____________________-------------------------------------------------------------------------------"
-        );
         if (prevLayer == layer) {
           dispatch(removebuilding());
-          console.log("same polygon -unselecting...");
           prevLayer.setStyle({
             fillColor: "red",
             color: "red",

@@ -3,14 +3,11 @@ import { useDispatch, useSelector } from "react-redux";
 import { disasterIncidnetAsyncGETThunk } from "../store/Slices/incidentSlice";
 import { AiFillInfoCircle } from "react-icons/ai";
 import { BiAlarm } from "react-icons/bi";
-function Incident() {
+function Incident({ reportActivated }) {
   const dispatch = useDispatch();
-  const status = useSelector((state) => state.disasterIncident.status);
   useEffect(() => {
-    if (status === "idle") {
-      dispatch(disasterIncidnetAsyncGETThunk());
-    }
-  }, []);
+    dispatch(disasterIncidnetAsyncGETThunk());
+  }, [reportActivated]);
   let disasterIncidentData = useSelector(
     (state) => state.disasterIncident.data
   );
