@@ -136,7 +136,7 @@ export const ManageDisasterLegend = ({ currenttab, disasterData }) => {
   if (disasterData)
     var disleg =
       disasterData
-        .map((element) => element.type.title)
+        .map((element) => element?.type?.title||"update type ")
         .filter((title, index, array) => array.indexOf(title) === index) || [];
   // ManageDisasterLegend()
   //  const disasterData = disasterData.filter((element, index, array) => array.indexOf(element) === index);
@@ -151,7 +151,7 @@ export const ManageDisasterLegend = ({ currenttab, disasterData }) => {
           zIndex: 9999,
         }}
       >
-        <h6 className="bg-white text-black p-[0.5px] mb-2 mx-2"> Legend</h6>
+        <h6 className="bg-white text-black p-[0.5px] mb-2 mx-2">  Legend</h6>
         {/* ANLYSIS DYAMIC LEGEND */}
         {currenttab === "disasterAnalysis" ? (
           <>
@@ -185,6 +185,7 @@ export const ManageDisasterLegend = ({ currenttab, disasterData }) => {
 
         {currenttab === "manageData" ? (
           <>
+          
             <div className="m-2 items-center justify-between pb-1 border-b-2">
               <div>
                 {" "}
@@ -225,9 +226,9 @@ export const ManageDisasterLegend = ({ currenttab, disasterData }) => {
         )}
 
         {(disasterData && currenttab === "activeManage") ||
-        currenttab === "allIncidents" ? (
+        currenttab === "allincident" ? (
           <>
-            {disleg.map((item) => {
+            {disleg?.map((item) => {
               return (
                 <>
                   <div className="m-2 flex items-center justify-between pb-1 border-b-2">
@@ -251,7 +252,7 @@ export const ManageDisasterLegend = ({ currenttab, disasterData }) => {
         )}
         {disleg && disasterData && currenttab === "allincident" ? (
           <>
-            {disleg.map((item) => {
+            {disleg?.map((item) => {
               console.log("JHKHKKHKKJKHkj");
               return (
                 <>
