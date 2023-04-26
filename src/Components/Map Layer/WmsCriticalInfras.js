@@ -7,7 +7,6 @@ import {
   WMSTileLayer,
 } from "react-leaflet";
 
-import L from "leaflet";
 import { useMapEvents } from "react-leaflet/hooks";
 
 export const WmsCriti = () => {

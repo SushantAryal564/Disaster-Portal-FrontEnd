@@ -1,27 +1,27 @@
-import React from "react";
-import {
-  MapContainer,
-  TileLayer,
-  useMap,
-  Pane,
-  WMSTileLayer,
-} from "react-leaflet";
+import React, { useRef } from "react";
+import { useEffect } from "react";
+import { Pane, WMSTileLayer } from "react-leaflet";
 
-import L from "leaflet";
-import { ClassNames } from "@emotion/react";
-
-export const Wms = () => {
+export const Wms = ({ url, layers, styles }) => {
+  const wmsLayerRef = useRef(null);
+  useEffect(() => {
+    const wmsLayer = wmsLayerRef.current?.leafletElement;
+    if (wmsLayer) {
+      wmsLayer.setZIndex(-100);
+    }
+  }, [wmsLayerRef]);
   return (
     <>
-      <Pane name="myPane" style={{ zIndex: 650 }}>
+      <Pane name="myPane">
         <WMSTileLayer
-          url="http://localhost:8080/geoserver/Lalitpur/wfs"
+          ref={wmsLayerRef}
+          url={url}
           params={{
-            layers: "Lalitpur:PopulationLalitpurMetro_final",
+            layers: layers,
             format: "image/png",
             transparent: true,
             version: "1.1.0",
-            styles: "wardsld",
+            styles: styles,
             noWrap: true,
           }}
         ></WMSTileLayer>

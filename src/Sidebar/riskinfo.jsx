@@ -1,28 +1,30 @@
 import React, { useState } from "react";
-import { Option } from "../RiskInfo/Option";
-import { Deomography, Population } from "../RiskInfo/Demography";
-import { Hazard } from "../RiskInfo/Hazard";
+import { Deomography } from "../RiskInfo/Demography";
 import { Imagery } from "../RiskInfo/Imagery";
 import { CriticalInfrastructure } from "../RiskInfo/CriticalInfrastructure";
-import { useSelector } from "react-redux";
 import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";
 import ChevronRightIcon from "@mui/icons-material/ChevronRight";
 import { Fragment } from "react";
+import { useSelector, useDispatch } from "react-redux";
+import { setpanel } from "../store/Slices/riskinfoSlice";
 
 function RiskInfo() {
-  const [pageNumber, changePageNumber] = useState(1);
+  const currentPanel = useSelector((state) => state.riskinfo.currentpanel);
+  const dispatch = useDispatch();
+
+  console.log(currentPanel);
   const IncreaseClickHandler = () => {
-    if (pageNumber == 4) {
-      changePageNumber(1);
+    if (currentPanel == 3) {
+      dispatch(setpanel(1));
     } else {
-      changePageNumber(pageNumber + 1);
+      dispatch(setpanel(currentPanel + 1));
     }
   };
   const DecreaseClickHandler = () => {
-    if (pageNumber == 1) {
-      changePageNumber(4);
+    if (currentPanel == 1) {
+      dispatch(setpanel(3));
     } else {
-      changePageNumber(pageNumber - 1);
+      dispatch(setpanel(currentPanel - 1));
     }
   };
   return (
@@ -32,10 +34,9 @@ function RiskInfo() {
         <ChevronRightIcon onClick={IncreaseClickHandler} />
       </div>
       <div>
-        {pageNumber === 1 ? <Deomography /> : ""}
-        {pageNumber === 2 ? <Imagery /> : ""}
-        {pageNumber === 3 ? <Hazard /> : ""}
-        {pageNumber === 4 ? <CriticalInfrastructure /> : ""}
+        {currentPanel === 1 ? <Deomography /> : ""}
+        {currentPanel === 2 ? <Imagery /> : ""}
+        {currentPanel === 3 ? <CriticalInfrastructure /> : ""}
       </div>
     </Fragment>
   );

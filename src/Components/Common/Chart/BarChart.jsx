@@ -12,26 +12,47 @@ import {
   LabelList,
 } from "recharts";
 
-const CustomBarChart = ({ data, width, height, dataKey, legend = true }) => {
+const CustomBarChart = ({ data, dataKey, name }) => {
+  const CustomTooltip = ({ active, payload, label }) => {
+    if (active && payload && payload.length) {
+      return (
+        <div className="custom-tooltip bg-[#ed818e] p-2 rounded-lg">
+          <div className="label">
+            <div className="text-white text-sm">{`Ward : ${label}`}</div>
+            <div className="text-white text-sm">{`${name} : ${payload[0].value}`}</div>
+          </div>
+        </div>
+      );
+    }
+
+    return null;
+  };
   return (
-    <ResponsiveContainer width="100%" height="100%" aspect={1}>
+    <ResponsiveContainer width="100%" height="90%">
       <BarChart
-        width={500}
+        width="100%"
         height="100%"
         data={data}
-        margin={{}}
+        margin={{ top: 15, right: 30, left: 20, bottom: 5 }}
         layout="vertical"
       >
+        <XAxis type="number" hide domain={[0, "dataMax"]} id="formal-bar" />
+        <XAxis type="number" hide domain={[0, "dataMax "]} id="informal-bar" />
         <YAxis
           type="category"
           dataKey="ward"
-          domain={[0, "dataMax"]}
-          axisLine={false}
-          minTickGap={20}
+          axisLine={true}
+          domain={[5, 100]}
+          style={{
+            fontSize: "13px",
+            color: "#212121",
+          }}
+          minTickGap={-20}
+          dx={-20}
+          label={{ value: "Ward", angle: -90, position: "left" }}
         />
-        <Tooltip />
-        <Legend />
-        <Bar dataKey="number_of_disasters" fill="#e35163" barSize={50}></Bar>
+        <Tooltip content={<CustomTooltip />} />
+        <Bar dataKey={dataKey} fill="#e35163" barSize={20}></Bar>
       </BarChart>
     </ResponsiveContainer>
   );

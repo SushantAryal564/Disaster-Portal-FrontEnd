@@ -27,7 +27,11 @@ import Situation from "../../Sidebar/situation";
 import Feedback from "@mui/icons-material/Feedback";
 import MarkerClusterGroup from "react-leaflet-cluster";
 import L from "leaflet";
-import { DamageAndLossLegend, RiskInfoLegend } from "../Legends/Legend";
+import {
+  DamageAndLossLegend,
+  IncidentLegend,
+  RiskInfoLegend,
+} from "../Legends/Legend";
 import {
   DASHBOARD,
   INCIDENT,
@@ -44,6 +48,8 @@ import { DashboardLegend, RealTimeLegend } from "../Legends/Legend";
 import { Wms } from "../../RiskInfo/Wms";
 import { WmsCriti } from "../Map Layer/WmsCriticalInfras";
 import { WmsAmenities } from "../Map Layer/AmenitiesWms";
+import CommonMarker from "../Common/Marker/CommonMarker";
+import { InfrastructureAsyncGETThunk } from "../../store/Slices/riskinfoSlice";
 export const Portal = () => {
   const selectedPanel = useSelector((state) => {
     return state.riskinfo.currentpanel;
@@ -51,12 +57,10 @@ export const Portal = () => {
   const amenitiesToggle = useSelector((state) => {
     return state.riskinfo.amenitiesToggle;
   });
-  const criticalInfraBuildingToggle = useSelector((state) => {});
   const [reportActivated, setReportActivated] = useState(false);
   const dispatch = useDispatch();
   var [jsonLalitpurMetro, setJsonLalitpurMetro] = useState("");
   var [jsonWard, setJsonWard] = useState("");
-  console.log(jsonWard, "jsonWArd");
   const [currentdamageindex, setdamageindex] = useState("incident");
   const totalIncident = useSelector((state) => {
     return state.damageloss.totalIncident;
@@ -120,8 +124,9 @@ export const Portal = () => {
   const changeSlidebarState = () => {
     dispatch(slidebarAction.changeSlidebarState());
   };
-
+  const infrastructure = useSelector((state) => state.riskinfo.data);
   useEffect(() => {
+    dispatch(InfrastructureAsyncGETThunk("school"));
     metroJSON();
     wardJSON();
   }, []);
@@ -234,7 +239,24 @@ export const Portal = () => {
               {/* <TileLayer url="https://tiles.stadiamaps.com/tiles/alidade_smooth/{z}/{x}/{y}{r}.png" /> */}
             </LayersControl.BaseLayer>
 
-            {component == RISKINFO ? <Wms /> : ""}
+            {component == RISKINFO && selectedPanel === 1 ? (
+              <Wms
+                url="http://localhost:8080/geoserver/Lalitpur/wfs"
+                layers="Lalitpur:PopulationLalitpurMetro_final"
+                styles="wardsld"
+              />
+            ) : (
+              ""
+            )}
+            {component == RISKINFO && selectedPanel === 2 ? (
+              <Wms
+                url="http://localhost:8080/geoserver/Lalitpur/wfs"
+                layers="Lalitpur:LalitpurLULC"
+                styles="LULC"
+              />
+            ) : (
+              ""
+            )}
 
             {jsonLalitpurMetro ? (
               <GeoJSONLayer
@@ -266,12 +288,6 @@ export const Portal = () => {
                 color: "blue",
                 dashArray: "4",
                 fillOpacity: 0.1,
-                // lineJoin:'mitter',
-                // smoothFactor:1,
-                // label: "ward" ,
-                // labelFont: "12px Arial",
-                // labelPosition: "top",
-                // labelAlign: "center",
               }}
               onEachFeature={(feature, layer) => {
                 layer
@@ -306,13 +322,6 @@ export const Portal = () => {
                 })
               : ""}
           </MarkerClusterGroup>
-          {component == RISKINFO &&
-          selectedPanel == 1 &&
-          criticalInfraBuildingToggle ? (
-            <WmsCriti />
-          ) : (
-            ""
-          )}
 
           {component == RISKINFO && selectedPanel == 1 && amenitiesToggle ? (
             <WmsAmenities />
@@ -332,11 +341,17 @@ export const Portal = () => {
             : ""}
           {component === REALTIME && <RealTimeLegend />}
           {component === RISKINFO && <RiskInfoLegend />}
+          {component === INCIDENT && <IncidentLegend />}
           {component === DASHBOARD && (
             <DashboardLegend legendItem={disasterinDashboard} />
           )}
           {component === DAMAGELOSS && (
             <DamageAndLossLegend changeDamagestate={setdamageindex} />
+          )}
+          {component == RISKINFO && selectedPanel === 3 ? (
+            <CommonMarker data={infrastructure} />
+          ) : (
+            ""
           )}
         </MapContainer>
         <SideBar changeReportState={changeReportState} />
@@ -353,3 +368,12 @@ export const Portal = () => {
   );
 };
 export default Portal;
+// {component == RISKINFO && selectedPanel === 3 ? (
+//   <Wms
+//     url="http://localhost:8080/geoserver/Lalitpur/wfs"
+//     layers="Lalitpur:Buildings"
+//     styles="bulding"
+//   />
+// ) : (
+//   ""
+// )}

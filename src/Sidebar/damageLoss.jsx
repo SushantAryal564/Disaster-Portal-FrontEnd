@@ -8,21 +8,22 @@ function DamageLoss({ reportActivated }) {
   const dispatch = useDispatch();
   const [startDate, setStartDate] = useState(null);
   const [endDate, setEndDate] = useState(null);
+  console.log(startDate, endDate, "in damageLoss");
   const handleSubmit = (event) => {
     event.preventDefault();
-    dispatch(DamageLossAsyncGETThunk(startDate, endDate));
+    dispatch(DamageLossAsyncGETThunk([startDate, endDate]));
   };
   const state = useSelector((state) => state.chart.status);
   useEffect(() => {
     if (state == "idle") {
       dispatch(GetChartDashboardInfo());
     }
-  });
-  const chartData = useSelector((state) => state.chart.data);
-  console.log(chartData, "chartData");
+  }, [reportActivated]);
+  let chartData = useSelector((state) => state.chart.data);
+  const [damageTab, changedamageTab] = useState("INCIDENT");
   return (
     <div className="border-2 p-2 text-xs">
-      <form onSubmit={handleSubmit}>
+      {/*<form onSubmit={handleSubmit}>
         <div className="flex items-center ">
           <div className="w-1/2 ">
             <label
@@ -54,42 +55,86 @@ function DamageLoss({ reportActivated }) {
               onChange={(e) => setEndDate(e.target.value)}
             />
           </div>
-          <button
-            onClick={handleSubmit}
-            className="bg-teal-500 mt-5 text-white p-1"
-          >
+          <button onClick={handleSubmit} className="bg-teal-500 text-white p-1">
             Submit
           </button>
         </div>
-      </form>
+  </form>*/}
       <div className="flex justify-evenly">
         <button
-          onClick={() => {}}
-          className="bg-teal-500 mt-5 text-white m-2 p-1 px-2"
+          onClick={() => {
+            changedamageTab("INCIDENT");
+          }}
+          className="bg-teal-500 text-white m-2 p-1 px-2"
         >
           Incident
         </button>
         <button
-          onClick={() => {}}
-          className="bg-teal-500 mt-5 text-white m-2 p-1 px-2"
+          onClick={() => {
+            changedamageTab("LIVES_LOST");
+          }}
+          className="bg-teal-500 text-white m-2 p-1 px-2"
         >
           Lives Lost
         </button>
         <button
-          onClick={() => {}}
-          className="bg-teal-500 mt-5 text-white m-2 p-1 px-2"
+          onClick={() => {
+            changedamageTab("PROPERTY_LOSS");
+          }}
+          className="bg-teal-500 text-white m-2 p-1 px-2"
         >
           Property Loss
         </button>
         <button
-          onClick={() => {}}
-          className="bg-teal-500 mt-5 text-white m-2 p-1 px-2"
+          onClick={() => {
+            changedamageTab("INFRASTRUCTURE_DAMAGE");
+          }}
+          className="bg-teal-500 text-white m-2 p-1 px-2"
         >
           Infrastructure Damage
         </button>
       </div>
-      <div className="w-full h-[500px]">
-        <CustomBarChart data={chartData} />
+      <div className="w-full h-[580px]">
+        {damageTab === "INCIDENT" && (
+          <>
+            <h1 className="text-base">Total Incident in Each Ward</h1>
+            <CustomBarChart
+              data={chartData}
+              dataKey="number_of_disasters"
+              name="Number Of Disasters"
+            />
+          </>
+        )}
+        {damageTab === "LIVES_LOST" && (
+          <>
+            <h1 className="text-base">Total Incident in Each Ward</h1>
+            <CustomBarChart
+              data={chartData}
+              dataKey="total_people_death"
+              name="Total People Death"
+            />
+          </>
+        )}
+        {damageTab === "PROPERTY_LOSS" && (
+          <>
+            <h1 className="text-base">Total Incident in Each Ward</h1>
+            <CustomBarChart
+              data={chartData}
+              dataKey="total_estimated_loss"
+              name="Damaged Property"
+            />
+          </>
+        )}
+        {damageTab === "INFRASTRUCTURE_DAMAGE" && (
+          <>
+            <h1 className="text-base">Total Incident in Each Ward</h1>
+            <CustomBarChart
+              data={chartData}
+              dataKey="total_infrastructure_damaged"
+              name="Infrastructure Damaged"
+            />
+          </>
+        )}
       </div>
     </div>
   );
