@@ -66,7 +66,6 @@ function ManageData({ polygonCoords, changeMarkerDataState }) {
       address
     } = buildingdata;
   }
-  // console.log("MANAGE DATA--->selected building", buildingdata);
   const [savedValue, setsavedValue] = useState(null);
   var initialValues = {
     osm_id: "",
@@ -79,7 +78,6 @@ function ManageData({ polygonCoords, changeMarkerDataState }) {
     address:""
   };
   useEffect(() => {
-    console.log("builidng daata changed");
     setsavedValue({
       osm_id: osm_id || "",
       phone_number_1: phone_number_1 || "",
@@ -91,8 +89,6 @@ function ManageData({ polygonCoords, changeMarkerDataState }) {
       email:email ||""
     });
   }, [buildingdata]);
-  
-  console.log("managed data rendere", "Saved Valued----", savedValue);
   const formik = useFormik({
     initialValues: savedValue || initialValues,
     enableReinitialize: true,
@@ -111,7 +107,6 @@ function ManageData({ polygonCoords, changeMarkerDataState }) {
       email: Yup.string().email("Invalid email address"),
     }),
     onSubmit: (values) => {
-      console.log(values,'hjkl------------------------------------------------------------___>');
       postPolygonData(values)
     },
   });

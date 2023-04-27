@@ -118,7 +118,7 @@ export const SideBar = ({ changeReportState }) => {
         />
       ))}
       <Link
-        className=" bg-[#ffffff]  w-full text-center text-[0.7rem] self-center pt-2 pb-2 font-semibold  text-slate-600 cursor-pointer hover:text-[#e35163] no-underline"
+        className=" bg-[#ffffff]  w-full text-center text-[0.7rem] self-center pt-1 pb-1 font-semibold  text-slate-600 cursor-pointer hover:text-[#e35163] no-underline"
         to={access_token ? "/managedisaster" : "/login"}
       >
         <div className="text-center pb-2">
@@ -127,7 +127,7 @@ export const SideBar = ({ changeReportState }) => {
         Manage Disaster
       </Link>
       <button
-        className=" bg-[#ffffff]   w-full text-center text-xs self-center pt-4 pb-4 font-semibold  text-slate-600 cursor-pointer hover:text-[#e35163]"
+        className=" bg-[#ffffff]   w-full text-center text-xs self-center pt-2 pb-2 font-semibold  text-slate-600 cursor-pointer hover:text-[#e35163]"
         onClick={changeReportState}
       >
         <div className="text-center pb-2">

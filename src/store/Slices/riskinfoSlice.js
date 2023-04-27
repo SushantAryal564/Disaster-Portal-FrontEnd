@@ -1,9 +1,21 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 
+export const InfrastructureAsyncGETThunk = createAsyncThunk(
+  "InfrastructureGet",
+  async (infrastructure) => {
+    const response = await fetch(
+      `http://127.0.0.1:8000/api/v1/analysis/amenites/?tag=${infrastructure}`
+    );
+    const data = await response.json();
+    return data;
+  }
+);
+
 const initialState = {
   currentpanel: 1,
-  criticalInfrastructureToggle: false,
-  amenitiesToggle: true,
+  data: [],
+  status: "idle",
+  error: null,
 };
 export const riskinfoSlice = createSlice({
   name: "riskinfo",
@@ -12,12 +24,20 @@ export const riskinfoSlice = createSlice({
     setpanel: (state, action) => {
       state.currentpanel = action.payload;
     },
-    setbuldingToggle: (state, action) => {
-      state.crticalInfraBuindingToggle = !state.crticalInfraBuindingToggle;
-    },
-    setamenitiesToggle: (state, action) => {
-      state.amenitiesToggle = !state.amenitiesToggle;
-    },
+  },
+  extraReducers(builder) {
+    builder
+      .addCase(InfrastructureAsyncGETThunk.pending, (state) => {
+        state.status = "loading";
+      })
+      .addCase(InfrastructureAsyncGETThunk.fulfilled, (state, action) => {
+        state.status = "succeeded";
+        state.data = action.payload;
+      })
+      .addCase(InfrastructureAsyncGETThunk.rejected, (state, action) => {
+        state.status = "failed";
+        state.error = action.error.message;
+      });
   },
 });
 

@@ -44,7 +44,7 @@ export const LiveData = () => {
             data2={data2[0].results}
             selectedMarkerId={selectedMarkerId}
           ></Water>
-          <Pollution 
+          <Pollution
             data={data[0].results}
             selectedMarkerId={selectedMarkerId}
           ></Pollution>
@@ -86,12 +86,6 @@ export const Pollution = ({ data, selectedMarkerId }) => {
                 </div>
               </div>
               {data.map((instance) => {
-                console.log(
-                  "check,check",
-                  instance.id,
-                  selectedMarkerId,
-                  instance.id == selectedMarkerId
-                );
                 return (
                   <div
                     className="border-gray-300 hover:bg-gray-400"

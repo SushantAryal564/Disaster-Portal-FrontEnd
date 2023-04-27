@@ -78,6 +78,28 @@ export const DashboardLegend = ({ legendItem }) => {
   );
 };
 
+export const IncidentLegend = ({ legendItem }) => {
+  return (
+    <div>
+      <div
+        className="legend"
+        style={{
+          position: "absolute",
+          bottom: "20px",
+          right: "20px",
+          zIndex: 9999,
+        }}
+      >
+        <h5 className="bg-white text-black p-[0.4px] mb-2"> Legend</h5>
+        <div className="flex justify-center items-center gap-3">
+          <div className="w-5 h-5 bg-[#e62727] rounded-full"></div>
+          <div>Disaster</div>
+        </div>
+      </div>
+    </div>
+  );
+};
+
 export const RiskInfoLegend = ({ legendItem }) => {
   const image =
     "http://localhost:8080/geoserver/wms?REQUEST=GetLegendGraphic&VERSION=1.0.0&FORMAT=image/png&WIDTH=20&HEIGHT=20&LAYER=Lalitpur:PopulationLalitpurMetro_final";
@@ -132,7 +154,6 @@ export const ManageDisasterLegend = ({ currenttab, disasterData }) => {
   const legendItem = new Array(
     ...new Set(useSelector((state) => state.feature.allfeature))
   );
-  // console.log(legendItem);
   if (disasterData)
     var disleg =
       disasterData
@@ -253,7 +274,6 @@ export const ManageDisasterLegend = ({ currenttab, disasterData }) => {
         {disleg && disasterData && currenttab === "allincident" ? (
           <>
             {disleg?.map((item) => {
-              console.log("JHKHKKHKKJKHkj");
               return (
                 <>
                   <div className="m-2 flex items-center justify-between pb-1 border-b-2">

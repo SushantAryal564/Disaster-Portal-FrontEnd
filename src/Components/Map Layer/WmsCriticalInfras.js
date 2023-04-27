@@ -7,7 +7,6 @@ import {
   WMSTileLayer,
 } from "react-leaflet";
 
-import L from "leaflet";
 import { useMapEvents } from "react-leaflet/hooks";
 
 export const WmsCriti = () => {
@@ -16,10 +15,8 @@ export const WmsCriti = () => {
   const map = useMapEvents({
     click: (e) => {
       setClickLocation(e.latlng);
-      console.log("BUILDING CLICKED", clickLocation);
 
       var point = umap.latLngToContainerPoint(e.latlng);
-      console.log(point);
       var url =
         "http://localhost:8080/geoserver/wms?" +
         "SERVICE=WMS" +
@@ -39,7 +36,6 @@ export const WmsCriti = () => {
         Math.round(point.y) +
         "&BBOX=" +
         map.getBounds().toBBoxString();
-      console.log(url);
     },
   });
 

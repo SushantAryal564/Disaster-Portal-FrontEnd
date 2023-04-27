@@ -28,8 +28,6 @@ export const getIcon = (disastertype) => {
 };
 
 function Markers({ disaster: event }) {
-  console.log(event.disastertype, "type--------..", event);
-
   return (
     <Marker
       key={`disaster-${event.id}`}

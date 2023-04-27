@@ -18,7 +18,6 @@ const authSlice = createSlice({
       state.access_token = action.payload.access_token;
     },
     setUserInfo: (state, action) => {
-      console.log(action.payload);
       if (action.payload.IsWard) {
         state.wardId = action.payload.WardId;
         state.wardNumber = action.payload.wardNumber;

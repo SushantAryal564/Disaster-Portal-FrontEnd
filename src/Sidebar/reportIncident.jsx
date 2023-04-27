@@ -85,7 +85,6 @@ function ReportAnAncident({ setReportActivated, reportActivated }) {
       longitude: Yup.number().required("Required"),
     }),
     onSubmit: (values) => {
-      console.log(values, "values");
       const disasterobject = disaster.find(
         (disaster) => disaster.title === values.hazard
       );
@@ -94,6 +93,7 @@ function ReportAnAncident({ setReportActivated, reportActivated }) {
         (ward) => ward.properties.ward == values.region
       );
       const wardid = wardobject.id;
+      console.log(values, "I am values");
       const disasterData = {
         description: values.title,
         lat: values.latitude,
@@ -122,7 +122,6 @@ function ReportAnAncident({ setReportActivated, reportActivated }) {
   } else {
     formIsValid = true;
   }
-  console.log(formIsValid);
   const colourStyles = {
     control: (styles, state) => ({
       ...styles,

@@ -2,11 +2,13 @@ import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 
 export const DamageLossAsyncGETThunk = createAsyncThunk(
   "damageLossGet",
-  async (startdate, enddate) => {
+  async (date) => {
+    console.log(date, "date");
     const response = await fetch(
-      `http://127.0.0.1:8000/api/v1/disaster/disasterEventwithoutgeom/?name=&Ward=$&type=&is_closed=&startTime__gte=${startdate}T18%3A00%3A00Z&startTime__gt=&startTime=&startTime__lte=${enddate}T18%3A00%3A00Z`
+      `http://127.0.0.1:8000/api/v1/disaster/disasterEventwithoutgeom/?name=&Ward=&type=&is_closed=&startTime__gte=${date[0]}T14%3A51%3A00Z&startTime__gt=&startTime=&startTime__lte=${date[1]}T14%3A51%3A00Z`
     );
     const data = await response.json();
+    console.log(data, "dateFilter");
     return data;
   }
 );
@@ -22,7 +24,7 @@ const initialState = {
 };
 
 export const damageLossSlice = createSlice({
-  name: "disasterIncident",
+  name: "damageLoss",
   initialState,
   reducers: {},
   extraReducers(builder) {

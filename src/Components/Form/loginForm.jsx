@@ -53,13 +53,11 @@ export const Login = (props) => {
       setServerError(res.message);
     }
     if (res.data) {
-      console.log(res.data);
       storeToken(res.data);
       let { access_token } = getToken();
       dispatch(setUserToken({ access_token: access_token }));
 
       let { WardId, IsWard, IsMunicipality, wardNumber } = getUserInformation();
-      console.log(" from log in, id WARD", WardId, "ward number", wardNumber);
       dispatch(setUserInfo({ WardId, IsWard, IsMunicipality, wardNumber }));
       navigate("/");
     }
