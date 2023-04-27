@@ -65,6 +65,8 @@ function Edit({ data }) {
         setPosition([event.target.getLatLng().lat, event.target.getLatLng().lng]);
       }
       const ReportSendToBackend = async (values) => {
+
+        console.log("valuess,---------------------------",values)
         const response = await fetch(
           "http://127.0.0.1:8000/api/v1/disaster/reportanincident/",
           {
@@ -79,25 +81,18 @@ function Edit({ data }) {
         // return responseData;
       };
      
- const date = new Date(date_event);
+ const date = new Date(date_event).toISOString().replace("Z",'');
 
-const formattedDate = date.toLocaleString('en-US', {
-  year: 'numeric',
-  month: '2-digit',
-  day: '2-digit',
-  hour: '2-digit',
-  minute: '2-digit',
-  timeZone: 'UTC'
-}).replace(',', 'T').replace('/','-');
 
-console.log(formattedDate); 
-      
-    const formik = useFormik({
+// console.log(formattedDate); 
+      //  formattedDate=new Date(formattedDate)
+        console.log(date,"FOORmATETED DATE")
+       const formik = useFormik({
         initialValues: {
           title: name,
           description:description||null,
           hazard: type.title|"np title api",
-          incidentOn: formattedDate,
+          incidentOn: date,
           streetAddress: address || 'no address api',
           image: null,
           region: "",
