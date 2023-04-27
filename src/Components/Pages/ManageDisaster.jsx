@@ -7,7 +7,7 @@ import {
   FeatureGroup,
   Circle,
 } from "react-leaflet";
-import { removebuilding } from "../../store/Slices/buildingSlice";
+import { setwkt } from "../../store/Slices/buildingSlice";
 import LayerControler from "../Map Layer/LayerControler";
 import { useSelector } from "react-redux";
 import { GetManageDisasterWardShpGETThunk } from "../../store/Slices/manageDisasterSlice";
@@ -27,9 +27,17 @@ import "leaflet/dist/leaflet.css";
 import "leaflet-draw/dist/leaflet.draw.css";
 import wk from "wellknown";
 
+
 const ManageDisaster = () => {
   const featureGroupRef = useRef();
   const [polygonCoords, setPolygonCoords] = useState([]);
+  
+
+//   const buildingdata = useSelector((state) => {
+//     return state.buildings.selectedBuilding;
+//   });
+
+
   const [slidebarState, setSlidebarState] = useState(true);
   const dispatch = useDispatch();
   const [disasterData, setDisasterData] = useState([]);
@@ -55,15 +63,18 @@ const ManageDisaster = () => {
     featureGroupRef.current.addLayer(layer);
 
     const latLngs = layer.getLatLngs()[0];
-    const coords = latLngs.map(({ lat, lng }) => [lng, lat]);
+  let coords = latLngs.map(({ lat, lng }) => [lng, lat]);
 
+    coords.pop(-1)
+    coords.push(coords[0])
     // Convert coordinates to a Polygon and then to WKT
     const polygonWkt = wk.stringify({
       type: "Polygon",
       coordinates: [coords],
     });
 
-    setPolygonCoords(polygonWkt);
+    setPolygonCoords(polygonWkt);    
+    dispatch(setwkt(polygonWkt));
   }
 
   function onEdited(e) {
@@ -201,9 +212,16 @@ const ManageDisaster = () => {
           {/* FOR RENDERING MARKER INTO THE MAP COMPONENT BELOW IS USED*/}
           <LayerControler currenttab={currenttab} disasterData={disasterData} />
           <WardjsonLoader />
-          {currenttab === "disasterAnalysis" ? <ManageDisasterLegend /> : ""}
+          {currenttab === "disasterAnalysis" ? <ManageDisasterLegend currenttab="disasterAnalysis"/> : ""}
+          {currenttab === "manageData" ? <ManageDisasterLegend currenttab="manageData"/> : ""}
+         
+          {currenttab === "allincident"  && disasterData.length>0 ? <ManageDisasterLegend currenttab="allincident" disasterData={disasterData}/> : ""}
+          {currenttab === "activeManage"&& disasterData.length>0 ? <ManageDisasterLegend currenttab="activeManage" disasterData={disasterData} /> : ""}
+          
+          {currenttab === "manageData" ? <ManageDisasterLegend currenttab="manageData"/> : ""}
+
           {currenttab === "manageData" ? <BuildingjsonLoader /> : null}
-          <ManageDisasterLegend />
+          
           {currenttab === "manageData" ? (
             <FeatureGroup ref={featureGroupRef}>
               <EditControl
@@ -221,12 +239,10 @@ const ManageDisaster = () => {
             </FeatureGroup>
           ) : null}
           {/* conditionaly rendder this when current tab is manageData */}
-          {currenttab === "manageData" ? <BuildingjsonLoader /> : ""}
+          {/* {currenttab === "manageData" ? <BuildingjsonLoader /> : ""} */}
         </MapContainer>
       </div>
     </Layout>
   );
 };
 export default ManageDisaster;
-
-/*********** */

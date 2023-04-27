@@ -6,6 +6,8 @@ import {
   removebuilding,
   buildingAsyncGETThunk,
   chageSelection,
+  singlebuidlingThunk,
+  removeAPIbuilding,setwkt
 } from "../../store/Slices/buildingSlice";
 import { Fragment } from "react";
 import { current } from "@reduxjs/toolkit";
@@ -13,7 +15,7 @@ import { current } from "@reduxjs/toolkit";
 function BuildingjsonLoader({ prevLayer }) {
   const dispatch = useDispatch();
   const wardID = localStorage.getItem("wardNumber");
-
+  
   const building = useSelector((state) => {
     return state.buildings.allbuilding;
   });
@@ -61,7 +63,7 @@ function BuildingjsonLoader({ prevLayer }) {
           prevLayer = "";
           return;
         }
-
+       
         prevLayer = layer;
       },
     });
@@ -75,6 +77,11 @@ function BuildingjsonLoader({ prevLayer }) {
           onEachFeature={onEachFeature}
         />
       ) : null}
+      {/* {buildingdata?<GeoJSON
+          data={buildingdata}
+          style={styleGEOJSON2}
+          onEachFeature={onEachFeature}
+        />:""} */}
     </Fragment>
   );
 }

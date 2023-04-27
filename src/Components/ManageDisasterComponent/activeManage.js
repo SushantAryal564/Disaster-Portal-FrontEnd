@@ -1,5 +1,12 @@
 import React from "react";
 import { useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { AiFillInfoCircle } from "react-icons/ai";
+// import { BiAlarm } from "react-icons/bi";
+import { string } from "yup";
+import AccordianDyn from "../UI/DynamicAccord";
+import { BiAlarm } from "react-icons/bi";
+import { setlatlng } from "./../../store/Slices/latlng";
 import { BiAlarm } from "react-icons/bi";
 const ActiveManage = ({ changeMarkerDataState }) => {
   const [wardIncident, setWardIncident] = useState([]);
@@ -23,10 +30,17 @@ const ActiveManage = ({ changeMarkerDataState }) => {
 
     changeMarkerDataState(wardIncident);
     setWardIncident(wardIncident);
-  };
+  }
+  let dispatch = useDispatch();
+  const latlngHandler = (array) => {
+    dispatch(setlatlng(array));}
+
   useEffect(() => {
     WardIncident(wardId, lastMonth, today);
   }, []);
+  return (
+    <React.Fragment>
+   <AccordianDyn AllDisaster={wardIncident}   latlngHandler={latlngHandler}></AccordianDyn>
   const handleSubmit = (event) => {
     event.preventDefault();
     WardIncident(wardId, startDate, endDate);
