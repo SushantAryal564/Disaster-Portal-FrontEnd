@@ -84,7 +84,7 @@ import Edit from "./Edit";
              <div className="text-gray-500 text-bold  text-[12px] mb-2 mx-2 bg-green-400 text-white py-2 px-2">EDIT DISASTER DATA</div>
              <div className="flex">
                <div className="mt-2 p-2 ">
-                   <Edit/>
+                   <Edit data={data}/>
                   </div>
                 </div> 
               </div>

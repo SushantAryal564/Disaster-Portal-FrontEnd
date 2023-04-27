@@ -153,7 +153,7 @@ function ReportAnAncident({ setReportActivated, reportActivated }) {
     return null;
   }
   return (
-    <div className="absolute w-[40%] z-50 bg-white h-[90%] left-[50%] top-[7%] px-8 border rounded shadow-2xl scrollbar scrollbar-thumb-gray-300 scrollbar-track-gray-100 scrollbar-w-1 scrollbar-rounded-rounded-md translate-x-[-50%]">
+    <div className="absolute w-[40%] z-50 bg-white h-[90%] left-[50%] top-[7%] px-8 border rounded shadow-2xl scrollbar scrollbar-thumb-gray-300 scrollbar-track-gray-100 scrollbar-w-1 scrollbar-rounded-rounded-md ">
       <div className="h-96 self-center text-gray-500">
         <form onSubmit={formik.handleSubmit}>
           <div className="flex flex-row items-center justify-center lg:justify-start ">

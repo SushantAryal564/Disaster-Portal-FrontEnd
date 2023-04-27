@@ -8,11 +8,23 @@ import { useMap } from "react-leaflet";
 import { GeoJSON } from "react-leaflet";
 import { MapContainer, TileLayer, Marker, Popup } from "react-leaflet";
 
-function Edit({ setReportActivated, reportActivated }) {
+function Edit({ data }) {
+    const [statedata,setstatedata]=useState(data)
+
+    let {
+        lat,
+        long,
+        description,
+        address,name,id,registered_date,type,date_event
+        } = data;
+        console.log(data,"THIS IS DATAS-----------------------------",lat,
+        long,
+        description
+  ,address)
     const [position, setPosition] = useState([
-        27.66445354418368, 85.31856628971687,
+        lat,long,
       ]);
-      const [calculatedWard, setcalculatedWard] = useState(null);
+      const [calculatedWard, setcalculatedWard] = useState(data.Ward);
       const [disaster, setDisaster] = useState([]);
       const [Region, SetRegion] = useState();
       const disasterTypeGET = async () => {
@@ -22,6 +34,21 @@ function Edit({ setReportActivated, reportActivated }) {
         let disaster = await data.json();
         setDisaster(disaster);
       };
+
+      const getWard = async () => {
+        const data = await fetch(
+          `http://127.0.0.1:8000/api/v1/spatial/getward/?lat=${position[0]}&lng=${position[1]}`
+        );
+    
+        let ward = await data.json();
+        setcalculatedWard(ward);
+      };
+    
+      useEffect(() => {
+        getWard();
+      }, [position]);
+    
+
       const RegionNameGET = async () => {
         const data = await fetch("http://127.0.0.1:8000/api/v1/spatial/ward/");
         let region = await data.json();
@@ -51,16 +78,31 @@ function Edit({ setReportActivated, reportActivated }) {
         // const responseData = await response.json();
         // return responseData;
       };
+     
+ const date = new Date(date_event);
+
+const formattedDate = date.toLocaleString('en-US', {
+  year: 'numeric',
+  month: '2-digit',
+  day: '2-digit',
+  hour: '2-digit',
+  minute: '2-digit',
+  timeZone: 'UTC'
+}).replace(',', 'T').replace('/','-');
+
+console.log(formattedDate); 
+      
     const formik = useFormik({
         initialValues: {
-          title: "",
-          hazard: "",
-          incidentOn: "",
-          streetAddress: "",
+          title: name,
+          description:description||null,
+          hazard: type.title|"np title api",
+          incidentOn: formattedDate,
+          streetAddress: address || 'no address api',
           image: null,
           region: "",
-          latitude: "",
-          longitude: "",
+          latitude: lat || null,
+          longitude:long|| null,
         },
         validationSchema: Yup.object({
           incidentOn: Yup.date()
@@ -92,7 +134,7 @@ function Edit({ setReportActivated, reportActivated }) {
             name: values.hazard + " in " + values.streetAddress,
           };
           ReportSendToBackend(disasterData);
-          setReportActivated(false);
+        //   setReportActivated(false);
         },
       });
       let formIsValid = true;
@@ -140,16 +182,17 @@ function Edit({ setReportActivated, reportActivated }) {
         return null;
       }
       return (
-        <div className="absolute   px-8 border rounded shadow-2xl scrollbar scrollbar-thumb-gray-300 scrollbar-track-gray-100 scrollbar-w-1 scrollbar-rounded-rounded-md translate-x-[-50%]">
-          <div className="h-96 self-center text-gray-500">
+        <div className="pt-2 px-8 border rounded shadow-2xl scrollbar scrollbar-thumb-gray-300 scrollbar-track-gray-100 scrollbar-w-1 scrollbar-rounded-rounded-md  ">
+          <div className=" text-gray-500">
             <form onSubmit={formik.handleSubmit}>
-              <div className="flex flex-row items-center justify-center lg:justify-start ">
-                <p className=" mb-8 mt-4 font-bold text-lg">Report an incident</p>
-              </div>
+            <label
+                    htmlFor="hazard"
+                    className="text-xs font-normal leading-tight text-blue-gray-500 transition-all after:absolute after:-bottom-2.5 after:block after:w-full after:scale-x-0 after:border-b-2 after:border-red-500 after:transition-transform after:duration-300 peer-placeholder-shown:leading-tight font-bold"
+                  >Description</label>
               <div className="pt-2">
-                <div class="]">
+                <div class="">
                   <input
-                    className=""
+                    className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                     id="title"
                     name="title"
                     type="text"
@@ -157,9 +200,7 @@ function Edit({ setReportActivated, reportActivated }) {
                     onBlur={formik.handleBlur}
                     value={formik.values.title}
                   />
-                  <label class="after:content[' '] pointer-events-none absolute left-0 -top-2.5 flex h-full w-full select-none text-xs font-normal leading-tight text-blue-gray-500 transition-all after:absolute after:-bottom-2.5 after:block after:w-full after:scale-x-0 after:border-b-2 after:border-red-500 after:transition-transform after:duration-300 peer-placeholder-shown:leading-tight peer-placeholder-shown:text-blue-gray-500 peer-focus:text-xs peer-focus:leading-tight peer-focus:text-red-500 peer-focus:after:scale-x-100 peer-focus:after:border-red-500 peer-disabled:text-transparent peer-disabled:peer-placeholder-shown:text-blue-gray-500 font-bold">
-                    Description
-                  </label>
+                 
                 </div>
                 {formik.errors.title && formik.touched.title ? (
                   <div className="text-red-600 text-xs">{formik.errors.title}</div>
@@ -181,7 +222,7 @@ function Edit({ setReportActivated, reportActivated }) {
                     }}
                     id="hazard"
                     name="hazard"
-                    value={formik.values.disasterTypeOptions}
+                    value={formik.values.hazard}
                     options={disasterTypeOptions}
                   />
                   {formik.errors.hazard ? (
@@ -329,7 +370,8 @@ function Edit({ setReportActivated, reportActivated }) {
               <div style={{ height: "275px" }} className="mt-3">
                 <MapContainer
                   style={{ height: "100%", minHeight: "100%", width: "100%" }}
-                  center={[27.66445354418368, 85.31856628971687]}
+                  center={[lat,
+                    long]}
                   zoom={13}
                   scrollWheelZoom={true}
                   zoomControl={false}
@@ -357,26 +399,40 @@ function Edit({ setReportActivated, reportActivated }) {
                     </Popup>
                   </Marker>
     
+    
                   <CustomZoomControl />
                 </MapContainer>
               </div>
+              
+              <div class="flex items-center">
+                <input checked id="checked-checkbox" type="checkbox" value={0} class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"/>
+               <label for="checked-checkbox" class="ml-2 text-sm font-medium text-gray-900 dark:text-gray-300">Verfify this Report</label>
+                </div>
+               {/*  */}
               <div className="flex justify-center">
                 <button
                   type="submit"
-                  className="inline-block rounded bg-danger px-6 pt-2.5 pb-2 my-2 text-xs font-medium uppercase leading-normal text-white shadow-[0_4px_9px_-4px_#dc4c64] transition duration-150 ease-in-out hover:bg-danger-600 hover:shadow-[0_8px_9px_-4px_rgba(220,76,100,0.3),0_4px_18px_0_rgba(220,76,100,0.2)] focus:bg-danger-600 focus:shadow-[0_8px_9px_-4px_rgba(220,76,100,0.3),0_4px_18px_0_rgba(220,76,100,0.2)] focus:outline-none focus:ring-0 active:bg-danger-700 active:shadow-[0_8px_9px_-4px_rgba(220,76,100,0.3),0_4px_18px_0_rgba(220,76,100,0.2)]"
+                  className="inline-block rounded bg-success px-6 pt-2.5 pb-2 my-2 text-xs font-medium uppercase leading-normal text-white shadow-[0_4px_9px_-4px_#dc4c64] transition duration-150 ease-in-out hover:bg-danger-600 hover:shadow-[0_8px_9px_-4px_rgba(220,76,100,0.3),0_4px_18px_0_rgba(220,76,100,0.2)] focus:bg-danger-600 focus:shadow-[0_8px_9px_-4px_rgba(220,76,100,0.3),0_4px_18px_0_rgba(220,76,100,0.2)] focus:outline-none focus:ring-0 active:bg-danger-700 active:shadow-[0_8px_9px_-4px_rgba(220,76,100,0.3),0_4px_18px_0_rgba(220,76,100,0.2)]"
                 >
                   Submit
                 </button>
+                <button
+                 
+                  className="mx-2 inline-block rounded bg-danger px-6 pt-2.5 pb-2 my-2 text-xs font-medium uppercase leading-normal text-white shadow-[0_4px_9px_-4px_#dc4c64] transition duration-150 ease-in-out hover:bg-danger-600 hover:shadow-[0_8px_9px_-4px_rgba(220,76,100,0.3),0_4px_18px_0_rgba(220,76,100,0.2)] focus:bg-danger-600 focus:shadow-[0_8px_9px_-4px_rgba(220,76,100,0.3),0_4px_18px_0_rgba(220,76,100,0.2)] focus:outline-none focus:ring-0 active:bg-danger-700 active:shadow-[0_8px_9px_-4px_rgba(220,76,100,0.3),0_4px_18px_0_rgba(220,76,100,0.2)]"
+                >
+                  Delete
+                </button>
               </div>
             </form>
+            
           </div>
     
-          <CloseIcon
+          {/* <CloseIcon
             className="absolute right-2 top-0 mt-4 cursor-pointer text-gray-500"
             onClick={() => {
               setReportActivated(false);
             }}
-          />
+          /> */}
         </div>
       );
 }
