@@ -10,7 +10,8 @@ import { MapContainer, TileLayer, Marker, Popup } from "react-leaflet";
 
 function Edit({ data }) {
   const [statedata, setstatedata] = useState(data);
-
+  const access_token =  localStorage.getItem("access_token")
+  console.log(access_token,"HEY I AMA TOKEN")
   let {
     lat,
     long,
@@ -22,17 +23,11 @@ function Edit({ data }) {
     type,
     date_event,
   } = data;
-  // console.log(
-  //   data,
-  //   "THIS IS DATAS-----------------------------",
-  //   lat,
-  //   long,
-  //   description,
-  //   address
-  // );
+ console.log("ALL THE DATA FROM THE API",data)
   const [position, setPosition] = useState([lat, long]);
   const [calculatedWard, setcalculatedWard] = useState(data.Ward);
   const [disaster, setDisaster] = useState([]);
+  console.log("DISASTER ARRAY",disaster)
   const [Region, SetRegion] = useState();
   const disasterTypeGET = async () => {
     const data = await fetch(
@@ -73,34 +68,34 @@ function Edit({ data }) {
   const ReportSendToBackend = async (values) => {
     console.log("valuess,---------------------------", values);
     values={...values,is_verified:true}
-    console.log( "http://127.0.0.1:8000/api/v1/disaster/reportanincident/"+ data.id+ "/","HITTING THIS API NOW")
+    console.log( "http://127.0.0.1:8000/api/v1/disaster/updatedisaster/${data.id}"+ "HITTING THIS API NOW")
     const response = await fetch(
-      "http://127.0.0.1:8000/api/v1/disaster/reportanincident/"+data.id+"/",
-
+      `http://127.0.0.1:8000/api/v1/disaster/updatedisaster/${data.id}/`,
       {
         method: "PATCH",
         headers: {
           "Content-Type": "application/json",
+          "Authorization": "Bearer "+access_token
         },
         body: JSON.stringify(values),
       }
     );
-    // const responseData = await response.json();
-    // return responseData;
+    const responseData = await response.json();
+    console.log("PATCH-RESPONSE",responseData)
   };
 
-  const date = new Date(date_event).toISOString().replace("Z", "");
-
-  // console.log(formattedDate);
+const date = new Date(date_event).toISOString().replace("Z", "");
+  
+// console.log(formattedDate);
   //  formattedDate=new Date(formattedDate)
   console.log(date, "FOORmATETED DATE");
   const formik = useFormik({
     initialValues: {
       title: name,
       description: description || null,
-      hazard: type?.title | "np title api",
+      hazard: type?.title | "no type",
       incidentOn: date,
-      streetAddress: address || "no address api",
+      streetAddress: address || "no address ",
       image: null,
       region: "",
       latitude: lat || null,
@@ -121,7 +116,8 @@ function Edit({ data }) {
       const disasterobject = disaster.find(
         (disaster) => disaster.title === values.hazard
       );
-      const hazardid = disasterobject.id;
+       console.log("DISASTEROBJECT",disasterobject)
+      const hazardid = disasterobject?.id
       const wardobject = Region.find(
         (ward) => ward.properties.ward == values.region
       );
@@ -130,12 +126,13 @@ function Edit({ data }) {
         description: values.title,
         lat: values.latitude,
         long: values.longitude,
-        hazard: hazardid,
+        type: hazardid,
         Ward: wardid,
-        startTime: values.incidentOn + ":00Z",
-        name: values.hazard + " in " + values.streetAddress,
+        date_event: values.incidentOn,
+        name:disasterobject?.title||"Disaster Event "+ " in " + values.streetAddress,
         address:values.streetAddress
       };
+      console.log("CALLING REPORT with",disasterData)
       ReportSendToBackend(disasterData);
       //   setReportActivated(false);
     },
@@ -226,7 +223,8 @@ function Edit({ data }) {
                 }}
                 id="hazard"
                 name="hazard"
-                value={formik.values.hazard}
+                  defaultValue={{ label: type?.title||"NO TYPE REPORTED", value: type?.title||"NO" }}
+                // value={formik.values.hazard}
                 options={disasterTypeOptions}
               />
               {formik.errors.hazard ? (
@@ -370,6 +368,76 @@ function Edit({ data }) {
                 </div>
               ) : null}
             </div>
+              
+
+
+
+            <div className="pt-3 hover:text-red-500">
+              <div className="after:">
+                <label
+                  htmlFor="latitude"
+                  className="text-xs font-normal leading-tight text-blue-gray-500 transition-all font-bold"
+                >
+                 Infrastructure Damage
+                </label>
+                <input
+                  id="latitude"
+                  name="latitude"
+                  type="number"
+                  className="h-9 border rounded border-stone-300	w-40 hover:border-red-500 hover:text-black px-2"
+                  onChange={formik.handleChange}
+                  onBlur={formik.handleBlur}
+                  // value={(formik.values.latitude = position[0].toFixed(5))}
+                ></input>
+              </div>
+             
+            </div>
+            <div className="pt-3 hover:text-red-500">
+              <div className="after:">
+                <label
+                  htmlFor="latitude"
+                  className="text-xs font-normal leading-tight text-blue-gray-500 transition-all font-bold"
+                >
+                 Financial Loss
+                </label>
+                <input
+                  id="latitude"
+                  name="latitude"
+                  type="number"
+                  className="h-9 border rounded border-stone-300	w-40 hover:border-red-500 hover:text-black px-2"
+                  onChange={formik.handleChange}
+                  onBlur={formik.handleBlur}
+                  // value={(formik.values.latitude = position[0].toFixed(5))}
+                ></input>
+              </div>
+             
+            </div>
+
+
+            <div className="pt-3 hover:text-red-500">
+              <div className="after:">
+                <label
+                  htmlFor="latitude"
+                  className="text-xs font-normal leading-tight text-blue-gray-500 transition-all font-bold"
+                >
+                 Lives Lost
+                </label>
+                <input
+                  id="latitude"
+                  name="latitude"
+                  type="number"
+                  className="h-9 border rounded border-stone-300	w-40 hover:border-red-500 hover:text-black px-2"
+                  onChange={formik.handleChange}
+                  onBlur={formik.handleBlur}
+                  // value={(formik.values.latitude = position[0].toFixed(5))}
+                ></input>
+              </div>
+             
+            </div>
+
+
+
+
           </div>
           <div style={{ height: "275px" }} className="mt-3">
             <MapContainer
