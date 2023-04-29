@@ -49,7 +49,7 @@ function DisasterAnalysis({ changeMarkerDataState }) {
   return (
     <div className="h-[80vh] scrollbar">
       <div className="flex justify-start">
-      <div className="p-2 hover:text-red-500 bg-[#e35163] text-white">
+      <div className="p-2 hover:text-red-500 bg-[#e35163] text-white rounded-sm">
        <div className="flex flex-start text-sm items-center"
        >
          < AiFillSetting/>Analysis Settings
@@ -69,8 +69,7 @@ function DisasterAnalysis({ changeMarkerDataState }) {
                   type="number"
                   defaultValue={bufferd}
                   onChange={(e)=>{
-                    dispatch(setdistance(e.target.value))
-                    
+                    dispatch(setdistance(e.target.value))  
                   }}
                   className="h-9 border rounded border-stone-300	w-40 hover:border-red-500 hover:text-black px-2 py-2 my-1 text-red-500"
                  
@@ -79,6 +78,10 @@ function DisasterAnalysis({ changeMarkerDataState }) {
           </div>
       </div>
       <Accordian AllDisaster={wardAllIncident} latlngHandler={latlngHandler} />
+      {/* <button className="mx-2 inline-block rounded bg-danger px-6 pt-2.5 pb-2 my-2 text-xs font-medium uppercase leading-normal text-white shadow-[0_4px_9px_-4px_#dc4c64] transition duration-150 ease-in-out hover:bg-danger-600 hover:shadow-[0_8px_9px_-4px_rgba(220,76,100,0.3),0_4px_18px_0_rgba(220,76,100,0.2)] focus:bg-danger-600 focus:shadow-[0_8px_9px_-4px_rgba(220,76,100,0.3),0_4px_18px_0_rgba(220,76,100,0.2)] focus:outline-none focus:ring-0 active:bg-danger-700 active:shadow-[0_8px_9px_-4px_rgba(220,76,100,0.3),0_4px_18px_0_rgba(220,76,100,0.2)]">
+              Delete
+            </button> */}
+      {/* <button className="mx-2 inline-block rounded bg-danger px-6 pt-2.5 pb-2 my-2 text-xs font-medium uppercase leading-normal text-white shadow-[0_4px_9px_-4px_#dc4c64] transition duration-150 ease-in-out hover:bg-danger-600 hover:shadow-[0_8px_9px_-4px_rgba(220,76,100,0.3),0_4px_18px_0_rgba(220,76,100,0.2)] focus:bg-danger-600 focus:shadow-[0_8px_9px_-4px_rgba(220,76,100,0.3),0_4px_18px_0_rgba(220,76,100,0.2)] focus:outline-none focus:ring-0 active:bg-danger-700 active:shadow-[0_8px_9px_-4px_rgba(220,76,100,0.3),0_4px_18px_0_rgba(220,76,100,0.2)]" >Trigger Alert In this region</button> */}
     </div>
   );
 }
