@@ -14,7 +14,7 @@ function Edit({ data }) {
   const [infra,setinfra]=useState(null)
   const [statedata, setstatedata] = useState(data);
   const access_token =  localStorage.getItem("access_token")
-  console.log(access_token,"HEY I AMA TOKEN")
+  // console.log(access_token,"HEY I AMA TOKEN")
   let {
     lat,
     long,
@@ -25,6 +25,8 @@ function Edit({ data }) {
     registered_date,
     type,
     date_event,
+    InfrastructureDestroyed,estimatedLoss,
+    peopleDeath
   } = data;
 
   const [position, setPosition] = useState([lat, long]);
@@ -68,7 +70,7 @@ function Edit({ data }) {
   function updatePosition(event) {
     setPosition([event.target.getLatLng().lat, event.target.getLatLng().lng]);
   }
-  const gitReportSendToBackend = async (values) => {
+  const ReportSendToBackend = async (values) => {
     console.log("valuess,---------------------------", values);
     values={...values,is_verified:true}
     console.log( "http://127.0.0.1:8000/api/v1/disaster/updatedisaster/${data.id}"+ "HITTING THIS API NOW")
@@ -409,6 +411,7 @@ const date = new Date(date_event).toISOString().replace("Z", "");
                   name="latitude"
                   type="number"
                   className="h-9 border rounded border-stone-300	w-40 hover:border-red-500 hover:text-black px-2"
+                  defaultValue={InfrastructureDestroyed}
                   onChange={(event) => {
                     setinfra(event.target.value);
                   }}
@@ -430,6 +433,7 @@ const date = new Date(date_event).toISOString().replace("Z", "");
                   id="latitude"
                   name="latitude"
                   type="number"
+                  defaultValue={ estimatedLoss}
                   className="h-9 border rounded border-stone-300	w-40 hover:border-red-500 hover:text-black px-2"
                   onChange={(event) => {
                     setFinance(event.target.value);
@@ -454,6 +458,7 @@ const date = new Date(date_event).toISOString().replace("Z", "");
                   id="latitude"
                   name="latitude"
                   type="number"
+                  defaultValue={peopleDeath}
                   className="h-9 border rounded border-stone-300	w-40 hover:border-red-500 hover:text-black px-2"
                   onChange={(event) => {
                     setlives(event.target.value);

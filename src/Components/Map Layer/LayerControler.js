@@ -1,15 +1,18 @@
 import React, { Fragment, useState, useEffect } from "react";
-import { LayersControl, MapContainer, Marker, TileLayer } from "react-leaflet";
+import { LayersControl, MapContainer, Pane,Marker, TileLayer ,CircleMarker } from "react-leaflet";
 import Markers from "../UI/Marker";
 import { GeoJSON } from "react-leaflet";
 import { useSelector } from "react-redux";
 import { useMap } from "react-leaflet";
 import { GetColor } from "../UI/GetColor";
+
+import L from "leaflet";
 function LayerControler({ disasterData, currenttab }) {
   const leafletMap = useMap();
   const latlng = useSelector((state) => {
     return state.latlng;
   });
+  console.log('I am lat long',latlng)
 
   const [json, setjson] = useState(null);
   const analysisResultAmenities = useSelector((state) => {
@@ -96,6 +99,18 @@ function LayerControler({ disasterData, currenttab }) {
       {disasterData.map((event) => {
         return <Markers disaster={event} key={event.id} />;
       })}
+    {/* <Markers disaster={...latlng}></Markers> */}
+   {/* {latlng? 
+   <Marker position={latlng} icon={ new L.DivIcon({ className: "marker-selector"})}>
+
+  </Marker>:null} */}
+     <Pane name='kl' style={{ zIndex: 1000 }} />
+  {latlng?<CircleMarker center={latlng} radius={10} color="red" fillColor="red" weight={1} pane="kl" zIndexOffset={100} className="blinking-circle" >
+  <div className="" />
+</CircleMarker>:""}
+{latlng?<CircleMarker center={latlng} radius={20}  weight={1} pane="kl" zIndexOffset={100} className="blinking-circle2" >
+  <div className="marker-selector" />
+</CircleMarker>:""}
     </Fragment>
   );
 }

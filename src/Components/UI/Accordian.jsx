@@ -1,4 +1,4 @@
-import { Fragment, useState } from "react";
+import { Fragment, useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { removeAll } from "../../store/Slices/featureSlice";
 import {
@@ -11,6 +11,7 @@ import { useMap } from "react-leaflet";
 import BarChart from "./Chart";
 import { featureGroup } from "leaflet";
 import { GetColor } from "./GetColor";
+import { buffer } from "d3";
 // import {  ChartRe } from "./ChartRe";
 function Icon({ id, open }) {
   return (
@@ -33,6 +34,10 @@ export default function Accordian({ AllDisaster, latlngHandler }) {
   const dispatch = useDispatch();
   const [open, setOpen] = useState(0);
   // barchat data
+  const bufferd=useSelector((state) => {
+    //  console.log(state.manageDisaster)
+    return (state.feature.bufferdistance)
+  })
 
   const builddata = useSelector((state) => {
     return state?.feature?.building;
@@ -92,13 +97,16 @@ export default function Accordian({ AllDisaster, latlngHandler }) {
     setOpen(open === value ? 0 : value);
   };
 
-  const disaster = AllDisaster.map((data) => (
+
+  const disaster = AllDisaster.map((data) => {
+    console.log(bufferd,"CULPRITTTTTTTTTTTTTT")
+    return(
     <Accordion open={open === data.id} icon={<Icon id={data.id} open={open} />}>
       <AccordionHeader
         onClick={() => {
           handleOpen(data.id);
           dispatch(removeAll());
-          latlngHandler([data.lat, data.long]);
+          latlngHandler([data.lat, data.long,bufferd]);
         }}
         className="text-sm py-0 px-2 py-2 border-gray-200 border-b-2  border-t-2"
       >
@@ -173,6 +181,8 @@ export default function Accordian({ AllDisaster, latlngHandler }) {
         </div>
       </AccordionBody>
     </Accordion>
-  ));
-  return <Fragment>{disaster}</Fragment>;
+)});
+  return <Fragment>
+    
+    {disaster}</Fragment>;
 }

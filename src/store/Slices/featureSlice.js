@@ -3,8 +3,10 @@ import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 export const GetBuildingWithInBuffer = createAsyncThunk(
   "GetBuildingWithInBuffer",
   async (latlng) => {
+    const bufferd=latlng[2]
+    // console.log('KKKKKKKKKKKKKKKKKKKK',bufferd)
     const response = await fetch(
-      `http://127.0.0.1:8000/api/v1/analysis/building/?lat=${latlng[0]}&lon=${latlng[1]}&buffer_distance=300`
+      `http://127.0.0.1:8000/api/v1/analysis/building/?lat=${latlng[0]}&lon=${latlng[1]}&buffer_distance=${+bufferd}`
     );
     const data = await response.json();
     return data;
@@ -13,8 +15,10 @@ export const GetBuildingWithInBuffer = createAsyncThunk(
 export const GetForestWithInBuffer = createAsyncThunk(
   "GetForestWithInBuffer",
   async (latlng) => {
+    const bufferd=latlng[2]
+    console.log(`http://127.0.0.1:8000/api/v1/analysis/forest/?lat=${latlng[0]}&lon=${latlng[1]}&buffer_distance=${+bufferd}`)
     const response = await fetch(
-      `http://127.0.0.1:8000/api/v1/analysis/forest/?lat=${latlng[0]}&lon=${latlng[1]}&buffer_distance=300`
+      `http://127.0.0.1:8000/api/v1/analysis/forest/?lat=${latlng[0]}&lon=${latlng[1]}&buffer_distance=${bufferd}`
     );
     const data = await response.json();
     return data;
@@ -23,8 +27,9 @@ export const GetForestWithInBuffer = createAsyncThunk(
 export const GetWaterbodyWithInBuffer = createAsyncThunk(
   "GetWaterbodyWithInBuffer",
   async (latlng) => {
+    const bufferd=latlng[2]
     const response = await fetch(
-      `http://127.0.0.1:8000/api/v1/analysis/waterbody/?lat=${latlng[0]}&lon=${latlng[1]}&buffer_distance=300`
+      `http://127.0.0.1:8000/api/v1/analysis/waterbody/?lat=${latlng[0]}&lon=${latlng[1]}&buffer_distance=${bufferd}`
     );
     const data = await response.json();
     return data;
@@ -33,8 +38,9 @@ export const GetWaterbodyWithInBuffer = createAsyncThunk(
 export const GetAmenitiesWithInBuffer = createAsyncThunk(
   "GetAmenitiesWithInBuffer",
   async (latlng) => {
+    const bufferd=latlng[2]
     const response = await fetch(
-      `http://127.0.0.1:8000/api/v1/analysis/amenities/?lat=${latlng[0]}&lon=${latlng[1]}&buffer_distance=300`
+      `http://127.0.0.1:8000/api/v1/analysis/amenities/?lat=${latlng[0]}&lon=${latlng[1]}&buffer_distance=${bufferd}`
     );
     const data = await response.json();
     return data;
@@ -50,6 +56,7 @@ const initialState = {
   status: "idle",
   featureEachCount: [],
   error: null,
+  bufferdistance:100
 };
 export const FeatureSlice = createSlice({
   name: "manageDisaster",
@@ -63,6 +70,9 @@ export const FeatureSlice = createSlice({
       state.allfeature = [];
       state.featureEachCount = [];
     },
+    setdistance:(state,action)=>{
+      state.bufferdistance=action.payload
+    }
   },
   extraReducers(builder) {
     builder
@@ -136,5 +146,5 @@ export const FeatureSlice = createSlice({
       });
   },
 });
-export const { removeAll } = FeatureSlice.actions;
+export const { removeAll,setdistance } = FeatureSlice.actions;
 export default FeatureSlice.reducer;
