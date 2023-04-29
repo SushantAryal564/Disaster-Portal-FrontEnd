@@ -9,6 +9,9 @@ import { GeoJSON } from "react-leaflet";
 import { MapContainer, TileLayer, Marker, Popup } from "react-leaflet";
 
 function Edit({ data }) {
+  const [finance,setFinance]=useState(null)
+  const [lives,setlives]=useState(null)
+  const [infra,setinfra]=useState(null)
   const [statedata, setstatedata] = useState(data);
   const access_token =  localStorage.getItem("access_token")
   console.log(access_token,"HEY I AMA TOKEN")
@@ -23,11 +26,11 @@ function Edit({ data }) {
     type,
     date_event,
   } = data;
- console.log("ALL THE DATA FROM THE API",data)
+
   const [position, setPosition] = useState([lat, long]);
   const [calculatedWard, setcalculatedWard] = useState(data.Ward);
   const [disaster, setDisaster] = useState([]);
-  console.log("DISASTER ARRAY",disaster)
+
   const [Region, SetRegion] = useState();
   const disasterTypeGET = async () => {
     const data = await fetch(
@@ -65,7 +68,7 @@ function Edit({ data }) {
   function updatePosition(event) {
     setPosition([event.target.getLatLng().lat, event.target.getLatLng().lng]);
   }
-  const ReportSendToBackend = async (values) => {
+  const gitReportSendToBackend = async (values) => {
     console.log("valuess,---------------------------", values);
     values={...values,is_verified:true}
     console.log( "http://127.0.0.1:8000/api/v1/disaster/updatedisaster/${data.id}"+ "HITTING THIS API NOW")
@@ -122,6 +125,7 @@ const date = new Date(date_event).toISOString().replace("Z", "");
         (ward) => ward.properties.ward == values.region
       );
       const wardid = wardobject.id;
+      if (infra,finance,lives){
       const disasterData = {
         description: values.title,
         lat: values.latitude,
@@ -130,11 +134,31 @@ const date = new Date(date_event).toISOString().replace("Z", "");
         Ward: wardid,
         date_event: values.incidentOn,
         name:disasterobject?.title||"Disaster Event "+ " in " + values.streetAddress,
-        address:values.streetAddress
+        address:values.streetAddress,
+        InfrastructureDestroyed:infra,
+        estimatedLoss:finance,
+        peopleDeath:lives,
       };
-      console.log("CALLING REPORT with",disasterData)
       ReportSendToBackend(disasterData);
-      //   setReportActivated(false);
+    }
+      else{
+        const disasterData = {
+          description: values.title,
+          lat: values.latitude,
+          long: values.longitude,
+          type: hazardid,
+          Ward: wardid,
+          date_event: values.incidentOn,
+          name:disasterobject?.title||"Disaster Event "+ " in " + values.streetAddress,
+          address:values.streetAddress,
+
+        }
+        ReportSendToBackend(disasterData);
+
+      }
+      // console.log("CALLING REPORT with",disasterData)
+      // ReportSendToBackend(disasterData);
+      // //   setReportActivated(false);
     },
   });
   let formIsValid = true;
@@ -385,7 +409,9 @@ const date = new Date(date_event).toISOString().replace("Z", "");
                   name="latitude"
                   type="number"
                   className="h-9 border rounded border-stone-300	w-40 hover:border-red-500 hover:text-black px-2"
-                  onChange={formik.handleChange}
+                  onChange={(event) => {
+                    setinfra(event.target.value);
+                  }}
                   onBlur={formik.handleBlur}
                   // value={(formik.values.latitude = position[0].toFixed(5))}
                 ></input>
@@ -405,7 +431,9 @@ const date = new Date(date_event).toISOString().replace("Z", "");
                   name="latitude"
                   type="number"
                   className="h-9 border rounded border-stone-300	w-40 hover:border-red-500 hover:text-black px-2"
-                  onChange={formik.handleChange}
+                  onChange={(event) => {
+                    setFinance(event.target.value);
+                  }}
                   onBlur={formik.handleBlur}
                   // value={(formik.values.latitude = position[0].toFixed(5))}
                 ></input>
@@ -427,7 +455,9 @@ const date = new Date(date_event).toISOString().replace("Z", "");
                   name="latitude"
                   type="number"
                   className="h-9 border rounded border-stone-300	w-40 hover:border-red-500 hover:text-black px-2"
-                  onChange={formik.handleChange}
+                  onChange={(event) => {
+                    setlives(event.target.value);
+                  }}
                   onBlur={formik.handleBlur}
                   // value={(formik.values.latitude = position[0].toFixed(5))}
                 ></input>
