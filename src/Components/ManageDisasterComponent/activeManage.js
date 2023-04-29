@@ -32,7 +32,8 @@ const ActiveManage = ({ changeMarkerDataState }) => {
     // console.log(`http://127.0.0.1:8000/api/v1/disaster/disasterEventwithoutgeom/?name=&Ward=${wardId}&type=&is_closed=false`,'NODATE ENDPOINT')
 
     let data = await fetch(
-      `http://127.0.0.1:8000/api/v1/disaster/disasterEvent/?name=&Ward=${wardId}&type=&is_closed=&startTime__gte=${startDate}&startTime__gt=&startTime__lt=${endDate}`
+      `http://127.0.0.1:8000/api/v1/disaster/disasterEvent/?name=&Ward=${wardId}&type=&is_closed=&startTime__gte=&startTime__gt=&startTime__lt=`
+    //   `http://127.0.0.1:8000/api/v1/disaster/disasterEvent/?name=&Ward=${wardId}&type=&is_closed=&startTime__gte=${startDate}&startTime__gt=&startTime__lt=${endDate}`
     );
     // var rem=`&startTime__gte=${startDate}T18%3A00%3A00Z&startTime__gt=&startTime=&startTime__lte=${endDate}T18%3A00%3A00Z`
 

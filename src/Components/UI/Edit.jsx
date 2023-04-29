@@ -22,14 +22,14 @@ function Edit({ data }) {
     type,
     date_event,
   } = data;
-  console.log(
-    data,
-    "THIS IS DATAS-----------------------------",
-    lat,
-    long,
-    description,
-    address
-  );
+  // console.log(
+  //   data,
+  //   "THIS IS DATAS-----------------------------",
+  //   lat,
+  //   long,
+  //   description,
+  //   address
+  // );
   const [position, setPosition] = useState([lat, long]);
   const [calculatedWard, setcalculatedWard] = useState(data.Ward);
   const [disaster, setDisaster] = useState([]);
@@ -72,10 +72,13 @@ function Edit({ data }) {
   }
   const ReportSendToBackend = async (values) => {
     console.log("valuess,---------------------------", values);
+    values={...values,is_verified:true}
+    console.log( "http://127.0.0.1:8000/api/v1/disaster/reportanincident/"+ data.id+ "/","HITTING THIS API NOW")
     const response = await fetch(
-      "http://127.0.0.1:8000/api/v1/disaster/reportanincident/",
+      "http://127.0.0.1:8000/api/v1/disaster/reportanincident/"+data.id+"/",
+
       {
-        method: "POST",
+        method: "PATCH",
         headers: {
           "Content-Type": "application/json",
         },
@@ -131,6 +134,7 @@ function Edit({ data }) {
         Ward: wardid,
         startTime: values.incidentOn + ":00Z",
         name: values.hazard + " in " + values.streetAddress,
+        address:values.streetAddress
       };
       ReportSendToBackend(disasterData);
       //   setReportActivated(false);
@@ -416,7 +420,9 @@ function Edit({ data }) {
             >
               Verfify this Report
             </label>
+          
           </div>
+          <p className="text-red-600">By clicking submit you are verify this report</p>
           {/*  */}
           <div className="flex justify-center">
             <button
