@@ -2,12 +2,17 @@ import React, { useState, useEffect, useRef } from "react";
 import { Fragment } from "react";
 import { AiFillInfoCircle } from "react-icons/ai";
 import { BiAlarm } from "react-icons/bi";
+import {
+  Accordion,
+  AccordionHeader,
+  AccordionBody,
+} from "@material-tailwind/react";
 
 function ActivityLog({ changeMarkerDataState }) {
   const [DisasterId, setDisasterID] = useState(0);
   const [activity, setActivity] = useState("");
   const [date, setDate] = useState("");
-  const[reloder,setreloder]=useState(true)
+  const [reloder, setreloder] = useState(true);
   let formIsValid = false;
   if (activity.trim() !== "" || date !== "") {
     formIsValid = true;
@@ -61,14 +66,12 @@ function ActivityLog({ changeMarkerDataState }) {
         },
         body: JSON.stringify(data),
       }
-    
     );
     const responseData = await response.json();
-    setActivity('')
-    setDate('')
-    setreloder(!reloder)
+    setActivity("");
+    setDate("");
+    setreloder(!reloder);
     return responseData;
-
   };
   const ActivityFormSubmitHandler = (e) => {
     e.preventDefault();
@@ -94,82 +97,114 @@ function ActivityLog({ changeMarkerDataState }) {
     DisasterActivity(id);
   };
 
-  // useEffect(()=>{
-  //   DisasterActivityLogHandler(wardId)
-  // },[reloder])
-  
   const ActivityLogLayout =
     DisasterActivityLog == []
       ? ""
       : DisasterActivityLog.map((data) => {
           return (
             <ul className="max-w-md divide-y divide-gray-200 dark:divide-gray-700">
-               <li class="pb-3 sm:pb-4">
-               <div>{data.action_name}</div>
-              <div className="text-xs text-gray-500">{data.time_of_action}</div>
-              <div>{data.logCreator}</div>
-               </li>
-              
+              <li class="pb-3 sm:pb-4">
+                <div className="text-lg font-bold">{data.action_name}</div>
+                <div className="text-xs text-black">
+                  {`${new Date(data.time_of_action).getFullYear()}/${(
+                    new Date(data.time_of_action).getMonth() + 1
+                  )
+                    .toString()
+                    .padStart(2, "0")}/${new Date(data.time_of_action)
+                    .getDate()
+                    .toString()
+                    .padStart(2, "0")} ${new Date(
+                    data.time_of_action
+                  ).toLocaleTimeString()}`}
+                </div>
+                <div>{data.logCreator}</div>
+              </li>
             </ul>
           );
         });
-  const DisasterEventLayout = WardDisasterData?.map((data) => {
-    console.log('Each daata in dashboard',data)
+  const [open, setOpen] = useState(0);
+  const handleOpen = (value) => {
+    setOpen(open === value ? 0 : value);
+  };
+  function Icon({ id, open }) {
     return (
-      <div className="border-gray-200 border-b-2 p-1 hover:bg-gray-200 py-2" onClick={() => {
-        DisasterActivityLogHandler(data.id);
-      }}>
-        <div className="text-md font-medium flex flex-row ">
-          <div className="text-red-500 text-sm flex flex-col">
-            <span className="px-3">
-              {" "}
-              <img
-            className="w-9 h-6 pt-1 mt-1"
-            src={`http://127.0.0.1:8000/${data?.type?.title}.svg`}
-            
-          />  
-            </span>
-            <p className="text-xs text-black mx-6 my-1">{data?.type?.title || "none"}</p>
-          </div>
-          <span className="font-normal ml-2 mt-1 pt-1 text-sm">
-            <div className="font-semibold text-xs"> {data.name}</div>
-            <div>
-              <div className="text-xs  text-gray-500 flex justify-start ">
-               
-                <div className="flex items-center my-1">
-                  <span>
-                    <BiAlarm />
+      <svg
+        xmlns="http://www.w3.org/2000/svg"
+        className={`${
+          id === open ? "rotate-180" : ""
+        } h-5 w-5 transition-transform`}
+        fill="none"
+        viewBox="0 0 24 24"
+        stroke="currentColor"
+        strokeWidth={2}
+      >
+        <path strokeLinecap="round" strokeLinejoin="round" d="M19 9l-7 7-7-7" />
+      </svg>
+    );
+  }
+  const DisasterEventLayout = WardDisasterData?.map((data) => {
+    return (
+      <div className="px-4 border-2 mx-2">
+        <Accordion
+          open={open === data.id}
+          icon={<Icon id={data.id} open={open} />}
+          onClick={() => {
+            handleOpen(data.id);
+          }}
+        >
+          <AccordionHeader
+            onClick={() => {
+              handleOpen(data.id);
+            }}
+          >
+            <div
+              onClick={() => {
+                DisasterActivityLogHandler(data.id);
+              }}
+            >
+              <div className="text-md font-medium flex flex-row">
+                <div className="text-red-500 flex flex-col">
+                  <span className="px-3">
+                    <img
+                      className="w-9 h-6 pt-1 mt-1"
+                      src={`http://127.0.0.1:8000/${data?.type?.title}.svg`}
+                    />
                   </span>
-                  <span className="mx-2">{data.date_event.slice(0,10)}</span>
-                  <span className="ml-2">{data.date_event.slice(11,16)}</span>
-                  <span className="ml-2">WARD-{data.Ward.ward}</span>
-                  <span className="ml-3">{data.ADDRESS||'Dhapakhel,Gems School'}</span>
+                  <p className="text-sm text-black mx-6 my-1">
+                    {data?.type?.title || "none"}
+                  </p>
+                </div>
+                <div className="font-normal ml-2 mt-1 pt-1 text-sm">
+                  <div className="font-semibold text-lg flex justify-start">
+                    {" "}
+                    {data.name}
+                  </div>
+                  <div>
+                    <div className="text-xs  text-gray-500 flex justify-start ">
+                      <div className="flex items-center my-1">
+                        <span>
+                          <BiAlarm />
+                        </span>
+                        <span className="mx-2">
+                          {data.date_event.slice(0, 10)}
+                        </span>
+                        <span className="ml-2">
+                          {data.date_event.slice(11, 16)}
+                        </span>
+                        <span className="ml-2">WARD-{data.Ward.ward}</span>
+                        <span className="ml-3">
+                          {data.ADDRESS || "Dhapakhel,Gems School"}
+                        </span>
+                      </div>
+                    </div>
+                  </div>
                 </div>
               </div>
             </div>
-          </span>
-        </div>
-      </div>
-    )});
-  
-  return (
-    <Fragment>
-      <div className="flex justify-between px-10">
-        {/* <div onClick={activeIncidentLogHandler}>Active Incident Log</div>
-        <div onClick={allIncidentLogHandler}>Past Incident Log</div> */}
-      </div>
-      <div className="grid grid-cols-8">
-        <div className="col-span-4">{DisasterEventLayout}</div>
-        <div className="col-span-4 ">
-          <div className="bg-gray-200 mt-2 text-white px-2 py-2"><center>Activity Log List</center></div>
-         <div>{ActivityLogLayout}</div>
-          <div>
-           
-          </div>
-        </div>
-        
-      </div>
-      <form className="w-full max-w-lg">
+          </AccordionHeader>
+          <AccordionBody>
+            {ActivityLogLayout}
+            <form className="w-full max-w-lg">
               <div class="w-full px-3">
                 <label
                   class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"
@@ -212,13 +247,27 @@ function ActivityLog({ changeMarkerDataState }) {
                     type="button"
                     onClick={ActivityFormSubmitHandler}
                     disabled={!formIsValid}
-                  >Submit
+                  >
+                    Submit
                   </button>
                 </div>
               </div>
             </form>
+          </AccordionBody>
+        </Accordion>
+      </div>
+    );
+  });
+
+  return (
+    <Fragment>
+      <div>
+        <div className="text-lg px-4 text-[#e35163]">
+          Disaster Response Activity
+        </div>
+        <div className="col-span-4">{DisasterEventLayout}</div>
+      </div>
     </Fragment>
   );
-
-  }
+}
 export default ActivityLog;

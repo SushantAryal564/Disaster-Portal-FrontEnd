@@ -16,7 +16,6 @@ function DisasterAnalysis({ changeMarkerDataState }) {
   let now = new Date();
   let dispatch = useDispatch();
   let today = now.toISOString().substr(0, 10);
-  console.log('TODAY frm anaysis',today)
   const [wardAllIncident, setWardAllIncident] = useState([]);
   const wardId = localStorage.getItem("WardId");
   const WardIncident = async () => {
@@ -40,7 +39,7 @@ function DisasterAnalysis({ changeMarkerDataState }) {
     WardIncident();
   }, []);
   return (
-    <div>
+    <div className="h-[80vh] scrollbar">
       <Accordian AllDisaster={wardAllIncident} latlngHandler={latlngHandler} />
     </div>
   );

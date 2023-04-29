@@ -107,7 +107,6 @@ export const Portal = () => {
         return <Dashboard />;
     }
   };
-
   const ComponentToRender = changeComponent(component);
   const metroJSON = async () => {
     let data = await fetch(

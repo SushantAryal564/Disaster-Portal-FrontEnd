@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { DamageLossAsyncGETThunk } from "../store/Slices/damageLossSlice";
 import { GetChartDashboardInfo } from "../store/Slices/chartSlice";
 import CustomBarChart from "../Components/Common/Chart/BarChart";
-
+import Header from "./Header";
 function DamageLoss({ reportActivated }) {
   const dispatch = useDispatch();
   const [startDate, setStartDate] = useState(null);
@@ -22,8 +22,10 @@ function DamageLoss({ reportActivated }) {
   let chartData = useSelector((state) => state.chart.data);
   const [damageTab, changedamageTab] = useState("INCIDENT");
   return (
-    <div className="border-2 p-2 text-xs">
-      {/*<form onSubmit={handleSubmit}>
+    <>
+      <Header />
+      <div className="border-2 p-2 text-xs">
+        {/*<form onSubmit={handleSubmit}>
         <div className="flex items-center ">
           <div className="w-1/2 ">
             <label
@@ -60,83 +62,86 @@ function DamageLoss({ reportActivated }) {
           </button>
         </div>
   </form>*/}
-      <div className="flex justify-evenly">
-        <button
-          onClick={() => {
-            changedamageTab("INCIDENT");
-          }}
-          className="bg-teal-500 text-white m-2 p-1 px-2"
-        >
-          Incident
-        </button>
-        <button
-          onClick={() => {
-            changedamageTab("LIVES_LOST");
-          }}
-          className="bg-teal-500 text-white m-2 p-1 px-2"
-        >
-          Lives Lost
-        </button>
-        <button
-          onClick={() => {
-            changedamageTab("PROPERTY_LOSS");
-          }}
-          className="bg-teal-500 text-white m-2 p-1 px-2"
-        >
-          Property Loss
-        </button>
-        <button
-          onClick={() => {
-            changedamageTab("INFRASTRUCTURE_DAMAGE");
-          }}
-          className="bg-teal-500 text-white m-2 p-1 px-2"
-        >
-          Infrastructure Damage
-        </button>
+        <div className="flex justify-evenly">
+          <button
+            onClick={() => {
+              changedamageTab("INCIDENT");
+            }}
+            className="bg-[#418fde] text-white m-2 py-[3px] px-3 rounded-sm"
+          >
+            Incident
+          </button>
+          <button
+            onClick={() => {
+              changedamageTab("LIVES_LOST");
+            }}
+            className="bg-[#418fde] text-white m-2 py-[3px] px-3 rounded-sm"
+          >
+            Lives Lost
+          </button>
+          <button
+            onClick={() => {
+              changedamageTab("PROPERTY_LOSS");
+            }}
+            className="bg-[#418fde] text-white m-2 py-[3px] px-3 rounded-sm"
+          >
+            Property Loss
+          </button>
+          <button
+            onClick={() => {
+              changedamageTab("INFRASTRUCTURE_DAMAGE");
+            }}
+            className="bg-[#418fde] text-white m-2 py-[3px] px-3 rounded-sm"
+          >
+            Infrastructure Damage
+          </button>
+        </div>
+        <div className="w-full h-[580px]">
+          {damageTab === "INCIDENT" && (
+            <>
+              <h1 className="text-center text-base font-bold mt-3">
+                Total Incident in Each Ward
+              </h1>
+              <CustomBarChart
+                data={chartData}
+                dataKey="number_of_disasters"
+                name="Number Of Disasters"
+              />
+            </>
+          )}
+          {damageTab === "LIVES_LOST" && (
+            <>
+              <h1 className="text-base">Total Incident in Each Ward</h1>
+              <CustomBarChart
+                data={chartData}
+                dataKey="total_people_death"
+                name="Total People Death"
+              />
+            </>
+          )}
+          {damageTab === "PROPERTY_LOSS" && (
+            <>
+              <h1 className="text-base">Total Incident in Each Ward</h1>
+              <CustomBarChart
+                data={chartData}
+                dataKey="total_estimated_loss"
+                name="Damaged Property"
+              />
+            </>
+          )}
+          {damageTab === "INFRASTRUCTURE_DAMAGE" && (
+            <>
+              <h1 className="text-base">Total Incident in Each Ward</h1>
+              <CustomBarChart
+                data={chartData}
+                dataKey="total_infrastructure_damaged"
+                name="Infrastructure Damaged"
+              />
+            </>
+          )}
+        </div>
       </div>
-      <div className="w-full h-[580px]">
-        {damageTab === "INCIDENT" && (
-          <>
-            <h1 className="text-base">Total Incident in Each Ward</h1>
-            <CustomBarChart
-              data={chartData}
-              dataKey="number_of_disasters"
-              name="Number Of Disasters"
-            />
-          </>
-        )}
-        {damageTab === "LIVES_LOST" && (
-          <>
-            <h1 className="text-base">Total Incident in Each Ward</h1>
-            <CustomBarChart
-              data={chartData}
-              dataKey="total_people_death"
-              name="Total People Death"
-            />
-          </>
-        )}
-        {damageTab === "PROPERTY_LOSS" && (
-          <>
-            <h1 className="text-base">Total Incident in Each Ward</h1>
-            <CustomBarChart
-              data={chartData}
-              dataKey="total_estimated_loss"
-              name="Damaged Property"
-            />
-          </>
-        )}
-        {damageTab === "INFRASTRUCTURE_DAMAGE" && (
-          <>
-            <h1 className="text-base">Total Incident in Each Ward</h1>
-            <CustomBarChart
-              data={chartData}
-              dataKey="total_infrastructure_damaged"
-              name="Infrastructure Damaged"
-            />
-          </>
-        )}
-      </div>
-    </div>
+    </>
   );
 }
 

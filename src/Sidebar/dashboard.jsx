@@ -18,10 +18,10 @@ function Dashboard({ reportActivated }) {
   });
   return (
     <React.Fragment>
-      <div className="flex justify-between items-center px-10 py-3">
-        <div>DIMS</div>
-        <div>
-          <img src={LMC} alt="LMC" style={{ height: "50px", width: "50px" }} />
+      <div className="flex justify-between items-center px-3 py-2 bg-[#e35163]">
+        <div className=" text-white text-3xl font-serif font-medium">DIMS</div>
+        <div className="text-white text-xl font-serif">
+          Lalitpur Metropolitan City
         </div>
       </div>
       {disasterData.map((data) => {
@@ -32,7 +32,7 @@ function Dashboard({ reportActivated }) {
                 <span className="px-3">
                   {" "}
                   <img
-                    className="w-9 h-6 pt-1 mt-1"
+                    className="w-9 h-6 pt-1 mt-1 text-red-500"
                     src={`http://127.0.0.1:8000/${data?.type?.title}.svg`}
                     alt={data}
                   />
@@ -57,7 +57,7 @@ function Dashboard({ reportActivated }) {
                       </span>
                       <span className="ml-2">WARD-{data.Ward.ward}</span>
                       <span className="ml-3">
-                        {data.ADDRESS || "Dhapakhel,Gems School"}
+                        {data.address || "Dhapakhel,Gems School"}
                       </span>
                     </div>
                   </div>

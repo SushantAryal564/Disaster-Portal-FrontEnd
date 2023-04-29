@@ -101,11 +101,6 @@ export const SideBar = ({ changeReportState }) => {
       icon: AssignmentIcon,
       handler: handletoggleSituation,
     },
-    {
-      name: FEEDBACK,
-      icon: FeedbackIcon,
-      handler: handletoggleDataFeedback,
-    },
   ];
   return (
     <div className="w-16 absolute right-0 z-50 h-screen border border-dashed shadow-md  flex flex-col  justify-start scrollbar scrollbar-thumb-gray-300 scrollbar-track-gray-100 scrollbar-w-0 scrollbar-rounded-rounded-md">

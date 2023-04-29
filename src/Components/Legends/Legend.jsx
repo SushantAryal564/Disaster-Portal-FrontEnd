@@ -15,7 +15,7 @@ export const getIcon = (disastertype) => {
 
 export const RealTimeLegend = () => {
   return (
-    <div className="bg-teal-500">
+    <div className="w-full">
       <div
         className="legend"
         style={{
@@ -25,9 +25,9 @@ export const RealTimeLegend = () => {
           zIndex: 9999,
         }}
       >
-        <h3 className="bg-white text-black p-1 mb-2"> Legend</h3>
+        <h3 className="bg-white text-black p-1 mb-2 text-base"> Legend</h3>
         <p className="m-2">
-          Selected Stations:{" "}
+          Selected Stations:
           <span className="blinking-marker-selected-legend ">
             &nbsp;&nbsp;&nbsp;&nbsp;
           </span>
@@ -157,7 +157,7 @@ export const ManageDisasterLegend = ({ currenttab, disasterData }) => {
   if (disasterData)
     var disleg =
       disasterData
-        .map((element) => element?.type?.title||"update type ")
+        .map((element) => element?.type?.title || "update type ")
         .filter((title, index, array) => array.indexOf(title) === index) || [];
   // ManageDisasterLegend()
   //  const disasterData = disasterData.filter((element, index, array) => array.indexOf(element) === index);
@@ -172,7 +172,7 @@ export const ManageDisasterLegend = ({ currenttab, disasterData }) => {
           zIndex: 9999,
         }}
       >
-        <h6 className="bg-white text-black p-[0.5px] mb-2 mx-2">  Legend</h6>
+        <h6 className="bg-white text-black p-[0.5px] mb-2 mx-2"> Legend</h6>
         {/* ANLYSIS DYAMIC LEGEND */}
         {currenttab === "disasterAnalysis" ? (
           <>
@@ -206,7 +206,6 @@ export const ManageDisasterLegend = ({ currenttab, disasterData }) => {
 
         {currenttab === "manageData" ? (
           <>
-          
             <div className="m-2 items-center justify-between pb-1 border-b-2">
               <div>
                 {" "}

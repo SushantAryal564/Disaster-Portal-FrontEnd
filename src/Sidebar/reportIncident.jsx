@@ -93,7 +93,7 @@ function ReportAnAncident({ setReportActivated, reportActivated }) {
         (ward) => ward.properties.ward == values.region
       );
       const wardid = wardobject.id;
-      console.log(values, "I am values");
+      console.log(values, "I am values bitch");
       const disasterData = {
         description: values.title,
         lat: values.latitude,
@@ -102,6 +102,7 @@ function ReportAnAncident({ setReportActivated, reportActivated }) {
         Ward: wardid,
         startTime: values.incidentOn + ":00Z",
         name: values.hazard + " in " + values.streetAddress,
+        address: values.streetAddress,
       };
       ReportSendToBackend(disasterData);
       setReportActivated(false);
@@ -152,7 +153,7 @@ function ReportAnAncident({ setReportActivated, reportActivated }) {
     return null;
   }
   return (
-    <div className="absolute w-[40%] z-50 bg-white h-[90%] left-[50%] top-[7%] px-8 border rounded shadow-2xl scrollbar scrollbar-thumb-gray-300 scrollbar-track-gray-100 scrollbar-w-1 scrollbar-rounded-rounded-md ">
+    <div className="absolute w-[40%] z-50 bg-white h-[90%] left-[30%] top-[7%] px-8 border rounded shadow-2xl scrollbar scrollbar-thumb-gray-300 scrollbar-track-gray-100 scrollbar-w-1 scrollbar-rounded-rounded-md ">
       <div className="h-96 self-center text-gray-500">
         <form onSubmit={formik.handleSubmit}>
           <div className="flex flex-row items-center justify-center lg:justify-start ">

@@ -2,6 +2,7 @@ import React, { useEffect } from "react";
 import { BiWater } from "react-icons/bi";
 import { GiFactory } from "react-icons/gi";
 import { useDispatch, useSelector } from "react-redux";
+import Header from "./Header";
 
 import {
   LivePollutionDataAsyncGETThunk,
@@ -27,41 +28,32 @@ export const LiveData = () => {
     (state) => state.selected.selectedMarkerId
   );
   return (
-    <div className="w-full max-w-screen-xl mx-auto">
-      {/*
-      <div className="flex justify-evenly text-xs py-2">
-        <div className="hover:bg-gray-100 px-10 py-2 w-full">
-          Pollution <BiWater />
-        </div>
-        <div className="hover:bg-gray-100 px-10 py-2 w-full">
-          Water Level
-          <GiFactory />
-        </div>
-  </div>*/}
-      {data[0]?.results && data2[0]?.results ? (
-        <div className="">
-          <Water
-            data2={data2[0].results}
-            selectedMarkerId={selectedMarkerId}
-          ></Water>
-          <Pollution
-            data={data[0].results}
-            selectedMarkerId={selectedMarkerId}
-          ></Pollution>
-        </div>
-      ) : (
-        ""
-      )}
-    </div>
+    <>
+      <Header />
+      <div className="w-full max-w-screen-xl mx-auto">
+        {data[0]?.results && data2[0]?.results ? (
+          <div className="">
+            <Water
+              data2={data2[0].results}
+              selectedMarkerId={selectedMarkerId}
+            ></Water>
+            <Pollution
+              data={data[0].results}
+              selectedMarkerId={selectedMarkerId}
+            ></Pollution>
+          </div>
+        ) : (
+          ""
+        )}
+      </div>
+    </>
   );
 };
 export const Pollution = ({ data, selectedMarkerId }) => {
   const dispatch = useDispatch();
   return (
     <div>
-      <div className="text-[12px] p-1 bg-teal-500 text-white mt-12">
-        Pollution Live Data
-      </div>
+      <div>Pollution Live Data</div>
       <div className="flex flex-col mt-0">
         <div className="">
           <div className="py-0 inline-block min-w-full ">
@@ -138,9 +130,7 @@ export const Water = ({ data2, selectedMarkerId }) => {
   const dispatch = useDispatch();
   return (
     <div>
-      <div className="text-[12px] p-1 bg-teal-500 text-white">
-        River Live Data
-      </div>
+      <div>River Live Data</div>
       <div className="flex flex-col mt-0">
         <div className="">
           <div className="py-0 inline-block min-w-full ">

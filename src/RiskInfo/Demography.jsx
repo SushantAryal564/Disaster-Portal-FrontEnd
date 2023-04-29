@@ -1,6 +1,7 @@
-import React, { Fragment } from "react";
-
-export const Deomography = () => {
+import React from "react";
+import DoubleBarChart from "../Components/Common/Chart/DoubleBarChart";
+import { demography } from "./population.js";
+export const Demography = () => {
   return (
     <div className=" mx-4 scrollbar scrollbar-thumb-gray-300 scrollbar-track-gray-100 scrollbar-w-1 scrollbar-rounded-rounded-md">
       <div className="mt-8 text-5xl font-serif font-medium"> Demography</div>
@@ -27,7 +28,7 @@ export const Deomography = () => {
           <div className="text-[#e35163]">Total HouseHold Number</div>
         </div>
       </div>
-      <div className="flex mt-3 font-bold justify-around">
+      <div className="flex mt-3 font-bold justify-around gap-3">
         <div>
           <div className="">145,924</div>
           <div className="text-[#e35163]">Male Population</div>
@@ -40,6 +41,24 @@ export const Deomography = () => {
           <div>0</div>
           <div className="text-[#e35163]">Other Population</div>
         </div>
+      </div>
+      <div className="flex gap-2 justify-center mt-4">
+        <div className="flex items-center gap-1">
+          <div className="w-4 h-4 bg-[#ffbf00]"></div>
+          <div>Male</div>
+        </div>
+        <div className="flex items-center gap-1">
+          <div className="w-4 h-4 bg-[#347eff]"></div>
+          <div>Female</div>
+        </div>
+      </div>
+      <div className="w-full h-[800px]">
+        <DoubleBarChart
+          data={demography}
+          datakey1="Male"
+          datakey2="Female"
+          labelBy="Ward"
+        />
       </div>
     </div>
   );

@@ -41,7 +41,7 @@ export default function AccordianDyn({ AllDisaster, latlngHandler }) {
           //   dispatch(removeAll());
           latlngHandler([data.lat, data.long, 19]);
         }}
-        className="text-sm py-0 px-2 py-2 border-gray-200 border-b-2  border-t-2"
+        className="text-sm px-2 py-2 border-gray-200 border-b-2  border-t-2"
       >
         <div className=" p-1 hover:bg-gray-200 py-2">
           <div className="text-md font-medium flex flex-row ">
@@ -95,5 +95,9 @@ export default function AccordianDyn({ AllDisaster, latlngHandler }) {
       </AccordionBody>
     </Accordion>
   ));
-  return <Fragment>{disaster}</Fragment>;
+  return (
+    <Fragment>
+      <div className="h-[85vh] scrollbar mt-2">{disaster}</div>
+    </Fragment>
+  );
 }

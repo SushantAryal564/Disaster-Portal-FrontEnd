@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Deomography } from "../RiskInfo/Demography";
+import { Demography } from "../RiskInfo/Demography.jsx";
 import { Imagery } from "../RiskInfo/Imagery";
 import { CriticalInfrastructure } from "../RiskInfo/CriticalInfrastructure";
 import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";
@@ -34,7 +34,7 @@ function RiskInfo() {
         <ChevronRightIcon onClick={IncreaseClickHandler} />
       </div>
       <div>
-        {currentPanel === 1 ? <Deomography /> : ""}
+        {currentPanel === 1 ? <Demography /> : ""}
         {currentPanel === 2 ? <Imagery /> : ""}
         {currentPanel === 3 ? <CriticalInfrastructure /> : ""}
       </div>
