@@ -11,6 +11,7 @@ import { getToken } from "./services/localStorageService";
 import { getUserInformation } from "./services/localStorageService";
 import { setUserToken, setUserInfo } from "./store/Slices/authSlice";
 import ManageDisasterMap from "./Components/Map Layer/ManageDisasterMap";
+import ManageDisasterOther from "./Components/Pages/ManageDisasterOther";
 function App() {
   const dispatch = useDispatch();
   let { access_token } = getToken();
@@ -26,7 +27,7 @@ function App() {
       <Route path="/" element={<Portal />} />
       <Route path="/login" element={<LoginSignUp />} />
       <Route path="/managedisaster" element={<ManageDisaster />} />
-      <Route path="/maplibre" element={<ManageDisasterMap />} />
+      <Route path="/manage" element={<ManageDisasterOther />} />
     </Routes>
   );
 }

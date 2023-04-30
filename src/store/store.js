@@ -16,6 +16,7 @@ import featureReducer from "./Slices/featureSlice";
 import buildingReducer from "./Slices/buildingSlice";
 import riskinfoReducer from "./Slices/riskinfoSlice";
 import chartReducer from "./Slices/chartSlice";
+import { manageApiSlice } from "../services/MuniClusManage";
 
 const store = configureStore({
   reducer: {
@@ -30,6 +31,7 @@ const store = configureStore({
     damageLegend: damageLegendSlice,
     chart: chartReducer,
     [userAuthApi.reducerPath]: userAuthApi.reducer,
+    [manageApiSlice.reducerPath]: manageApiSlice.reducer,
     auth: authReducer,
     manageDisaster: manageDisasterReducer,
     latlng: latlngreducer,
@@ -37,7 +39,10 @@ const store = configureStore({
     buildings: buildingReducer,
     riskinfo: riskinfoReducer,
   },
-  middleware: (getDefaultMiddleware) =>
-    getDefaultMiddleware().concat(userAuthApi.middleware),
+  middleware: (getDefaultMiddleware) => [
+    ...getDefaultMiddleware(),
+    userAuthApi.middleware,
+    manageApiSlice.middleware,
+  ],
 });
 export default store;

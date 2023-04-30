@@ -5,6 +5,7 @@ const initialState = {
   wardId: "",
   wardNumber: "",
   isMunicipality: false,
+  isCluster: false,
 };
 
 const authSlice = createSlice({
@@ -12,6 +13,7 @@ const authSlice = createSlice({
   initialState,
   reducers: {
     setUserToken: (state, action) => {
+      console.log(action.payload, "payload");
       state.access_token = action.payload.access_token;
     },
     unSetUserToken: (state, action) => {
@@ -26,6 +28,11 @@ const authSlice = createSlice({
       }
       if (action.payload.IsMunicipality) {
         state.isMunicipality = true;
+        state.wardNumber = "";
+        state.wardId = "";
+      }
+      if (action.payload.IsClutser) {
+        state.isCluster = true;
         state.wardNumber = "";
         state.wardId = "";
       }

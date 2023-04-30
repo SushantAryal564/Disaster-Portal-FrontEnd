@@ -22,7 +22,6 @@ function ActivityLog({ changeMarkerDataState }) {
   const [DisasterActivityLog, setDisasterActivityLog] = useState("");
   const wardId = localStorage.getItem("WardId");
   const wardNumber = localStorage.getItem("wardNumber");
-  let access_token = localStorage.getItem("access_token");
   const WardActiveDisaster = async () => {
     let data = await fetch(
       `http://127.0.0.1:8000/api/v1/disaster/disasterEventwithoutgeom/?name=&Ward=${wardId}`
