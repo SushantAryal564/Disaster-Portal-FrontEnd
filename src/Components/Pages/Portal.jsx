@@ -1,5 +1,5 @@
 import React, { useEffect, useState, Fragment } from "react";
-import { GeoJSON } from "react-leaflet";
+import { GeoJSON,CircleMarker  } from "react-leaflet";
 import Layout from "../Layout/Layout";
 import {
   LayersControl,
@@ -329,11 +329,7 @@ const wardstyle2={
                 })
               : ""}
 
-     {component==='Data' && dedata?
-     dedata?.map((event) => {
-      return <Markers disaster={event} key={event.id} />;
-                })
-     :""}
+   
 
             {component === INCIDENT
               ? dataIncident.map((event) => {
@@ -341,6 +337,21 @@ const wardstyle2={
                 })
               : ""}
           </MarkerClusterGroup>
+          
+          {component==='Data' && dedata?
+     dedata?.map((event) => {
+      return <Markers disaster={event} key={event.id} />;
+                })
+     :""}
+
+
+
+        {component==='Data' && dedata?
+     dedata?.map((event) => {
+      console.log(event.lat,event.lat,'adssssssssssssssss')
+      return <CircleMarker center={[event.lat , event.long]} radius={20}  weight={1} zIndexOffset={100} className="blinking-circle2"  />;
+                })
+     :""}
 
           {component == RISKINFO && selectedPanel == 1 && amenitiesToggle ? (
             <WmsAmenities />

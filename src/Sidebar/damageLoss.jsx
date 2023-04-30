@@ -23,7 +23,9 @@ function DamageLoss({ reportActivated }) {
   const [damageTab, changedamageTab] = useState("INCIDENT");
   return (
     <>
+      <div className=" p-3 text-sm bg-[#e35163] text-white"> Damage and Loss</div>
       <Header />
+    
       <div className="border-2 p-2 text-xs">
         {/*<form onSubmit={handleSubmit}>
         <div className="flex items-center ">

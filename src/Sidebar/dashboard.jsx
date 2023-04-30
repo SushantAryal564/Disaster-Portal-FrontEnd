@@ -19,6 +19,7 @@ function Dashboard({ reportActivated }) {
   });
   return (
     <React.Fragment>
+       <div className=" p-3 text-sm bg-[#e35163] text-white"> Dashboard Section</div>
       <div className="flex justify-between items-center text-black px-3 border-b-2 border-gray-100">
       <div className="text-white text-xl font-sans ">
         <div className="flex flex-start"><img  className='h-20 mt-3' src={LMC}></img>

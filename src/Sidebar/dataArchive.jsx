@@ -119,34 +119,37 @@ const handleend=(e)=>{
   return (
     <>
       <Header />
-      <div>
-        <label className="p-2">Select Building data</label>
+      <div className=" p-3 text-sm bg-[#e35163] text-white"> Data Download Section</div>
+      <div className="h-70 bg-gray-100">
+       
+        <label className="p-2 mt-5">Select Building data</label>
         <Select options={options1} className="p-2" onChange={(event)=>{
           console.log(event)
           setWardb(event.value)
         }}
            />
-          <div className="flex justify-center">
-           <button className="text-red-500 text-sm" onClick={()=>dispatch(clearWard())
-          
-          }>Clear selection</button>
-        <button 
+          <center>
+           <button className="text-red-500 text-sm mt-4" onClick={()=>dispatch(clearWard())}>Clear selection</button>
+           </center>
+           <center>
+          <button 
           onClick={() => {  
             let downloadUrl='http://localhost:8000/api/v1/analysis/download_building/?ward='+selectedwardbuilding
             console.log("dsa")
             window.location.href = downloadUrl;
           }}
-          className="bg-[#418fde] text-white m-2 py-[3px] px-3 rounded-sm"
+          className="bg-[#418fde] text-sm text-white m-2 py-[3px] px-3 rounded-sm mb-5"
         >
           Download Shapefile
-        </button>{" "}</div>
+        </button>{" "}
+        </center>
         
       </div>
 
-      <div className="p-2 border-t-2 border-gray-100 mt-3  bg-gray-100">
-        <span className="text-md my-4"> Filter Disaster data</span><br/>
-       
-       <div className="flex justify-evenly">
+      <div className="p-2 border-t-2 border-gray-100  pt-5  bg-gray-200">
+        <span className="text-md my-4 p"> Filter Disaster data</span><br/>
+       <div className="h-70">
+       <div className="flex  mt-3">
       <div className="m-2"> <label
                 htmlFor="incidentOn1"
                 className="text-xs font-normal leading-tight text-blue-gray-500 transition-all after:absolute after:-bottom-2.5 after:block after:w-full after:scale-x-0 after:border-b-2 after:border-red-500 after:transition-transform after:duration-300 peer-placeholder-shown:leading-tight font-bold"
@@ -186,24 +189,29 @@ const handleend=(e)=>{
 </div>
 
        </div>
-      <div className="flex justify-center"> 
+     
+       <div className="pb-8"> 
+       <center>
       
       {/* <div className="flex justify-center */}
-           <button className="text-red-500 text-sm" onClick={()=>dispatch(cleardData())
+           <button className="text-red-500 text-sm mt-4" onClick={()=>dispatch(cleardData())
           
           }>Clear selection</button>
 
-
-      <button 
+   </center>
+    <center>      <button 
           onClick={() => {  
             let downloadUrl='http://localhost:8000/api/v1/analysis/download_disaster/?fromdate='+startDate+"&todate="+endDate
              console.log(downloadUrl)
             window.location.href = downloadUrl;
           }}
-          className="bg-[#418fde] text-white m-2 py-[3px] px-3 rounded-sm"
+          className="bg-[#418fde] text-white m-2 py-[3px] px-3 rounded-sm text-sm"
         >
           Download Shapefile
         </button>
+        </center>
+
+      </div>
       </div>
         
       </div>

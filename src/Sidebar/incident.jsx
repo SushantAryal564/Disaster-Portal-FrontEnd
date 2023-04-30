@@ -3,6 +3,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { disasterIncidnetAsyncGETThunk } from "../store/Slices/incidentSlice";
 import { AiFillInfoCircle } from "react-icons/ai";
 import { BiAlarm } from "react-icons/bi";
+import Header from "./Header";
 function Incident({ reportActivated }) {
   const dispatch = useDispatch();
   useEffect(() => {
@@ -13,6 +14,8 @@ function Incident({ reportActivated }) {
   );
   return (
     <React.Fragment>
+       <div className=" p-3 text-sm bg-[#e35163] text-white"> Incident Section</div>
+      <Header/>
       {disasterIncidentData.map((data) => {
         return (
           <div className="border-gray-200 border-b-2 p-3 hover:bg-gray-200 py-4">

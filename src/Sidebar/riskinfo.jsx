@@ -7,7 +7,7 @@ import ChevronRightIcon from "@mui/icons-material/ChevronRight";
 import { Fragment } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { setpanel } from "../store/Slices/riskinfoSlice";
-
+import Header from "./Header";
 function RiskInfo() {
   const currentPanel = useSelector((state) => state.riskinfo.currentpanel);
   const dispatch = useDispatch();
@@ -29,6 +29,8 @@ function RiskInfo() {
   };
   return (
     <Fragment>
+        <div className=" p-3 text-sm bg-[#e35163] text-white"> Damage and Loss</div>
+      <Header />
       <div className="absolute right-2 top-3">
         <ChevronLeftIcon onClick={DecreaseClickHandler} />
         <ChevronRightIcon onClick={IncreaseClickHandler} />
