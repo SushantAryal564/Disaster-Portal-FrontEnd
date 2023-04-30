@@ -1,16 +1,20 @@
 import React from "react";
+import { useSelector } from "react-redux";
 import { Marker, Popup } from "react-leaflet";
 import MarkerClusterGroup from "react-leaflet-cluster";
+import { getMarker } from "../../utils/GetMarker";
 import L from "leaflet";
 
-const markerIcon = new L.Icon({
-  iconUrl: require("../../../assests/marker.png"),
-  iconSize: [40, 40],
-  iconAnchor: [17, 46],
-  popupAnchor: [0, -46],
-});
 const CommonMarker = ({ data }) => {
-  console.log(data);
+  const infrastructure = useSelector(
+    (state) => state.riskinfo.criticalInfrastructure
+  );
+  const markerIcon = new L.Icon({
+    iconUrl: require("../../../assests/school.png"),
+    iconSize: [40, 40],
+    iconAnchor: [17, 46],
+    popupAnchor: [0, -46],
+  });
   const createClusterCustomIcon = function (cluster) {
     return L.divIcon({
       html: `<span>${cluster.getChildCount()}</span>`,
@@ -30,10 +34,10 @@ const CommonMarker = ({ data }) => {
             feature.geometry.coordinates[1],
             feature.geometry.coordinates[0],
           ]}
-          icon={markerIcon}
+          icon={getMarker(infrastructure)}
         >
           <Popup>
-            <b>Is this the place?</b>
+            <div className="font-bold">{feature.properties.name}</div>
           </Popup>
         </Marker>
       ))}

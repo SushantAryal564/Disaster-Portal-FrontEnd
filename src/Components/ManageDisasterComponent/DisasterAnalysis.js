@@ -47,16 +47,16 @@ function DisasterAnalysis({ changeMarkerDataState }) {
   }, []);
   return (
     <div className="h-[80vh] scrollbar mx-3">
-      <div className="flex justify-start mb-2">
+      <div className="flex justify-center mb-2">
         <div className="p-2 hover:text-red-500 bg-[#e35163] text-white rounded-sm">
-          <div className="flex flex-start text-sm items-center">
+          <div className="flex flex-start gap-1 text-sm items-center">
             <AiFillSetting />
             Analysis Settings
           </div>
-          <div className="after:">
+          <div>
             <label
               htmlFor="latitude"
-              className="text-xs font-normal leading-tight text-blue-gray-500 transition-all font-bold mx-3"
+              className="text-xs items-center leading-tight text-blue-gray-500 transition-all font-bold mx-3"
             >
               Distance in meters
             </label>

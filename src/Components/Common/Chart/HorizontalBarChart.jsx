@@ -36,8 +36,7 @@ const HorizontalBarChart = () => {
         <XAxis dataKey="name" />
         <YAxis />
         <Tooltip />
-        <Legend />
-        <Bar dataKey="value" stackId="a" fill="#82ca9d" />
+        <Bar dataKey="value" stackId="a" fill="#418fde" />
       </BarChart>
     </ResponsiveContainer>
   );

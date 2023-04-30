@@ -16,6 +16,7 @@ const initialState = {
   data: [],
   status: "idle",
   error: null,
+  criticalInfrastructure: "school",
 };
 export const riskinfoSlice = createSlice({
   name: "riskinfo",
@@ -23,6 +24,9 @@ export const riskinfoSlice = createSlice({
   reducers: {
     setpanel: (state, action) => {
       state.currentpanel = action.payload;
+    },
+    setCriticalInfrastructure: (state, action) => {
+      state.criticalInfrastructure = action.payload;
     },
   },
   extraReducers(builder) {
@@ -41,6 +45,5 @@ export const riskinfoSlice = createSlice({
   },
 });
 
-export const { setpanel, setbuldingToggle, setamenitiesToggle } =
-  riskinfoSlice.actions;
+export const { setpanel, setCriticalInfrastructure } = riskinfoSlice.actions;
 export default riskinfoSlice.reducer;

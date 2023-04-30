@@ -8,11 +8,7 @@ import {
 } from "@material-tailwind/react";
 import { AiOutlineAlert, AiOutlineExclamation } from "react-icons/ai";
 import { BiAlarm } from "react-icons/bi";
-import { useMap } from "react-leaflet";
-import BarChart from "./Chart";
-import { featureGroup } from "leaflet";
 import { GetColor } from "./GetColor";
-import { buffer } from "d3";
 import HorizontalBarChart from "../Common/Chart/HorizontalBarChart";
 // import {  ChartRe } from "./ChartRe";
 function Icon({ id, open }) {
@@ -160,8 +156,8 @@ export default function Accordian({ AllDisaster, latlngHandler }) {
           </AccordionHeader>
           <AccordionBody>
             <div className="m-2 ">
-              <span className="text-gray-500 text-bold  text-[12px] mb-2 mx-2 bg-blue-700 text-white py-2 px-2">
-                INFRASTRUCTURES IN DISASTER AREA
+              <span className=" text-bold  text-[12px] mb-2 mx-2 font-bold py-2 px-2">
+                INFRASTRUCTURES WITHIN RISK AREA
               </span>
 
               <div className="mt-2 p-2 ">
@@ -169,38 +165,49 @@ export default function Accordian({ AllDisaster, latlngHandler }) {
                   {data2.length > 0 && <HorizontalBarChart data={data2} />}
                 </div>
 
-                <div class="grid grid-cols-3 mt-3">
-                  {Object.keys(classCounts).map((className) => {
-                    let colorRGB = GetColor(className);
-                    return (
-                      <div
-                        className="text-black  py-4 border-r-4 border-white"
-                        key={className}
-                        style={{
-                          background: `rgb(${colorRGB[0]}, ${colorRGB[1]}, ${colorRGB[2]})`,
-                        }}
-                      >
-                        <span className="px-4 text-xl,">
-                          {className}(s):{classCounts[className]}
-                        </span>
-                      </div>
-                    );
-                  })}
+                <div class="flex justify-center">
+                  <table className="border-collapse border border-slate-500 w-full">
+                    <tr>
+                      <th className="border border-slate-600">Amenities</th>
+                      <tr>Count</tr>
+                    </tr>
+                    {Object.keys(classCounts).map((className) => {
+                      let colorRGB = GetColor(className);
+                      console.log(colorRGB, "color");
+                      return (
+                        <tr>
+                          <td
+                            style={{
+                              background: `rgb(${colorRGB[0]}, ${colorRGB[1]}, ${colorRGB[2]})`,
+                            }}
+                            className="border border-slate-600"
+                          >
+                            {className}
+                          </td>
+                          <td
+                            style={{
+                              background: `rgb(${colorRGB[0]}, ${colorRGB[1]}, ${colorRGB[2]})`,
+                            }}
+                            className="border border-slate-600"
+                          >
+                            {classCounts[className]}
+                          </td>
+                        </tr>
+                      );
+                    })}
+                  </table>
                 </div>
               </div>
             </div>
-            <span className="mx-3 my-10 font-bold text-center items-center flex justify-center ">
+            <span className="mx-3 font-bold text-center items-center flex justify-center pb-2 ">
               Trigger an Alert for this disaster <AiOutlineExclamation />
               <AiOutlineAlert className="px-.5" />
             </span>
-            <div className="p-4 hover:text-black-500 rounded-sm bg-[#e35163] text-white">
-              <div className="flex flex-start text-sm items-center">
-                {/* < AiFillSetting/>Configure An Alert Setting */}
-              </div>
-              <div className="after: p-3">
+            <div className="p-4 mx-3 hover:text-black-500 rounded-sm bg-[#e35163] text-white ">
+              <div>
                 <label
                   htmlFor="latitude"
-                  className="text-xs font-normal leading-tight text-black-500 transition-all font-bold mt-3"
+                  className="text-xs font-normal leading-tight text-black-500 transition-all"
                 >
                   Type your message here
                 </label>
