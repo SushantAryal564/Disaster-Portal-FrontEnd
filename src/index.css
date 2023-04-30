@@ -242,8 +242,10 @@
 }
 
 @keyframes blink {
-  50% {
+  100% {
     opacity: 0;
     border: 12px solid rgb(255, 0, 38);
   }
+
+}
 }

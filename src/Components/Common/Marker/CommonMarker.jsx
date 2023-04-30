@@ -28,7 +28,7 @@ const CommonMarker = ({ data }) => {
       spiderfyDistanceMultiplier={2}
       iconCreateFunction={createClusterCustomIcon}
     >
-      {data.features.map((feature) => (
+      {data.features?.map((feature) => (
         <Marker
           position={[
             feature.geometry.coordinates[1],
