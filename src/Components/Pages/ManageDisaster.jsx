@@ -27,6 +27,7 @@ import "leaflet/dist/leaflet.css";
 import "leaflet-draw/dist/leaflet.draw.css";
 import wk from "wellknown";
 import Header from "../../Sidebar/Header";
+import { setlatlng } from "../../store/Slices/latlng";
 const ManageDisaster = () => {
   const featureGroupRef = useRef();
   const [polygonCoords, setPolygonCoords] = useState([]);
@@ -102,6 +103,11 @@ const ManageDisaster = () => {
       <ActiveManage changeMarkerDataState={setDisasterData} />
     );
   }, []);
+
+useEffect(()=>{
+  dispatch(setlatlng(""))
+  
+},[currenttab])
   return (
     <Layout>
       <div className="flex">
