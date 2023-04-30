@@ -15,6 +15,7 @@ function DamageLoss({ reportActivated }) {
   };
   const state = useSelector((state) => state.chart.status);
   useEffect(() => {
+    dispatch(DamageLossAsyncGETThunk());
     if (state == "idle") {
       dispatch(GetChartDashboardInfo());
     }
@@ -25,42 +26,45 @@ function DamageLoss({ reportActivated }) {
     <>
       <Header />
       <div className="border-2 p-2 text-xs">
-        {/*<form onSubmit={handleSubmit}>
-        <div className="flex items-center ">
-          <div className="w-1/2 ">
-            <label
-              className="block text-xs text-gray-700 font-medium mb-1"
-              htmlFor="start-date"
+        {/* <form onSubmit={handleSubmit}>
+          <div className="flex items-center ">
+            <div className="w-1/2 ">
+              <label
+                className="block text-xs text-gray-700 font-medium mb-1"
+                htmlFor="start-date"
+              >
+                Start Date
+              </label>
+              <input
+                type="date"
+                id="start-date"
+                className="block w-full border p-1 appearance-none focus:outline-none focus:border-indigo-500"
+                value={startDate}
+                onChange={(e) => setStartDate(e.target.value)}
+              />
+            </div>
+            <div className=" w-1/2 m-2">
+              <label
+                className="block text-xs text-gray-700 font-medium mb-1"
+                htmlFor="end-date"
+              >
+                End Date
+              </label>
+              <input
+                type="date"
+                id="end-date"
+                className="block w-full   border p-1 appearance-none focus:outline-none focus:border-indigo-500"
+                value={endDate}
+                onChange={(e) => setEndDate(e.target.value)}
+              />
+            </div>
+            <button
+              onClick={handleSubmit}
+              className="bg-teal-500 text-white p-1"
             >
-              Start Date
-            </label>
-            <input
-              type="date"
-              id="start-date"
-              className="block w-full border p-1 appearance-none focus:outline-none focus:border-indigo-500"
-              value={startDate}
-              onChange={(e) => setStartDate(e.target.value)}
-            />
+              Submit
+            </button>
           </div>
-          <div className=" w-1/2 m-2">
-            <label
-              className="block text-xs text-gray-700 font-medium mb-1"
-              htmlFor="end-date"
-            >
-              End Date
-            </label>
-            <input
-              type="date"
-              id="end-date"
-              className="block w-full   border p-1 appearance-none focus:outline-none focus:border-indigo-500"
-              value={endDate}
-              onChange={(e) => setEndDate(e.target.value)}
-            />
-          </div>
-          <button onClick={handleSubmit} className="bg-teal-500 text-white p-1">
-            Submit
-          </button>
-        </div>
   </form>*/}
         <div className="flex justify-evenly">
           <button

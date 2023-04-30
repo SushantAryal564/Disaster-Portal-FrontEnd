@@ -72,8 +72,9 @@ export const Portal = () => {
     return state.damageloss.totalPeopledeath;
   });
   const totalInfrastructureDamage = useSelector((state) => {
-    return state.damageloss.totalInfrastrucutre;
+    return state.damageloss.totalInfrastructure;
   });
+  console.log(totalInfrastructureDamage, "I am infrastructure");
   const slidebarState = useSelector((state) => {
     return state.slidebar.slidebarState;
   });
@@ -141,6 +142,7 @@ export const Portal = () => {
   ];
   const scrollWheelZoom = true;
   const getColor = (d) => {
+    console.log(d, "I am d value");
     return d > 90
       ? "#800026"
       : d > 80
@@ -151,22 +153,28 @@ export const Portal = () => {
       ? "#FC4E2A"
       : d > 20
       ? "#FD8D3C"
-      : d >= 0
+      : d >= 10
       ? "#FEB24C"
-      : "#FEB24C";
+      : d > 5
+      ? "#FBCC8D"
+      : "#EAD9C2";
   };
   const styleFeature = (feature) => {
     let currentLegendItem = currentdamageindex;
     let data = 0;
     if (currentLegendItem === "incident") {
-      data = feature.properties.number_of_disasters / totalIncident;
+      console.log(feature.properties.number_of_disasters, "/", totalIncident);
+      data = (feature.properties.number_of_disasters * 100) / totalIncident;
+      console.log(data, "/ result");
     } else if (currentLegendItem === "peopleDeath") {
-      data = feature.properties.total_people_death / totalPeopleDeath;
+      data = (feature.properties.total_people_death * 100) / totalPeopleDeath;
     } else if (currentLegendItem === "estimatedLoss") {
-      data = feature.properties.total_estimated_loss / totalEstimatedLoss;
+      data =
+        (feature.properties.total_estimated_loss * 100) / totalEstimatedLoss;
     } else if (currentLegendItem === "infrastructuredestroyed") {
       data =
-        feature.properties.total_infrastructure / totalInfrastructureDamage;
+        (feature.properties.total_infrastructure_damaged * 100) /
+        totalInfrastructureDamage;
     } else {
       data = feature.properties.number_of_disasters;
     }
