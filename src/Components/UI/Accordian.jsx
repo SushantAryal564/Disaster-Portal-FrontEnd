@@ -1,4 +1,4 @@
-import { Fragment, useState } from "react";
+import { Fragment, useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { removeAll } from "../../store/Slices/featureSlice";
 import {
@@ -6,11 +6,13 @@ import {
   AccordionHeader,
   AccordionBody,
 } from "@material-tailwind/react";
+import { AiOutlineAlert ,AiOutlineExclamation} from "react-icons/ai";
 import { BiAlarm } from "react-icons/bi";
 import { useMap } from "react-leaflet";
 import BarChart from "./Chart";
 import { featureGroup } from "leaflet";
 import { GetColor } from "./GetColor";
+import { buffer } from "d3";
 // import {  ChartRe } from "./ChartRe";
 function Icon({ id, open }) {
   return (
@@ -30,9 +32,42 @@ function Icon({ id, open }) {
 }
 
 export default function Accordian({ AllDisaster, latlngHandler }) {
+  const [message,setmsg]=useState('Default')
+  const latlng = useSelector((state) => {
+    return state.latlng;
+  });
+  const buf = useSelector((state) => {
+    return state.feature.bufferdistance;
+  });
+  const triggerAlert=async function sendAnalysisEmail(id) {
+    const url = 'http://127.0.0.1:8000/api/v1/analysis/email/';
+    console.log(latlng,"your lat alANF",latlng[0],latlng[1],id,message)
+    const data = {
+      lat: latlng[0], // replace with the latitude value
+      lng: latlng[1], // replace with the longitude value
+      message: message, 
+      buf:buf,
+      // replace with the message content
+      disaster_id:id
+    };
+  console.log("o data",data)
+    const response = await fetch(url, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(data),
+    });
+  
+    const responseData = await response.json();
+  
+    console.log(responseData);
+  }
   const dispatch = useDispatch();
   const [open, setOpen] = useState(0);
   // barchat data
+  const bufferd=useSelector((state) => {
+    //  console.log(state.manageDisaster)
+    return (state.feature.bufferdistance)
+  })
 
   const builddata = useSelector((state) => {
     return state?.feature?.building;
@@ -92,17 +127,20 @@ export default function Accordian({ AllDisaster, latlngHandler }) {
     setOpen(open === value ? 0 : value);
   };
 
-  const disaster = AllDisaster.map((data) => (
+
+  const disaster = AllDisaster.map((data) => {
+    console.log(bufferd,"CULPRITTTTTTTTTTTTTT")
+    return(
     <Accordion open={open === data.id} icon={<Icon id={data.id} open={open} />}>
       <AccordionHeader
         onClick={() => {
           handleOpen(data.id);
           dispatch(removeAll());
-          latlngHandler([data.lat, data.long]);
+          latlngHandler([data.lat, data.long,bufferd]);
         }}
         className="text-sm py-0 px-2 py-2 border-gray-200 border-b-2  border-t-2"
       >
-        <div className=" p-1 hover:bg-gray-200 py-2">
+        <div className=" p-1  py-2">
           <div className="text-md font-medium flex flex-row ">
             <div className="text-red-500 text-sm flex flex-col">
               <span className="px-3">
@@ -145,7 +183,7 @@ export default function Accordian({ AllDisaster, latlngHandler }) {
           <span className="text-gray-500 text-bold  text-[12px] mb-2 mx-2 bg-blue-700 text-white py-2 px-2">
             INFRASTRUCTURES IN DISASTER AREA
           </span>
-          <div className="flex">
+          <div className="flex justify-center">
             <div className="mt-2 p-2 ">
               <BarChart data={data2}></BarChart>
               <div class="grid grid-cols-3 mt-3">
@@ -171,8 +209,43 @@ export default function Accordian({ AllDisaster, latlngHandler }) {
             {/* <div>asds</div> */}
           </div>
         </div>
+        <span className="mx-3 my-10 font-bold text-center items-center flex justify-center ">Trigger an Alert for this disaster <AiOutlineExclamation/><AiOutlineAlert className="px-.5"/></span>
+        <div className="p-4 hover:text-black-500 rounded-sm bg-[#e35163] text-white">
+          
+       <div className="flex flex-start text-sm items-center"
+       >
+         {/* < AiFillSetting/>Configure An Alert Setting */}
+          </div>
+                <div className="after: p-3">
+                
+                <label
+                    htmlFor="latitude"
+                   className="text-xs font-normal leading-tight text-black-500 transition-all font-bold mt-3">
+                Type your message here
+                </label>
+                <input 
+                
+                  id="latitude"
+                  name="latitude"
+                  type="text"
+                  defaultValue={"Disaster Alert"}
+                  onChange={(e)=>{
+                    dispatch(setmsg(e.target.value))  
+                  }}
+                className="peer h-full w-full border-b border-blue-gray-200 bg-transparent pt-4 pb-1.5 font-sans text-sm font-normal text-blue-gray-700 outline outline-0 transition-all placeholder-shown:border-blue-gray-200 focus:border-red-500 focus:outline-0 disabled:border-0 disabled:bg-blue-gray-50"
+                // className=""
+                 
+                ></input>
+              </div>
+          </div>
+        <p className="text-xs text-red-500 p-2 mx-3">By pressing you are sending an alert meassage to the selected region</p>
+        <div className="flex justify-center">
+        <button onClick={()=>triggerAlert(data.id)} className="mx-2 inline-block bg-danger px-6 pt-2.5 pb-2 my-2 text-xs font-medium uppercase leading-normal text-white shadow-[0_4px_9px_-4px_#dc4c64] transition duration-150 ease-in-out  hover:shadow-[0_8px_9px_-4px_rgba(220,76,100,0.3),0_4px_18px_0_rgba(220,76,100,0.2)] focus:bg-danger-600 focus:shadow-[0_8px_9px_-4px_rgba(220,76,100,0.3),0_4px_18px_0_rgba(220,76,100,0.2)] focus:outline-none focus:ring-0 active:bg-danger-700 active:shadow-[0_8px_9px_-4px_rgba(220,76,100,0.3),0_4px_18px_0_rgba(220,76,100,0.2)]" >Trigger Alert </button>
+        </div>
       </AccordionBody>
     </Accordion>
-  ));
-  return <Fragment>{disaster}</Fragment>;
+)});
+  return <Fragment>
+    
+    {disaster}</Fragment>;
 }
