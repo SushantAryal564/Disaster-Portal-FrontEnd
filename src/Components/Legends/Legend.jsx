@@ -3,6 +3,9 @@ import React from "react";
 import { Marker, Popup } from "react-leaflet";
 import { useSelector } from "react-redux";
 import { GetColor } from "../UI/GetColor";
+import { useDispatch } from "react-redux";
+import { changeDamageAndLossTab } from "../../store/Slices/chartSlice";
+
 export const getIcon = (disastertype) => {
   if (disastertype == "Fire") {
     return "marker-fire";
@@ -122,6 +125,7 @@ export const RiskInfoLegend = ({ legendItem }) => {
 };
 
 export const DamageAndLossLegend = ({ changeDamagestate }) => {
+  const dispatch = useDispatch();
   return (
     <div>
       <div
@@ -135,15 +139,23 @@ export const DamageAndLossLegend = ({ changeDamagestate }) => {
         }}
       >
         <div className="m-2 flex justify-between pb-1 items-start">
-          <div onClick={() => changeDamagestate("incident")}>Incident</div>
-          <div onClick={() => changeDamagestate("peopleDeath")}>
-            People death
+          <div onClick={() => dispatch(changeDamageAndLossTab("INCIDENT"))}>
+            Incident
           </div>
-          <div onClick={() => changeDamagestate("estimatedLoss")}>
-            Estimated loss
+          <div onClick={() => dispatch(changeDamageAndLossTab("LIVES_LOST"))}>
+            Lives Lost
           </div>
-          <div onClick={() => changeDamagestate("infrastructuredestroyed")}>
-            Infrastructure destroyed
+          <div
+            onClick={() => dispatch(changeDamageAndLossTab("PROPERTY_LOSS"))}
+          >
+            Property loss
+          </div>
+          <div
+            onClick={() =>
+              dispatch(changeDamageAndLossTab("INFRASTRUCTURE_DAMAGE"))
+            }
+          >
+            Infrastructure Damaged
           </div>
         </div>
       </div>

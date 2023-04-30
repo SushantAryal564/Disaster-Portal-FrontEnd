@@ -50,6 +50,7 @@ import { WmsCriti } from "../Map Layer/WmsCriticalInfras";
 import { WmsAmenities } from "../Map Layer/AmenitiesWms";
 import CommonMarker from "../Common/Marker/CommonMarker";
 import { InfrastructureAsyncGETThunk } from "../../store/Slices/riskinfoSlice";
+import getColor from "../Common/Choropleth";
 export const Portal = () => {
   const selectedPanel = useSelector((state) => {
     return state.riskinfo.currentpanel;
@@ -61,7 +62,7 @@ export const Portal = () => {
   const dispatch = useDispatch();
   var [jsonLalitpurMetro, setJsonLalitpurMetro] = useState("");
   var [jsonWard, setJsonWard] = useState("");
-  const [currentdamageindex, setdamageindex] = useState("incident");
+  const currentdamageindex = useSelector((state) => state.chart.tab);
   const totalIncident = useSelector((state) => {
     return state.damageloss.totalIncident;
   });
@@ -141,37 +142,17 @@ export const Portal = () => {
     ...new Set(datadisaster.map((data) => data?.type?.title)),
   ];
   const scrollWheelZoom = true;
-  const getColor = (d) => {
-    console.log(d, "I am d value");
-    return d > 90
-      ? "#800026"
-      : d > 80
-      ? "#BD0026"
-      : d > 60
-      ? "#E31A1C"
-      : d > 40
-      ? "#FC4E2A"
-      : d > 20
-      ? "#FD8D3C"
-      : d >= 10
-      ? "#FEB24C"
-      : d > 5
-      ? "#FBCC8D"
-      : "#EAD9C2";
-  };
   const styleFeature = (feature) => {
     let currentLegendItem = currentdamageindex;
     let data = 0;
-    if (currentLegendItem === "incident") {
-      console.log(feature.properties.number_of_disasters, "/", totalIncident);
+    if (currentLegendItem === "INCIDENT") {
       data = (feature.properties.number_of_disasters * 100) / totalIncident;
-      console.log(data, "/ result");
-    } else if (currentLegendItem === "peopleDeath") {
+    } else if (currentLegendItem === "LIVES_LOST") {
       data = (feature.properties.total_people_death * 100) / totalPeopleDeath;
-    } else if (currentLegendItem === "estimatedLoss") {
+    } else if (currentLegendItem === "PROPERTY_LOSS") {
       data =
         (feature.properties.total_estimated_loss * 100) / totalEstimatedLoss;
-    } else if (currentLegendItem === "infrastructuredestroyed") {
+    } else if (currentLegendItem === "INFRASTRUCTURE_DAMAGE") {
       data =
         (feature.properties.total_infrastructure_damaged * 100) /
         totalInfrastructureDamage;
@@ -352,9 +333,7 @@ export const Portal = () => {
           {component === DASHBOARD && (
             <DashboardLegend legendItem={disasterinDashboard} />
           )}
-          {component === DAMAGELOSS && (
-            <DamageAndLossLegend changeDamagestate={setdamageindex} />
-          )}
+          {component === DAMAGELOSS && <DamageAndLossLegend />}
           {component == RISKINFO && selectedPanel === 3 ? (
             <CommonMarker data={infrastructure} />
           ) : (
@@ -375,12 +354,3 @@ export const Portal = () => {
   );
 };
 export default Portal;
-// {component == RISKINFO && selectedPanel === 3 ? (
-//   <Wms
-//     url="http://localhost:8080/geoserver/Lalitpur/wfs"
-//     layers="Lalitpur:Buildings"
-//     styles="bulding"
-//   />
-// ) : (
-//   ""
-// )}
