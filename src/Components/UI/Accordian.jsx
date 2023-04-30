@@ -13,6 +13,7 @@ import BarChart from "./Chart";
 import { featureGroup } from "leaflet";
 import { GetColor } from "./GetColor";
 import { buffer } from "d3";
+import HorizontalBarChart from "../Common/Chart/HorizontalBarChart";
 // import {  ChartRe } from "./ChartRe";
 function Icon({ id, open }) {
   return (
@@ -105,90 +106,69 @@ export default function Accordian({ AllDisaster, latlngHandler }) {
       }
     });
   }
-
-  // const forestdata = useSelector((state) => {
-  //   return state.feature.forest[0].features.length||0;
-  //   });
-  // const waterdata = useSelector((state) => {
-  //     return state.feature.waterbody[0].features.length||0;
-  //     });
-  // const amenities = useSelector((state) => {
-  //       return state.feature.amenities[0].features.length||0;
-  //       });
-
-  // data2 = [
-  //   { name: 'Buildings', value:0},
-  // //   { name: 'Amenities', value: amenities||0 },
-  // //  { name: 'WaterBody', value: waterdata|0 },
-  // //   { name: 'Forest', value: forestdata ||0},
-  // ]
   const handleOpen = (value) => {
     setOpen(open === value ? 0 : value);
   };
 
   const disaster = AllDisaster.map((data) => {
-    console.log(bufferd, "CULPRITTTTTTTTTTTTTT");
     return (
-      <Accordion
-        open={open === data.id}
-        icon={<Icon id={data.id} open={open} />}
-      >
-        <AccordionHeader
-          onClick={() => {
-            handleOpen(data.id);
-            dispatch(removeAll());
-            latlngHandler([data.lat, data.long, bufferd]);
-          }}
-          className="text-sm py-0 px-2 py-2 border-gray-200 border-b-2  border-t-2"
+      <div className="border-2">
+        <Accordion
+          open={open === data.id}
+          icon={<Icon id={data.id} open={open} />}
         >
-          <div className=" p-1  py-2">
-            <div className="text-md font-medium flex flex-row ">
-              <div className="text-red-500 text-sm flex flex-col">
-                <span className="px-3">
-                  {" "}
-                  <img
-                    className="w-9 h-6 pt-1 mt-1"
-                    src={`http://127.0.0.1:8000/${data?.type?.title}.svg`}
-                  />
-                </span>
-                <p className="text-xs text-black mx-6 my-1">
-                  {data?.type?.title || "none"}
-                </p>
-              </div>
-              <span className="font-normal ml-2 mt-1 pt-1 text-sm">
-                <div className="font-semibold text-xs"> {data.name}</div>
-                <div>
-                  <div className="text-xs  text-gray-500 flex justify-start ">
-                    <div className="flex items-center my-1">
-                      <span>
-                        <BiAlarm />
-                      </span>
-                      <span className="mx-2">
-                        {data.date_event.slice(0, 10)}
-                      </span>
-                      <span className="ml-2">
-                        {data.date_event.slice(11, 16)}
-                      </span>
-                      <span className="ml-2">WARD-{data.Ward.ward}</span>
-                      <span className="ml-3">
-                        {data.ADDRESS || "Dhapakhel,Gems School"}
-                      </span>
+          <AccordionHeader
+            onClick={() => {
+              handleOpen(data.id);
+              dispatch(removeAll());
+              latlngHandler([data.lat, data.long, bufferd]);
+            }}
+            className="text-sm py-0 px-2 py-2 border-gray-200 border-b-2  border-t-2"
+          >
+            <div className=" p-1  py-2">
+              <div className="text-md font-medium flex flex-row ">
+                <div className="text-red-500 text-sm flex flex-col">
+                  <span className="px-3"></span>
+                  <p className="text-xs text-black mx-6 my-1">
+                    {data?.type?.title || "none"}
+                  </p>
+                </div>
+                <span className="font-normal ml-2 mt-1 pt-1 text-sm">
+                  <div className="font-semibold text-xs"> {data.name}</div>
+                  <div>
+                    <div className="text-xs  text-gray-500 flex justify-start ">
+                      <div className="flex items-center my-1">
+                        <span>
+                          <BiAlarm />
+                        </span>
+                        <span className="mx-2">
+                          {data.date_event.slice(0, 10)}
+                        </span>
+                        <span className="ml-2">
+                          {data.date_event.slice(11, 16)}
+                        </span>
+                        <span className="ml-2">WARD-{data.Ward.ward}</span>
+                        <span className="ml-3">
+                          {data.ADDRESS || "Dhapakhel,Gems School"}
+                        </span>
+                      </div>
                     </div>
                   </div>
-                </div>
-              </span>
+                </span>
+              </div>
             </div>
-          </div>
-        </AccordionHeader>
-        <AccordionBody>
-          {/* <div className="text-bold text-md px-3">Buildings In the Area</div> */}
-          <div className="m-2 ">
-            <span className="text-gray-500 text-bold  text-[12px] mb-2 mx-2 bg-blue-700 text-white py-2 px-2">
-              INFRASTRUCTURES IN DISASTER AREA
-            </span>
-            <div className="flex justify-center">
+          </AccordionHeader>
+          <AccordionBody>
+            <div className="m-2 ">
+              <span className="text-gray-500 text-bold  text-[12px] mb-2 mx-2 bg-blue-700 text-white py-2 px-2">
+                INFRASTRUCTURES IN DISASTER AREA
+              </span>
+
               <div className="mt-2 p-2 ">
-                <BarChart data={data2}></BarChart>
+                <div className="h-[400px]">
+                  {data2.length > 0 && <HorizontalBarChart data={data2} />}
+                </div>
+
                 <div class="grid grid-cols-3 mt-3">
                   {Object.keys(classCounts).map((className) => {
                     let colorRGB = GetColor(className);
@@ -207,52 +187,51 @@ export default function Accordian({ AllDisaster, latlngHandler }) {
                     );
                   })}
                 </div>
-                {/* <ChartRe></ChartRe> */}
               </div>
-              {/* <div>asds</div> */}
             </div>
-          </div>
-          <span className="mx-3 my-10 font-bold text-center items-center flex justify-center ">
-            Trigger an Alert for this disaster <AiOutlineExclamation />
-            <AiOutlineAlert className="px-.5" />
-          </span>
-          <div className="p-4 hover:text-black-500 rounded-sm bg-[#e35163] text-white">
-            <div className="flex flex-start text-sm items-center">
-              {/* < AiFillSetting/>Configure An Alert Setting */}
+            <span className="mx-3 my-10 font-bold text-center items-center flex justify-center ">
+              Trigger an Alert for this disaster <AiOutlineExclamation />
+              <AiOutlineAlert className="px-.5" />
+            </span>
+            <div className="p-4 hover:text-black-500 rounded-sm bg-[#e35163] text-white">
+              <div className="flex flex-start text-sm items-center">
+                {/* < AiFillSetting/>Configure An Alert Setting */}
+              </div>
+              <div className="after: p-3">
+                <label
+                  htmlFor="latitude"
+                  className="text-xs font-normal leading-tight text-black-500 transition-all font-bold mt-3"
+                >
+                  Type your message here
+                </label>
+                <input
+                  id="latitude"
+                  name="latitude"
+                  type="text"
+                  defaultValue={"Disaster Alert"}
+                  onChange={(e) => {
+                    dispatch(setmsg(e.target.value));
+                  }}
+                  className="peer h-full w-full border-b border-blue-gray-200 bg-transparent pt-4 pb-1.5 font-sans text-sm font-normal text-blue-gray-700 outline outline-0 transition-all placeholder-shown:border-blue-gray-200 focus:border-red-500 focus:outline-0 disabled:border-0 disabled:bg-blue-gray-50"
+                  // className=""
+                ></input>
+              </div>
             </div>
-            <div className="after: p-3">
-              <label
-                htmlFor="latitude"
-                className="text-xs font-normal leading-tight text-black-500 transition-all font-bold mt-3"
+            <p className="text-xs text-red-500 p-2 mx-3">
+              By pressing you are sending an alert meassage to the selected
+              region
+            </p>
+            <div className="flex justify-center">
+              <button
+                onClick={() => triggerAlert(data.id)}
+                className="mx-2 inline-block bg-danger px-6 pt-2.5 pb-2 my-2 text-xs font-medium uppercase leading-normal text-white shadow-[0_4px_9px_-4px_#dc4c64] transition duration-150 ease-in-out  hover:shadow-[0_8px_9px_-4px_rgba(220,76,100,0.3),0_4px_18px_0_rgba(220,76,100,0.2)] focus:bg-danger-600 focus:shadow-[0_8px_9px_-4px_rgba(220,76,100,0.3),0_4px_18px_0_rgba(220,76,100,0.2)] focus:outline-none focus:ring-0 active:bg-danger-700 active:shadow-[0_8px_9px_-4px_rgba(220,76,100,0.3),0_4px_18px_0_rgba(220,76,100,0.2)]"
               >
-                Type your message here
-              </label>
-              <input
-                id="latitude"
-                name="latitude"
-                type="text"
-                defaultValue={"Disaster Alert"}
-                onChange={(e) => {
-                  dispatch(setmsg(e.target.value));
-                }}
-                className="peer h-full w-full border-b border-blue-gray-200 bg-transparent pt-4 pb-1.5 font-sans text-sm font-normal text-blue-gray-700 outline outline-0 transition-all placeholder-shown:border-blue-gray-200 focus:border-red-500 focus:outline-0 disabled:border-0 disabled:bg-blue-gray-50"
-                // className=""
-              ></input>
+                Trigger Alert{" "}
+              </button>
             </div>
-          </div>
-          <p className="text-xs text-red-500 p-2 mx-3">
-            By pressing you are sending an alert meassage to the selected region
-          </p>
-          <div className="flex justify-center">
-            <button
-              onClick={() => triggerAlert(data.id)}
-              className="mx-2 inline-block bg-danger px-6 pt-2.5 pb-2 my-2 text-xs font-medium uppercase leading-normal text-white shadow-[0_4px_9px_-4px_#dc4c64] transition duration-150 ease-in-out  hover:shadow-[0_8px_9px_-4px_rgba(220,76,100,0.3),0_4px_18px_0_rgba(220,76,100,0.2)] focus:bg-danger-600 focus:shadow-[0_8px_9px_-4px_rgba(220,76,100,0.3),0_4px_18px_0_rgba(220,76,100,0.2)] focus:outline-none focus:ring-0 active:bg-danger-700 active:shadow-[0_8px_9px_-4px_rgba(220,76,100,0.3),0_4px_18px_0_rgba(220,76,100,0.2)]"
-            >
-              Trigger Alert{" "}
-            </button>
-          </div>
-        </AccordionBody>
-      </Accordion>
+          </AccordionBody>
+        </Accordion>
+      </div>
     );
   });
   return <Fragment>{disaster}</Fragment>;

@@ -104,17 +104,16 @@ const ManageDisaster = () => {
     );
   }, []);
 
-useEffect(()=>{
-  dispatch(setlatlng(""))
-  
-},[currenttab])
+  useEffect(() => {
+    dispatch(setlatlng(""));
+  }, [currenttab]);
   return (
     <Layout>
       <div className="flex">
         <div
           className={`${
             slidebarState ? "w-3/5" : "w-0"
-          } duration-300 h-[90vh] relative`}
+          } duration-300 h-[100vh] relative overflow-x-hidden scrollbar scrollbar-thumb-gray-300 overflow-y-scroll scrollbar-track-gray-100 scrollbar-w-1 scrollbar-rounded-rounded-md`}
         >
           <Header wardID={wardId} />
           <div className="flex my-2 justify-center gap-1 pl-2">

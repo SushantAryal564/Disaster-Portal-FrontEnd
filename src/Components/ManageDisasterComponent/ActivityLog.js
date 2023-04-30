@@ -47,7 +47,6 @@ function ActivityLog({ changeMarkerDataState }) {
   };
   const ActivitySendToBackend = async (activity, creator, date, id) => {
     let access_token = localStorage.getItem("access_token");
-    console.log("accs----->", access_token);
     let data = {
       disaster: id,
       action_name: activity,
@@ -84,13 +83,6 @@ function ActivityLog({ changeMarkerDataState }) {
   useEffect(() => {
     WardActiveDisaster(wardId);
   }, [reloder]);
-  const activeIncidentLogHandler = () => {
-    WardActiveDisaster();
-  };
-  const allIncidentLogHandler = () => {
-    WardPastDisaster();
-    setDisasterActivityLog([]);
-  };
   const DisasterActivityLogHandler = (id) => {
     setDisasterID(id);
     DisasterActivity(id);
@@ -147,9 +139,6 @@ function ActivityLog({ changeMarkerDataState }) {
         <Accordion
           open={open === data.id}
           icon={<Icon id={data.id} open={open} />}
-          onClick={() => {
-            handleOpen(data.id);
-          }}
         >
           <AccordionHeader
             onClick={() => {
