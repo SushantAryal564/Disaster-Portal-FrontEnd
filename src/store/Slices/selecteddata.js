@@ -12,12 +12,25 @@ export const getWarddownloadbuilding = createAsyncThunk(
     return data;
   }
 );
+export const getdateselectedEvents = createAsyncThunk(
+  "getdateselectedEvents",
+  async (date) => {
+    let startDate=date[0]
+    let endDate=date[1]
+    console.log(`http://127.0.0.1:8000/api/v1/disaster/disasterEventwithoutgeom/?name=&type=&is_closed=false&startTime__gte=${startDate}T18%3A00%3A00Z&startTime__gt=&startTime=&startTime__lte=${endDate}T18%3A00%3A00Z`,'HUNKKK')
+const response = await fetch(
+  `http://127.0.0.1:8000/api/v1/disaster/disasterEventwithoutgeom/?name=&type=&is_closed=false&startTime__gte=${startDate}T18%3A00%3A00Z&startTime__gt=&startTime=&startTime__lte=${endDate}T18%3A00%3A00Z`
+);
+const data = await response.json()
+console.log("THUNK dta----------------",)
+return data
 
-
+  });
 
 const initialState = {
   selectedMarkerId: null,
-  selectionDownloadWardbuilding:null
+  selectionDownloadWardbuilding:null,
+  dateselectedevent:null
 };
 
 const markerSlice = createSlice({
@@ -29,6 +42,9 @@ const markerSlice = createSlice({
     },
     clearWard: (state, action) => {
       state.selectionDownloadWardbuilding = null;
+    },
+    cleardData:(state, action) => {
+      state.dateselectedevent = null;
     },
 
   }, 
@@ -45,9 +61,20 @@ const markerSlice = createSlice({
       .addCase(getWarddownloadbuilding.rejected, (state, action) => {
         state.status = "failed";
         state.error = action.error.message;
+      }).addCase(getdateselectedEvents.pending, (state, action) => {
+        state.status = "loading";
+        state.error = "";
+      })
+      .addCase(getdateselectedEvents.fulfilled, (state, action) => {
+        state.status = "succeeded";
+        state.dateselectedevent = action.payload;
+      })
+      .addCase(getdateselectedEvents.rejected, (state, action) => {
+        state.status = "failed";
+        state.error = action.error.message;
       });
   },
 });
 
-export const { selectMarker ,clearWard} = markerSlice.actions;
+export const { selectMarker ,clearWard,cleardData} = markerSlice.actions;
 export default markerSlice.reducer;

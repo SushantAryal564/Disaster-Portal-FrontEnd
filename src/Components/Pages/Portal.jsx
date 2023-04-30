@@ -52,7 +52,7 @@ import CommonMarker from "../Common/Marker/CommonMarker";
 import { InfrastructureAsyncGETThunk } from "../../store/Slices/riskinfoSlice";
 import DownloadWardGeoJSONRender from "./DownloadWardgeojson";
 export const Portal = () => {
-  
+  const dedata=useSelector(state=>state.selected.dateselectedevent)
   const selectedPanel = useSelector((state) => {
     return state.riskinfo.currentpanel;
   });
@@ -328,6 +328,13 @@ const wardstyle2={
                   return <Markers disaster={event} key={event.id} />;
                 })
               : ""}
+
+     {component==='Data' && dedata?
+     dedata?.map((event) => {
+      return <Markers disaster={event} key={event.id} />;
+                })
+     :""}
+
             {component === INCIDENT
               ? dataIncident.map((event) => {
                   return <Markers disaster={event} key={event.id} />;
