@@ -11,12 +11,17 @@ export const GetChartDashboardInfo = createAsyncThunk("chartInfo", async () => {
 const initialState = {
   data: [],
   status: "idle",
+  tab: "incident",
   error: null,
 };
 export const chartSlice = createSlice({
   name: "disasterIncident",
   initialState,
-  reducers: {},
+  reducers: {
+    changeDamageAndLossTab: (state, action) => {
+      state.tab = action.payload;
+    },
+  },
   extraReducers(builder) {
     builder
       .addCase(GetChartDashboardInfo.pending, (state, action) => {
@@ -32,4 +37,5 @@ export const chartSlice = createSlice({
       });
   },
 });
+export const { changeDamageAndLossTab } = chartSlice.actions;
 export default chartSlice.reducer;

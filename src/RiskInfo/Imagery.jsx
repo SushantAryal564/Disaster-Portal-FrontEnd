@@ -19,7 +19,7 @@ export const Imagery = () => {
           of the area. The Built-Up Area covers the largest portion of the area,
           accounting for 60.59968%. The Cropland covers 35.40342% of the area.
           The Grassland covers 1.557457% of the area, and the Wooden Land covers
-          only 0.041565%.
+          only 0.041565%.<i className="text-sm">(source: ICIMOD)</i>
         </p>
       </div>
       <div className="w-[100%] h-[400px]">

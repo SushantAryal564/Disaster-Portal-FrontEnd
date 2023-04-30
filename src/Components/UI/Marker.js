@@ -27,12 +27,17 @@ export const getIcon = (disastertype) => {
   });
 };
 
-function Markers({ disaster: event }) {
+function Markers({ disaster: event, setOpen }) {
   return (
     <Marker
       key={`disaster-${event.id}`}
       position={[event.lat || 83, event.long || 23]}
       icon={getIcon(event?.type?.title)}
+      eventHandlers={{
+        click: () => {
+          setOpen(event.id);
+        },
+      }}
     >
       <Popup>
         <div class="">

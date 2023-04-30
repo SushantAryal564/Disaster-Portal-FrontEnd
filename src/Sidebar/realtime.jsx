@@ -53,71 +53,47 @@ export const Pollution = ({ data, selectedMarkerId }) => {
   const dispatch = useDispatch();
   return (
     <div>
-      <div>Pollution Live Data</div>
-      <div className="flex flex-col mt-0">
+      <div className="text-lg py-2 font-serif mx-4">Live Pollution Data</div>
+      <p className="mx-4">
+        Real-time river flow data is collected using a variety of techniques,
+        including gauges that measure the water level and velocity, and acoustic
+        sensors that can estimate flow rates. This data can be used to monitor
+        water availability and quality, forecast flood events, and manage water
+        resources.
+      </p>
+      <div className="flex flex-col mt-0 mx-4">
         <div className="">
           <div className="py-0 inline-block min-w-full ">
             <div className="overflow-hidden bg-white">
-              <div className="bg-gray-100 border-b">
-                <div className="w-full bg-white border-b transition duration-300 ease-in-out  flex justify-evenly">
-                  <div className="font-bold text-[11px] text-black font-light px-6 py-2 ">
-                    ID
-                  </div>
-
-                  <div className="font-bold text-[11px] text-bold text-gray-900 font-light px-6 py-2 whitespace-nowrap">
-                    Station
-                  </div>
-
-                  <div className="font-bold text-[11px] text-sm text-gray-900 font-light px-6 py-2 whitespace-nowrap">
-                    Nepali Name
-                  </div>
-
-                  <div className="font-bold text-[11px] text-sm text-gray-900 font-light px-6 py-2 whitespace-nowrap">
-                    Data Source
-                  </div>
-                </div>
-              </div>
-              {data.map((instance) => {
-                return (
-                  <div
-                    className="border-gray-300 hover:bg-gray-400"
-                    onClick={() => dispatch(selectMarker(instance.id))}
-                  >
-                    <div
+              <table className="w-full border-collapse border border-slate-500	 ">
+                <tr className="border-1">
+                  <th className="py-1 px-1 border border-slate-600">Station</th>
+                  <th className="py-1 px-1 border border-slate-600">
+                    Air Quality(aqi)
+                  </th>
+                </tr>
+                {data.map((instance) => {
+                  console.log(instance, "air quality instance");
+                  return (
+                    <tr
                       className={
                         instance.id == selectedMarkerId
-                          ? "pl-3 w-full  cursor-pointer transition duration-300 ease-in-out bg-yellow-300 text-white flex justify-evenly "
-                          : "pl-3 w-full  hover:bg-gray-200 cursor-pointer transition duration-300 ease-in-out bg-white flex justify-evenly"
+                          ? "border-gray-300 bg-[#418fde]"
+                          : `bg-[${instance.aqiColor}]`
                       }
+                      onClick={() => dispatch(selectMarker(instance.id))}
                     >
-                      <div className="text-[12px] text-gray-900 font-light px-8 py-2 whitespace-nowrap">
-                        {instance.id}
-                      </div>
-
-                      <div className="text-[12px] text-gray-900 font-light px-10 py-2 whitespace-nowra">
+                      <td className="py-1 px-1 border border-slate-600">
                         {instance.name} Station
-                      </div>
-
-                      <div className="text-[12px] text-gray-900 font-light px-5 py-2 whitespace-nowrap">
-                        {instance.nepaliName
-                          ? instance.nepaliName
-                          : "............"}
-                      </div>
-
-                      <div className="text-[12px] text-gray-900 font-light px-6 py-2 whitespace-nowrap">
-                        {instance.dataSource}
-                      </div>
-                    </div>
-
-                    <div className="pl-12 py-2 text-[12px] text-red-400 bg-white ">
-                      {instance.description}
-                    </div>
-                    <div className="px-9  text-[10px] text-gray-400 bg-gray-100 flex justify-end    bg-white">
-                      {instance.modifiedOn}
-                    </div>
-                  </div>
-                );
-              })}
+                      </td>
+                      <td className="py-1 px-1 border border-slate-600">
+                        {instance.aqi.toFixed(3)}
+                      </td>
+                    </tr>
+                  );
+                })}
+              </table>
+              <i>(Data source:pollution.gov.np)</i>
             </div>
           </div>
         </div>
@@ -129,80 +105,46 @@ export const Pollution = ({ data, selectedMarkerId }) => {
 export const Water = ({ data2, selectedMarkerId }) => {
   const dispatch = useDispatch();
   return (
-    <div>
-      <div>River Live Data</div>
+    <div className="mb-2">
+      <div className=" mx-4 text-lg font-serif py-2">Live Riverflow Data</div>
+      <p className="text-justify mx-4">
+        Real-time pollution data is typically collected using sensors that
+        measure parameters such as dissolved oxygen, pH, temperature, and the
+        levels of pollutants such as nitrogen and phosphorus. This data is then
+        transmitted to a central database, where it can be analyzed and used to
+        make management decisions
+      </p>
       <div className="flex flex-col mt-0">
-        <div className="">
-          <div className="py-0 inline-block min-w-full ">
-            <div className="overflow-hidden bg-white">
-              <div className="bg-gray-100 border-b">
-                <div className="w-full bg-white border-b transition duration-300 ease-in-out  flex justify-evenly">
-                  <div className="font-bold text-[11px] text-black font-light px-6 py-2 ">
-                    ID
-                  </div>
-
-                  <div className="font-bold text-[11px] text-bold text-gray-900 font-light px-6 py-2 whitespace-nowrap">
-                    Station at
-                  </div>
-
-                  <div className="font-bold text-[11px] text-sm text-gray-900 font-light px-6 py-2 whitespace-nowrap">
-                    Warning Level
-                  </div>
-
-                  <div className="font-bold text-[11px] text-sm text-gray-900 font-light px-6 py-2 whitespace-nowrap">
-                    Danger Level
-                  </div>
-                </div>
-              </div>
-
-              {data2.map((instance) => {
-                return (
-                  <div
-                    className={
-                      instance.id == selectedMarkerId
-                        ? "border-gray-300 bg-yellow-500"
-                        : "border-gray-300 hover:bg-gray-400"
-                    }
-                    onClick={() => dispatch(selectMarker(instance.id))}
-                  >
-                    <div
-                      className={
-                        instance.id == selectedMarkerId
-                          ? "pl-3 w-full  cursor-pointer transition duration-300 ease-in-out bg-yellow-300 text-white flex justify-evenly "
-                          : "pl-3 w-full  hover:bg-gray-200 cursor-pointer transition duration-300 ease-in-out bg-white flex justify-evenly"
-                      }
-                    >
-                      <div className="text-[12px] text-gray-900 font-light px-1 py-4 whitespace-nowrap ">
-                        {instance.id}
-                      </div>
-
-                      <div className="text-[12px] text-gray-900 font-light pl-7 py-4 whitespace-nowra">
-                        {instance.title}
-                      </div>
-
-                      <div className="text-[12px] text-gray-900 font-light px-2 py-4 whitespace-nowrap pl-10 pr-10">
-                        {instance.warningLevel
-                          ? instance.warningLevel
-                          : "............"}
-                      </div>
-
-                      <div className="text-[12px] text-gray-900 font-light px-2 py-4 whitespace-nowrap pl-10 pr-10">
-                        {instance.dangerLevel}
-                      </div>
-                    </div>
-
-                    <div className="pl-12 py-1 text-[12px] text-red-400 bg-white ">
-                      {instance.status}
-                    </div>
-                    <div className="px-9  text-[10px] text-gray-400 bg-gray-100 flex justify-end bg-white">
-                      {instance.modifiedOn}
-                    </div>
-                  </div>
-                );
-              })}
-            </div>
-          </div>
-        </div>
+        <table className=" mx-4 border-collapse border border-slate-500	">
+          <tr className="border-1">
+            <th>Station</th>
+            <th>Water Level</th>
+          </tr>
+          {data2.map((instance) => {
+            return (
+              <tr
+                className={
+                  instance.id == selectedMarkerId
+                    ? "border-gray-300 bg-[#418fde]"
+                    : `${
+                        instance.status === "BELOW WARNING LEVEL"
+                          ? "bg-green-600"
+                          : "bg-[#ff0000]"
+                      }`
+                }
+                onClick={() => dispatch(selectMarker(instance.id))}
+              >
+                <td className=" py-1 px-1 border border-slate-600">
+                  {instance.title}
+                </td>
+                <td className="py-1 px-1 border border-slate-600">
+                  {instance?.waterLevel.toFixed(2)}
+                </td>
+              </tr>
+            );
+          })}
+        </table>
+        <i className="mx-4">(Data source: hydrology.gov.np)</i>
       </div>
     </div>
   );

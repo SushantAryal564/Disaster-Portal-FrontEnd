@@ -3,18 +3,23 @@ import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 export const DamageLossAsyncGETThunk = createAsyncThunk(
   "damageLossGet",
   async (date) => {
-    console.log(date, "date");
-    const response = await fetch(
-      `http://127.0.0.1:8000/api/v1/disaster/disasterEventwithoutgeom/?name=&Ward=&type=&is_closed=&startTime__gte=${date[0]}T14%3A51%3A00Z&startTime__gt=&startTime=&startTime__lte=${date[1]}T14%3A51%3A00Z`
-    );
-    const data = await response.json();
-    console.log(data, "dateFilter");
+    let data;
+    if (date) {
+      const response = await fetch(
+        `http://127.0.0.1:8000/api/v1/disaster/disasterEventwithoutgeom/?name=&Ward=&type=&is_closed=&startTime__gte=${date[0]}T12%3A55%3A00Z&startTime__gt=&startTime=&startTime__lte=${date[1]}T14%3A51%3A00Z`
+      );
+      data = await response.json();
+    } else {
+      const response = await fetch(
+        `http://127.0.0.1:8000/api/v1/spatial/ward/`
+      );
+      data = await response.json();
+    }
     return data;
   }
 );
 
 const initialState = {
-  data: [],
   totalIncident: 0,
   totalPeopledeath: 0,
   totalEstimatedLoss: 0,
@@ -34,21 +39,20 @@ export const damageLossSlice = createSlice({
       })
       .addCase(DamageLossAsyncGETThunk.fulfilled, (state, action) => {
         state.status = "succeeded";
-        state.data = state.data.concat(action.payload);
-        state.totalIncident = state.data.reduce(
-          (sum, event) => sum + event.Ward.number_of_disasters,
+        console.log(action.payload, "action payload");
+        state.totalIncident = action.payload.features.reduce((sum, event) => {
+          return sum + event.properties.number_of_disasters;
+        }, 0);
+        state.totalPeopledeath = action.payload.features.reduce(
+          (sum, event) => sum + event.properties.total_people_death,
           0
         );
-        state.totalPeopledeath = state.data.reduce(
-          (sum, event) => sum + event.Ward.total_people_death,
+        state.totalEstimatedLoss = action.payload.features.reduce(
+          (sum, event) => sum + event.properties.total_estimated_loss,
           0
         );
-        state.totalEstimatedLoss = state.data.reduce(
-          (sum, event) => sum + event.Ward.total_estimated_loss,
-          0
-        );
-        state.totalInfrastructure = state.data.reduce(
-          (sum, event) => sum + event.Ward.total_infrastructure_damaged,
+        state.totalInfrastructure = action.payload.features.reduce(
+          (sum, event) => sum + event.properties.total_infrastructure_damaged,
           0
         );
       })

@@ -51,6 +51,7 @@ import { WmsAmenities } from "../Map Layer/AmenitiesWms";
 import CommonMarker from "../Common/Marker/CommonMarker";
 import { InfrastructureAsyncGETThunk } from "../../store/Slices/riskinfoSlice";
 import DownloadWardGeoJSONRender from "./DownloadWardgeojson";
+import getColor from "../Common/Choropleth";
 export const Portal = () => {
   const dedata=useSelector(state=>state.selected.dateselectedevent)
   const selectedPanel = useSelector((state) => {
@@ -63,7 +64,7 @@ export const Portal = () => {
   const dispatch = useDispatch();
   var [jsonLalitpurMetro, setJsonLalitpurMetro] = useState("");
   var [jsonWard, setJsonWard] = useState("");
-  const [currentdamageindex, setdamageindex] = useState("incident");
+  const currentdamageindex = useSelector((state) => state.chart.tab);
   const totalIncident = useSelector((state) => {
     return state.damageloss.totalIncident;
   });
@@ -74,8 +75,9 @@ export const Portal = () => {
     return state.damageloss.totalPeopledeath;
   });
   const totalInfrastructureDamage = useSelector((state) => {
-    return state.damageloss.totalInfrastrucutre;
+    return state.damageloss.totalInfrastructure;
   });
+  console.log(totalInfrastructureDamage, "I am infrastructure");
   const slidebarState = useSelector((state) => {
     return state.slidebar.slidebarState;
   });
@@ -145,33 +147,20 @@ export const Portal = () => {
     ...new Set(datadisaster.map((data) => data?.type?.title)),
   ];
   const scrollWheelZoom = true;
-  const getColor = (d) => {
-    return d > 90
-      ? "#800026"
-      : d > 80
-      ? "#BD0026"
-      : d > 60
-      ? "#E31A1C"
-      : d > 40
-      ? "#FC4E2A"
-      : d > 20
-      ? "#FD8D3C"
-      : d >= 0
-      ? "#FEB24C"
-      : "#FEB24C";
-  };
   const styleFeature = (feature) => {
     let currentLegendItem = currentdamageindex;
     let data = 0;
-    if (currentLegendItem === "incident") {
-      data = feature.properties.number_of_disasters / totalIncident;
-    } else if (currentLegendItem === "peopleDeath") {
-      data = feature.properties.total_people_death / totalPeopleDeath;
-    } else if (currentLegendItem === "estimatedLoss") {
-      data = feature.properties.total_estimated_loss / totalEstimatedLoss;
-    } else if (currentLegendItem === "infrastructuredestroyed") {
+    if (currentLegendItem === "INCIDENT") {
+      data = (feature.properties.number_of_disasters * 100) / totalIncident;
+    } else if (currentLegendItem === "LIVES_LOST") {
+      data = (feature.properties.total_people_death * 100) / totalPeopleDeath;
+    } else if (currentLegendItem === "PROPERTY_LOSS") {
       data =
-        feature.properties.total_infrastructure / totalInfrastructureDamage;
+        (feature.properties.total_estimated_loss * 100) / totalEstimatedLoss;
+    } else if (currentLegendItem === "INFRASTRUCTURE_DAMAGE") {
+      data =
+        (feature.properties.total_infrastructure_damaged * 100) /
+        totalInfrastructureDamage;
     } else {
       data = feature.properties.number_of_disasters;
     }
@@ -375,9 +364,7 @@ const wardstyle2={
           {component === DASHBOARD && (
             <DashboardLegend legendItem={disasterinDashboard} />
           )}
-          {component === DAMAGELOSS && (
-            <DamageAndLossLegend changeDamagestate={setdamageindex} />
-          )}
+          {component === DAMAGELOSS && <DamageAndLossLegend />}
           {component == RISKINFO && selectedPanel === 3 ? (
             <CommonMarker data={infrastructure} />
           ) : (
@@ -406,12 +393,3 @@ const wardstyle2={
   );
 };
 export default Portal;
-// {component == RISKINFO && selectedPanel === 3 ? (
-//   <Wms
-//     url="http://localhost:8080/geoserver/Lalitpur/wfs"
-//     layers="Lalitpur:Buildings"
-//     styles="bulding"
-//   />
-// ) : (
-//   ""
-// )}

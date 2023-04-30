@@ -10,11 +10,17 @@ function WardjsonLoader() {
   const wardId = localStorage.getItem("wardNumber");
   //DISCLAMIER--this end point takes wardnumber not ID altho variavble is wardID ,it is actually wardNUMBER,wardId = localStorage.getItem("wardNumber");
   const getWardJSONData = async () => {
-    const data = await fetch(
-      `http://127.0.0.1:8000/api/v1/spatial/ward/${wardId}/`
-    );
-    const wardjson = await data.json();
-    setWardJSON(wardjson);
+    if (wardId) {
+      const data = await fetch(
+        `http://127.0.0.1:8000/api/v1/spatial/ward/${wardId}/`
+      );
+      const wardjson = await data.json();
+      setWardJSON(wardjson);
+    } else {
+      const data = await fetch(`http://127.0.0.1:8000/api/v1/spatial/ward/`);
+      const wardjson = await data.json();
+      setWardJSON(wardjson);
+    }
   };
   useEffect(() => {
     getWardJSONData();
@@ -26,7 +32,7 @@ function WardjsonLoader() {
   //   wardShp.properties.centroid.coordinates[1]
   // );
   useEffect(() => {
-    if (WardJSON) {
+    if (WardJSON && wardId) {
       leafletMap.setView(
         [
           WardJSON.properties.centroid.coordinates[1],

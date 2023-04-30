@@ -5,6 +5,8 @@ const initialState = {
   wardId: "",
   wardNumber: "",
   isMunicipality: false,
+  isCluster: false,
+  ClusterName: "",
 };
 
 const authSlice = createSlice({
@@ -12,12 +14,14 @@ const authSlice = createSlice({
   initialState,
   reducers: {
     setUserToken: (state, action) => {
+      console.log(action.payload, "payload");
       state.access_token = action.payload.access_token;
     },
     unSetUserToken: (state, action) => {
       state.access_token = action.payload.access_token;
     },
     setUserInfo: (state, action) => {
+      console.log(action.payload, "I am not here");
       if (action.payload.IsWard) {
         state.wardId = action.payload.WardId;
         state.wardNumber = action.payload.wardNumber;
@@ -26,8 +30,10 @@ const authSlice = createSlice({
       }
       if (action.payload.IsMunicipality) {
         state.isMunicipality = true;
-        state.wardNumber = "";
-        state.wardId = "";
+      }
+      if (action.payload.IsCluster) {
+        state.isCluster = true;
+        state.ClusterName = action.payload.ClusterName;
       }
     },
   },

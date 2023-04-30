@@ -7,10 +7,14 @@ const storeToken = (value) => {
       localStorage.setItem("WardId", value.userId);
       localStorage.setItem("wardNumber", value.WardNumber);
       localStorage.setItem("IsWard", true);
-    } else if (user == "munciplaity") {
+    }
+    if (user == "munciplaity") {
       localStorage.setItem("IsMunicipality", true);
     }
-    // localStorage.setItem("")
+    if (user === "cluster") {
+      localStorage.setItem("IsCluster", true);
+      localStorage.setItem("ClusterName", value.clusterName);
+    }
   }
 };
 
@@ -24,16 +28,14 @@ const getUserInformation = () => {
   let WardId = localStorage.getItem("WardId");
   let IsMunicipality = localStorage.getItem("IsMunicipality");
   let IsWard = localStorage.getItem("IsWard");
+  let IsCluster = localStorage.getItem("IsCluster");
   let wardNumber = localStorage.getItem("wardNumber");
-  return { WardId, IsMunicipality, IsWard, wardNumber };
+  let ClusterName = localStorage.getItem("ClusterName");
+  return { WardId, IsMunicipality, IsWard, wardNumber, IsCluster, ClusterName };
 };
 
 const removeToken = () => {
-  localStorage.removeItem("access_token");
-  localStorage.removeItem("refresh_token");
-  localStorage.removeItem("WardId");
-  localStorage.removeItem("wardNumber");
-  localStorage.removeItem("IsWard");
+  localStorage.clear();
 };
 
 export { storeToken, getToken, removeToken, getUserInformation };

@@ -22,7 +22,6 @@ function ActivityLog({ changeMarkerDataState }) {
   const [DisasterActivityLog, setDisasterActivityLog] = useState("");
   const wardId = localStorage.getItem("WardId");
   const wardNumber = localStorage.getItem("wardNumber");
-  let access_token = localStorage.getItem("access_token");
   const WardActiveDisaster = async () => {
     let data = await fetch(
       `http://127.0.0.1:8000/api/v1/disaster/disasterEventwithoutgeom/?name=&Ward=${wardId}`
@@ -48,7 +47,6 @@ function ActivityLog({ changeMarkerDataState }) {
   };
   const ActivitySendToBackend = async (activity, creator, date, id) => {
     let access_token = localStorage.getItem("access_token");
-    console.log("accs----->", access_token);
     let data = {
       disaster: id,
       action_name: activity,
@@ -85,13 +83,6 @@ function ActivityLog({ changeMarkerDataState }) {
   useEffect(() => {
     WardActiveDisaster(wardId);
   }, [reloder]);
-  const activeIncidentLogHandler = () => {
-    WardActiveDisaster();
-  };
-  const allIncidentLogHandler = () => {
-    WardPastDisaster();
-    setDisasterActivityLog([]);
-  };
   const DisasterActivityLogHandler = (id) => {
     setDisasterID(id);
     DisasterActivity(id);
@@ -148,9 +139,6 @@ function ActivityLog({ changeMarkerDataState }) {
         <Accordion
           open={open === data.id}
           icon={<Icon id={data.id} open={open} />}
-          onClick={() => {
-            handleOpen(data.id);
-          }}
         >
           <AccordionHeader
             onClick={() => {

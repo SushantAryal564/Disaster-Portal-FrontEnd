@@ -3,6 +3,9 @@ import React from "react";
 import { Marker, Popup } from "react-leaflet";
 import { useSelector } from "react-redux";
 import { GetColor } from "../UI/GetColor";
+import { useDispatch } from "react-redux";
+import { changeDamageAndLossTab } from "../../store/Slices/chartSlice";
+
 export const getIcon = (disastertype) => {
   if (disastertype == "Fire") {
     return "marker-fire";
@@ -100,28 +103,76 @@ export const IncidentLegend = ({ legendItem }) => {
   );
 };
 
-export const RiskInfoLegend = ({ legendItem }) => {
-  const image =
-    "http://localhost:8080/geoserver/wms?REQUEST=GetLegendGraphic&VERSION=1.0.0&FORMAT=image/png&WIDTH=20&HEIGHT=20&LAYER=Lalitpur:PopulationLalitpurMetro_final";
-  return (
-    <div>
-      <div
-        className="legend"
-        style={{
-          position: "absolute",
-          bottom: "20px",
-          right: "20px",
-          zIndex: 9999,
-        }}
-      >
-        <h5 className="bg-white text-black p-[0.4px] mb-2"> Legend</h5>
-        <img src={image} />
+export const RiskInfoLegend = () => {
+  const currentPanel = useSelector((state) => state.riskinfo.currentpanel);
+  let image = "";
+  if (currentPanel == "1") {
+    image =
+      "http://localhost:8080/geoserver/wms?REQUEST=GetLegendGraphic&VERSION=1.0.0&FORMAT=image/png&WIDTH=20&HEIGHT=20&LAYER=Lalitpur:PopulationLalitpurMetro_final";
+    return (
+      <div>
+        <div
+          className="legend"
+          style={{
+            position: "absolute",
+            bottom: "20px",
+            right: "20px",
+            zIndex: 9999,
+          }}
+        >
+          <h5 className="bg-white text-black p-[0.4px] mb-2"> Legend</h5>
+          <img src={image} />
+        </div>
       </div>
-    </div>
-  );
+    );
+  }
+  if (currentPanel == "2") {
+    return (
+      <div>
+        <div
+          className="legend"
+          style={{
+            position: "absolute",
+            bottom: "20px",
+            right: "20px",
+            zIndex: 9999,
+          }}
+        >
+          <h5 className="bg-white text-black p-[0.4px] mb-2"> Legend</h5>
+          <div className="flex flex-col gap-1">
+            <div className="flex gap-3">
+              <div className="w-4 h-4 bg-[#2777ec]"></div>
+              <div className="text-xs font-medium">WaterBody</div>
+            </div>
+            <div className="flex gap-3">
+              <div className="w-4 h-4 bg-[#498828]"></div>
+              <div className="text-xs font-medium">Forest</div>
+            </div>
+            <div className="flex gap-3">
+              <div className="w-4 h-4 bg-[#ea2a2b]"></div>
+              <div className="text-xs font-medium">Built-up</div>
+            </div>
+            <div className="flex gap-3">
+              <div className="w-4 h-4 bg-[#ffff2c]"></div>
+              <div className="text-xs font-medium">Crop Land</div>
+            </div>
+            <div className="flex gap-3">
+              <div className="w-4 h-4 bg-[#c6fdaf]"></div>
+              <div className="text-xs font-medium">Grassland</div>
+            </div>
+            <div className="flex gap-3">
+              <div className="w-4 h-4 bg-[#69e52e]"></div>
+              <div className="text-xs font-medium">Woodenland</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    );
+  }
 };
 
 export const DamageAndLossLegend = ({ changeDamagestate }) => {
+  const dispatch = useDispatch();
   return (
     <div>
       <div
@@ -135,15 +186,23 @@ export const DamageAndLossLegend = ({ changeDamagestate }) => {
         }}
       >
         <div className="m-2 flex justify-between pb-1 items-start">
-          <div onClick={() => changeDamagestate("incident")}>Incident</div>
-          <div onClick={() => changeDamagestate("peopleDeath")}>
-            People death
+          <div onClick={() => dispatch(changeDamageAndLossTab("INCIDENT"))}>
+            Incident
           </div>
-          <div onClick={() => changeDamagestate("estimatedLoss")}>
-            Estimated loss
+          <div onClick={() => dispatch(changeDamageAndLossTab("LIVES_LOST"))}>
+            Lives Lost
           </div>
-          <div onClick={() => changeDamagestate("infrastructuredestroyed")}>
-            Infrastructure destroyed
+          <div
+            onClick={() => dispatch(changeDamageAndLossTab("PROPERTY_LOSS"))}
+          >
+            Property loss
+          </div>
+          <div
+            onClick={() =>
+              dispatch(changeDamageAndLossTab("INFRASTRUCTURE_DAMAGE"))
+            }
+          >
+            Infrastructure Damaged
           </div>
         </div>
       </div>
