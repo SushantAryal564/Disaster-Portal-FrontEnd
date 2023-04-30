@@ -19,12 +19,12 @@ function Dashboard({ reportActivated }) {
   });
   return (
     <React.Fragment>
-      <div className="flex justify-between items-center text-black px-3 ">
+      <div className="flex justify-between items-center text-black px-3 border-b-2 border-gray-100">
       <div className="text-white text-xl font-sans ">
         <div className="flex flex-start"><img  className='h-20 mt-3' src={LMC}></img>
         <div className="text-sm flex flex-cols justify-center mx-3" ><p className="text-xl text-black mt-4">Lalitpur Metropolitan city,
-        <br/>Bagmati Pradesh, Lalitpur
-        <div className=" text-black text-xs font-medium italic ">Disaster Information Management System</div> 
+        <br/><p className="align-baseline">Bagmati Pradesh, Lalitpur</p>
+        <div className=" text-black text-xs font-medium italic align-baseline ">Disaster Information Management System</div> 
         </p>
         
         </div>
