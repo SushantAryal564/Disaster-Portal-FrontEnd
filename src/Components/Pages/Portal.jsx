@@ -50,7 +50,9 @@ import { WmsCriti } from "../Map Layer/WmsCriticalInfras";
 import { WmsAmenities } from "../Map Layer/AmenitiesWms";
 import CommonMarker from "../Common/Marker/CommonMarker";
 import { InfrastructureAsyncGETThunk } from "../../store/Slices/riskinfoSlice";
+import DownloadWardGeoJSONRender from "./DownloadWardgeojson";
 export const Portal = () => {
+  
   const selectedPanel = useSelector((state) => {
     return state.riskinfo.currentpanel;
   });
@@ -124,6 +126,9 @@ export const Portal = () => {
     dispatch(slidebarAction.changeSlidebarState());
   };
   const infrastructure = useSelector((state) => state.riskinfo.data);
+  const downloablebuildingarchive = useSelector((state) => state.selected.selectionDownloadWardbuilding);
+  console.log("DWONLOAD(((((((((((((((((999999999999999999999999",downloablebuildingarchive)
+  
   useEffect(() => {
     dispatch(InfrastructureAsyncGETThunk("school"));
     metroJSON();
@@ -187,7 +192,15 @@ export const Portal = () => {
       iconSize: L.point(35, 35, true),
     });
   };
+const wardstyle2={
+  fillColor: `green`,
+  opacity: 1,
+  weight: 1,
+  color: "green",
+  fillOpacity: 0.7,
+};
 
+  
   return (
     <Fragment>
       {reportActivated ? (
@@ -352,6 +365,14 @@ export const Portal = () => {
           ) : (
             ""
           )}
+
+
+   {downloablebuildingarchive?<DownloadWardGeoJSONRender data={downloablebuildingarchive}/>:""}
+
+        
+
+          {/* download archive wardjson loader */}
+          {/* {downloablebuildingarchive?<GeoJSON style={wardstyle2} data={downloablebuildingarchive}></GeoJSON>:""}  */}
         </MapContainer>
         <SideBar changeReportState={changeReportState} />
         {reportActivated ? (

@@ -4,7 +4,8 @@ import { AiFillInfoCircle } from "react-icons/ai";
 import { BiAlarm } from "react-icons/bi";
 import { disasterAsyncGETThunk } from "../store/Slices/disasterSlice";
 import { useDispatch } from "react-redux";
-import LMC from "./../assests/LMC.png";
+import LMC from "./../assests/a.png";
+
 function Dashboard({ reportActivated }) {
   const dispatch = useDispatch();
   const status = useSelector((state) => state.disaster.status);
@@ -18,12 +19,22 @@ function Dashboard({ reportActivated }) {
   });
   return (
     <React.Fragment>
-      <div className="flex justify-between items-center px-3 py-2 bg-[#e35163]">
-        <div className=" text-white text-3xl font-serif font-medium">DIMS</div>
-        <div className="text-white text-xl font-serif">
-          Lalitpur Metropolitan City
+      <div className="flex justify-between items-center text-black px-3 ">
+      <div className="text-white text-xl font-sans ">
+        <div className="flex flex-start"><img  className='h-20 mt-3' src={LMC}></img>
+        <div className="text-sm flex flex-cols justify-center mx-3" ><p className="text-xl text-black mt-4">Lalitpur Metropolitan city,
+        <br/>Bagmati Pradesh, Lalitpur
+        <div className=" text-black text-xs font-medium italic ">Disaster Information Management System</div> 
+        </p>
+        
         </div>
+        
+        </div>
+        </div>
+      {/* <div className=" text-black text-sm font-serif font-medium">Disaster Information Management System</div> */}
+        
       </div>
+    {/* <div className=" text-black text-sm font-serif font-medium mx-3">Disaster Information Management System</div>  */}
       {disasterData.map((data) => {
         return (
           <div className=" border-gray-200 border-b-2 p-1 hover:bg-gray-200 py-2  ">
