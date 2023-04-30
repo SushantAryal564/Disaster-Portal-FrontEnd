@@ -49,7 +49,6 @@ export const Login = (props) => {
     };
 
     const res = await loginUser(actualData);
-    console.log(res.data, "response");
     if (res.message) {
       setServerError(res.message);
     }
@@ -57,12 +56,28 @@ export const Login = (props) => {
       storeToken(res.data);
       let { access_token } = getToken();
       dispatch(setUserToken({ access_token: access_token }));
-      let { WardId, IsWard, IsMunicipality, wardNumber } = getUserInformation();
-      dispatch(setUserInfo({ WardId, IsWard, IsMunicipality, wardNumber }));
-      console.log(res, "response data");
-      if (res.data.user === "ward") {
+      let {
+        WardId,
+        IsWard,
+        IsMunicipality,
+        wardNumber,
+        IsCluster,
+        ClusterName,
+      } = getUserInformation();
+      dispatch(
+        setUserInfo({
+          WardId,
+          IsWard,
+          IsMunicipality,
+          wardNumber,
+          IsCluster,
+          ClusterName,
+        })
+      );
+      if (IsWard) {
         navigate("/managedisaster");
-      } else {
+      }
+      if (IsMunicipality || IsCluster) {
         navigate("/manage");
       }
     }

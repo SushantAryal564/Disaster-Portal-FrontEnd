@@ -1,5 +1,6 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/dist/query/react";
 
+let access_token = localStorage.getItem("access_token");
 export const manageApiSlice = createApi({
   reducerPath: "api",
   baseQuery: fetchBaseQuery({
@@ -16,6 +17,10 @@ export const manageApiSlice = createApi({
       query: (activity) => ({
         url: "response/activity/",
         method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${access_token}`,
+        },
         body: activity,
       }),
       invalidatesTags: ["ActivityLog"],

@@ -230,7 +230,7 @@ const ManageDisasterOther = () => {
         <div
           className={`${
             slidebarState ? "w-1/2" : "w-0"
-          } duration-300 h-[90vh] relative`}
+          } duration-300 h-[100vh] relative overflow-x-hidden scrollbar scrollbar-thumb-gray-300 overflow-y-scroll scrollbar-track-gray-100 scrollbar-w-1 scrollbar-rounded-rounded-md`}
         >
           <div>
             <Headers />
