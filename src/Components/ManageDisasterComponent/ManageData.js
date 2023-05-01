@@ -2,19 +2,18 @@ import * as Yup from "yup";
 import { useFormik } from "formik";
 import { useSelector } from "react-redux";
 import { useEffect, useState } from "react";
-import { ToastContainer, toast } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 function ManageData({ polygonCoords, changeMarkerDataState }) {
   const buildingdata = useSelector((state) => {
     return state.buildings.selectedBuilding;
   });
   const notify = () => toast("Data Updated!");
-  console.log("BUILDING DATA",buildingdata)
+  console.log("BUILDING DATA", buildingdata);
 
   async function postPolygonData(data) {
-    if (polygonCoords===![]){
+    if (polygonCoords === ![]) {
       try {
-        console.log("1DATAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA1",polygonCoords,data)
         const response = await fetch(
           "http://127.0.0.1:8000/api/v1/analysis/patchbuilding/",
           {
@@ -22,7 +21,7 @@ function ManageData({ polygonCoords, changeMarkerDataState }) {
             headers: {
               "Content-Type": "application/json",
             },
-            body: JSON.stringify({geom: polygonCoords,...data }),
+            body: JSON.stringify({ geom: polygonCoords, ...data }),
           }
         );
         toast.success("Data updated successfully!", {
@@ -30,7 +29,7 @@ function ManageData({ polygonCoords, changeMarkerDataState }) {
           autoClose: 3000,
         });
       } catch (error) {}
-    }else{
+    } else {
       try {
         console.log("Data:", JSON.stringify(data));
         const response = await fetch(
@@ -52,8 +51,8 @@ function ManageData({ polygonCoords, changeMarkerDataState }) {
       } catch (error) {
         console.error("Error:", error);
       }
-  
-  }}
+    }
+  }
   if (buildingdata) {
     var {
       osm_id,
@@ -63,7 +62,7 @@ function ManageData({ polygonCoords, changeMarkerDataState }) {
       housemetricnumber,
       type,
       email,
-      address
+      address,
     } = buildingdata;
   }
   // console.log("MANAGE DATA--->selected building", buildingdata);
@@ -76,7 +75,7 @@ function ManageData({ polygonCoords, changeMarkerDataState }) {
     type: "",
     people: 0,
     email: "",
-    address:""
+    address: "",
   };
   useEffect(() => {
     console.log("builidng daata changed");
@@ -86,12 +85,12 @@ function ManageData({ polygonCoords, changeMarkerDataState }) {
       phone_number_2: phone_number_2 || "",
       people: people || 0,
       housemetricnumber: housemetricnumber || "",
-      type: type || "" ,
-      address:address || "",
-      email:email ||""
+      type: type || "",
+      address: address || "",
+      email: email || "",
     });
   }, [buildingdata]);
-  
+
   console.log("managed data rendere", "Saved Valued----", savedValue);
   const formik = useFormik({
     initialValues: savedValue || initialValues,
@@ -111,8 +110,11 @@ function ManageData({ polygonCoords, changeMarkerDataState }) {
       email: Yup.string().email("Invalid email address"),
     }),
     onSubmit: (values) => {
-      console.log(values,'hjkl------------------------------------------------------------___>');
-      postPolygonData(values)
+      console.log(
+        values,
+        "hjkl------------------------------------------------------------___>"
+      );
+      postPolygonData(values);
     },
   });
 
@@ -135,7 +137,7 @@ function ManageData({ polygonCoords, changeMarkerDataState }) {
   }
   return (
     <div className="h-full self-center text-gray-500 scrollbar scrollbar-thumb-gray-300 scrollbar-track-gray-100 scrollbar-w-1 scrollbar-rounded-rounded-md">
-       <ToastContainer />
+      <ToastContainer />
       <form onSubmit={formik.handleSubmit}>
         <div className="mx-4">
           <div className="flex flex-row items-center justify-center lg:justify-start ">

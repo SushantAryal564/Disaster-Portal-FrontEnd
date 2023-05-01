@@ -30,7 +30,7 @@ export const LiveData = () => {
   return (
     <>
       <Header />
-      <div className="w-full max-w-screen-xl mx-auto">
+      <div className="w-full max-w-screen-xl mx-auto px-4 h-[83vh] overflow-x-scroll scrollbar scrollbar-thumb-gray-300 scrollbar-track-gray-100 scrollbar-w-1 scrollbar-rounded-rounded-md">
         {data[0]?.results && data2[0]?.results ? (
           <div className="">
             <Water
@@ -53,15 +53,15 @@ export const Pollution = ({ data, selectedMarkerId }) => {
   const dispatch = useDispatch();
   return (
     <div>
-      <div className="text-lg py-2 font-serif mx-4">Live Pollution Data</div>
-      <p className="mx-4">
+      <div className="text-lg py-2 font-serif mx-2">Live Pollution Data</div>
+      <p className="mx-2">
         Real-time river flow data is collected using a variety of techniques,
         including gauges that measure the water level and velocity, and acoustic
         sensors that can estimate flow rates. This data can be used to monitor
         water availability and quality, forecast flood events, and manage water
         resources.
       </p>
-      <div className="flex flex-col mt-0 mx-4">
+      <div className="flex flex-col mt-0 mx-2">
         <div className="">
           <div className="py-0 inline-block min-w-full ">
             <div className="overflow-hidden bg-white">
@@ -106,8 +106,8 @@ export const Water = ({ data2, selectedMarkerId }) => {
   const dispatch = useDispatch();
   return (
     <div className="mb-2">
-      <div className=" mx-4 text-lg font-serif py-2">Live Riverflow Data</div>
-      <p className="text-justify mx-4">
+      <div className=" mx-2 text-lg font-serif py-2">Live Riverflow Data</div>
+      <p className="text-justify mx-2">
         Real-time pollution data is typically collected using sensors that
         measure parameters such as dissolved oxygen, pH, temperature, and the
         levels of pollutants such as nitrogen and phosphorus. This data is then
@@ -115,7 +115,7 @@ export const Water = ({ data2, selectedMarkerId }) => {
         make management decisions
       </p>
       <div className="flex flex-col mt-0">
-        <table className=" mx-4 border-collapse border border-slate-500	">
+        <table className=" mx-2 border-collapse border border-slate-500	">
           <tr className="border-1">
             <th>Station</th>
             <th>Water Level</th>
@@ -144,7 +144,7 @@ export const Water = ({ data2, selectedMarkerId }) => {
             );
           })}
         </table>
-        <i className="mx-4">(Data source: hydrology.gov.np)</i>
+        <i className="mx-2">(Data source: hydrology.gov.np)</i>
       </div>
     </div>
   );

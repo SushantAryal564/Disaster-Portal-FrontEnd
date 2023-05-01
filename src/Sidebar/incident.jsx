@@ -14,37 +14,38 @@ function Incident({ reportActivated }) {
   );
   return (
     <React.Fragment>
-       <div className=" p-3 text-sm bg-[#e35163] text-white"> Incident Section</div>
-      <Header/>
-      {disasterIncidentData.map((data) => {
-        return (
-          <div className="border-gray-200 border-b-2 p-3 hover:bg-gray-200 py-4">
-            <div className="text-md font-medium flex flex-row ">
-              <div className="text-red-500 text-sm flex flex-col">
-                <span className="px-3">
-                  {" "}
-                  <AiFillInfoCircle size={20} />
-                </span>
-                <p className="text-xs">{data?.type?.title || "none"}</p>
-              </div>
-              <span className="font-normal ml-5 pt-1 text-sm">
-                <div className="font-semibold text-xs"> {data.name}</div>
-                <div>
-                  <div className="text-xs  text-gray-500 flex justify-start ">
-                    <span className="">{data.date}</span>
-                    <div className="flex items-center px-2">
-                      <span>
-                        <BiAlarm />
-                      </span>
-                      <span className="pl-1">{data.time || "none"}</span>
+      <Header />
+      <div className="px-4 h-[83vh] overflow-x-scroll scrollbar scrollbar-thumb-gray-300 scrollbar-track-gray-100 scrollbar-w-1 scrollbar-rounded-rounded-md">
+        {disasterIncidentData.map((data) => {
+          return (
+            <div className="border-gray-200 border-b-2 p-3 hover:bg-gray-200 py-4">
+              <div className="text-md font-medium flex flex-row ">
+                <div className="text-red-500 text-sm flex flex-col">
+                  <span className="px-3">
+                    {" "}
+                    <AiFillInfoCircle size={20} />
+                  </span>
+                  <p className="text-xs">{data?.type?.title || "none"}</p>
+                </div>
+                <span className="font-normal ml-5 pt-1 text-sm">
+                  <div className="font-semibold text-xs"> {data.name}</div>
+                  <div>
+                    <div className="text-xs  text-gray-500 flex justify-start ">
+                      <span className="">{data.date}</span>
+                      <div className="flex items-center px-2">
+                        <span>
+                          <BiAlarm />
+                        </span>
+                        <span className="pl-1">{data.time || "none"}</span>
+                      </div>
                     </div>
                   </div>
-                </div>
-              </span>
+                </span>
+              </div>
             </div>
-          </div>
-        );
-      })}
+          );
+        })}
+      </div>
     </React.Fragment>
   );
 }

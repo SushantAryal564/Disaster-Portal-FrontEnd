@@ -1,5 +1,5 @@
 import React, { useEffect, useState, Fragment } from "react";
-import { GeoJSON,CircleMarker  } from "react-leaflet";
+import { GeoJSON, CircleMarker } from "react-leaflet";
 import Layout from "../Layout/Layout";
 import {
   LayersControl,
@@ -53,7 +53,7 @@ import { InfrastructureAsyncGETThunk } from "../../store/Slices/riskinfoSlice";
 import DownloadWardGeoJSONRender from "./DownloadWardgeojson";
 import getColor from "../Common/Choropleth";
 export const Portal = () => {
-  const dedata=useSelector(state=>state.selected.dateselectedevent)
+  const dedata = useSelector((state) => state.selected.dateselectedevent);
   const selectedPanel = useSelector((state) => {
     return state.riskinfo.currentpanel;
   });
@@ -128,9 +128,10 @@ export const Portal = () => {
     dispatch(slidebarAction.changeSlidebarState());
   };
   const infrastructure = useSelector((state) => state.riskinfo.data);
-  const downloablebuildingarchive = useSelector((state) => state.selected.selectionDownloadWardbuilding);
-  console.log("DWONLOAD(((((((((((((((((999999999999999999999999",downloablebuildingarchive)
-  
+  const downloablebuildingarchive = useSelector(
+    (state) => state.selected.selectionDownloadWardbuilding
+  );
+
   useEffect(() => {
     dispatch(InfrastructureAsyncGETThunk("school"));
     metroJSON();
@@ -181,15 +182,14 @@ export const Portal = () => {
       iconSize: L.point(35, 35, true),
     });
   };
-const wardstyle2={
-  fillColor: `green`,
-  opacity: 1,
-  weight: 1,
-  color: "green",
-  fillOpacity: 0.7,
-};
+  const wardstyle2 = {
+    fillColor: `green`,
+    opacity: 1,
+    weight: 1,
+    color: "green",
+    fillOpacity: 0.7,
+  };
 
-  
   return (
     <Fragment>
       {reportActivated ? (
@@ -199,7 +199,7 @@ const wardstyle2={
         <div
           className={`${
             slidebarState ? "w-2/5 " : "w-0"
-          } duration-300 h-[100vh] relative overflow-x-scroll scrollbar scrollbar-thumb-gray-300 scrollbar-track-gray-100 scrollbar-w-1 scrollbar-rounded-rounded-md`}
+          } duration-300 h-[100vh] relative`}
         >
           {ComponentToRender}
         </div>
@@ -318,29 +318,33 @@ const wardstyle2={
                 })
               : ""}
 
-   
-
             {component === INCIDENT
               ? dataIncident.map((event) => {
                   return <Markers disaster={event} key={event.id} />;
                 })
               : ""}
           </MarkerClusterGroup>
-          
-          {component==='Data' && dedata?
-     dedata?.map((event) => {
-      return <Markers disaster={event} key={event.id} />;
-                })
-     :""}
 
+          {component === "Data" && dedata
+            ? dedata?.map((event) => {
+                return <Markers disaster={event} key={event.id} />;
+              })
+            : ""}
 
-
-        {component==='Data' && dedata?
-     dedata?.map((event) => {
-      console.log(event.lat,event.lat,'adssssssssssssssss')
-      return <CircleMarker center={[event.lat , event.long]} radius={20}  weight={1} zIndexOffset={100} className="blinking-circle2"  />;
-                })
-     :""}
+          {component === "Data" && dedata
+            ? dedata?.map((event) => {
+                console.log(event.lat, event.lat, "adssssssssssssssss");
+                return (
+                  <CircleMarker
+                    center={[event.lat, event.long]}
+                    radius={20}
+                    weight={1}
+                    zIndexOffset={100}
+                    className="blinking-circle2"
+                  />
+                );
+              })
+            : ""}
 
           {component == RISKINFO && selectedPanel == 1 && amenitiesToggle ? (
             <WmsAmenities />
@@ -371,10 +375,11 @@ const wardstyle2={
             ""
           )}
 
-
-   {downloablebuildingarchive?<DownloadWardGeoJSONRender data={downloablebuildingarchive}/>:""}
-
-        
+          {downloablebuildingarchive ? (
+            <DownloadWardGeoJSONRender data={downloablebuildingarchive} />
+          ) : (
+            ""
+          )}
 
           {/* download archive wardjson loader */}
           {/* {downloablebuildingarchive?<GeoJSON style={wardstyle2} data={downloablebuildingarchive}></GeoJSON>:""}  */}

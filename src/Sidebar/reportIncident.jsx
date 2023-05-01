@@ -93,12 +93,11 @@ function ReportAnAncident({ setReportActivated, reportActivated }) {
         (ward) => ward.properties.ward == values.region
       );
       const wardid = wardobject.id;
-      console.log(values, "I am values bitch");
       const disasterData = {
         description: values.title,
+        type: hazardid,
         lat: values.latitude,
         long: values.longitude,
-        hazard: hazardid,
         Ward: wardid,
         startTime: values.incidentOn + ":00Z",
         name: values.hazard + " in " + values.streetAddress,

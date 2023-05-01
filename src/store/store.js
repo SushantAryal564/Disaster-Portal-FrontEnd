@@ -17,6 +17,7 @@ import buildingReducer from "./Slices/buildingSlice";
 import riskinfoReducer from "./Slices/riskinfoSlice";
 import chartReducer from "./Slices/chartSlice";
 import { manageApiSlice } from "../services/MuniClusManage";
+import situationReducer from "./Slices/situationSlice";
 
 const store = configureStore({
   reducer: {
@@ -38,6 +39,7 @@ const store = configureStore({
     feature: featureReducer,
     buildings: buildingReducer,
     riskinfo: riskinfoReducer,
+    situation: situationReducer,
   },
   middleware: (getDefaultMiddleware) => [
     ...getDefaultMiddleware(),

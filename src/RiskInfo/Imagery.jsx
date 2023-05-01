@@ -11,7 +11,7 @@ export const Imagery = () => {
     { name: "Wooden Land", value: 0.041565 },
   ];
   return (
-    <div className=" mx-4 scrollbar scrollbar-thumb-gray-300 scrollbar-track-gray-100 scrollbar-w-1 scrollbar-rounded-rounded-md">
+    <div className="px-4 h-[83vh] overflow-x-scroll scrollbar scrollbar-thumb-gray-300 scrollbar-track-gray-100 scrollbar-w-1 scrollbar-rounded-rounded-md">
       <div className="mt-8 text-5xl font-serif font-medium"> Land Cover</div>
       <div className=" mt-4 text-justify">
         <p>

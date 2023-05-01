@@ -26,9 +26,8 @@ function DamageLoss({ reportActivated }) {
   const damageTab = useSelector((state) => state.chart.tab);
   return (
     <>
-      <div className=" p-3 text-sm bg-[#e35163] text-white"> Damage and Loss</div>
       <Header />
-    
+
       <div className="border-2 p-2 text-xs">
         <div className="flex justify-evenly">
           <button

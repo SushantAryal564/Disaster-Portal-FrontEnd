@@ -3,8 +3,8 @@ import DoubleBarChart from "../Components/Common/Chart/DoubleBarChart";
 import { demography } from "./population.js";
 export const Demography = () => {
   return (
-    <div className=" mx-4 scrollbar scrollbar-thumb-gray-300 scrollbar-track-gray-100 scrollbar-w-1 scrollbar-rounded-rounded-md">
-      <div className="mt-8 text-5xl font-serif font-medium"> Demography</div>
+    <div className=" px-4 h-[83vh] overflow-x-scroll scrollbar scrollbar-thumb-gray-300 scrollbar-track-gray-100 scrollbar-w-1 scrollbar-rounded-rounded-md">
+      <div className="mt-3 text-5xl font-serif font-medium"> Demography</div>
       <div className=" mt-4 text-justify">
         <p>
           Lalitpur Metropolitan City, is the fourth most populous city of
