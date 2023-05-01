@@ -1,10 +1,30 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 
-export const SituationGETAsyncThunk = createAsyncThunk(
-  "Situation",
-  async (infrastructure) => {
+export const ActiveDisasterGETAsyncThunk = createAsyncThunk(
+  "ActiveDisaster",
+  async () => {
     const response = await fetch(
-      `http://127.0.0.1:8000/api/v1/analysis/amenites/?tag=${infrastructure}`
+      `http://127.0.0.1:8000/api/v1/disaster/disasterEventwithoutgeom/?name=&Ward=&type=&is_closed=false&startTime__gte=&startTime__gt=&startTime=&startTime__lte=`
+    );
+    const data = await response.json();
+    return data;
+  }
+);
+export const AllDisasterGETAsyncThunk = createAsyncThunk(
+  "AllDisaster",
+  async () => {
+    const response = await fetch(
+      "http://127.0.0.1:8000/api/v1/disaster/disasterEventwithoutgeom/"
+    );
+    const data = await response.json();
+    return data;
+  }
+);
+export const GETDisasterIncidentResponse = createAsyncThunk(
+  "Response",
+  async (disasterId) => {
+    const response = await fetch(
+      `http://127.0.0.1:8000/api/v1/response/activity/?disaster__is_closed=&disaster__id=${disasterId}&disaster__Ward=`
     );
     const data = await response.json();
     return data;
@@ -12,33 +32,39 @@ export const SituationGETAsyncThunk = createAsyncThunk(
 );
 
 const initialState = {
-  currentTab: "active",
-  data: [],
-  status: "idle",
+  allIncident: [],
+  activeIncident: [],
+  activityResponse: [],
+  selectedDisaster: null,
+  selectedPanel: "allIncident",
 };
 export const situationSlice = createSlice({
-  name: "riskinfo",
+  name: "situationInfo",
   initialState,
   reducers: {
-    setpanel: (state, action) => {
-      state.currentpanel = action.payload;
+    setDisaster: (state, action) => {
+      state.selectedDisaster = action.payload;
+    },
+    setPanel: (state, action) => {
+      state.selectedPanel = action.payload;
     },
   },
   extraReducers(builder) {
     builder
-      .addCase(SituationGETAsyncThunk.pending, (state) => {
-        state.status = "loading";
-      })
-      .addCase(SituationGETAsyncThunk.fulfilled, (state, action) => {
+      .addCase(ActiveDisasterGETAsyncThunk.fulfilled, (state, action) => {
         state.status = "succeeded";
-        state.data = action.payload;
+        state.activeIncident = action.payload;
       })
-      .addCase(SituationGETAsyncThunk.rejected, (state, action) => {
-        state.status = "failed";
-        state.error = action.error.message;
+      .addCase(AllDisasterGETAsyncThunk.fulfilled, (state, action) => {
+        state.status = "succeeded";
+        state.allIncident = action.payload;
+      })
+      .addCase(GETDisasterIncidentResponse.fulfilled, (state, action) => {
+        state.status = "succeeded";
+        state.activityResponse = action.payload;
       });
   },
 });
 
-export const { setpanel } = situationSlice.actions;
+export const { setDisaster, setPanel } = situationSlice.actions;
 export default situationSlice.reducer;
