@@ -8,7 +8,7 @@ import { useMap } from "react-leaflet";
 import { GeoJSON } from "react-leaflet";
 import { MapContainer, TileLayer, Marker, Popup } from "react-leaflet";
 
-function Edit({ data }) {
+function Edit({ data,open,setOpen }) {
   const [finance,setFinance]=useState(null)
   const [lives,setlives]=useState(null)
   const [infra,setinfra]=useState(null)
@@ -87,6 +87,7 @@ function Edit({ data }) {
     );
     const responseData = await response.json();
     console.log("PATCH-RESPONSE",responseData)
+    setOpen(0)
   };
 
 
@@ -107,6 +108,7 @@ function Edit({ data }) {
     );
     const responseData = await response.json();
     console.log("DELETE-RESPONSE",responseData,response)
+    setOpen(0)
   };
 
 
@@ -202,6 +204,7 @@ const date = new Date(date_event).toISOString().replace("Z", "");
     );
     const responseData = await response.json();
     console.log("PATCH-RESPONSE",responseData)
+    setOpen(0)
   }
   let formIsValid = true;
   if (
