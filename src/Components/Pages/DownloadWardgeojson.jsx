@@ -40,7 +40,6 @@ function DownloadWardGeoJSONRender({data}) {
   const map=useMap()
     return (
         <>
-    
         </>
     )
 }
