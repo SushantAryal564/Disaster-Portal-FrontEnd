@@ -131,7 +131,7 @@ export const Portal = () => {
   const downloablebuildingarchive = useSelector(
     (state) => state.selected.selectionDownloadWardbuilding
   );
-
+ console.log("SECTION WAD DATA??-------------------",downloablebuildingarchive)
   useEffect(() => {
     dispatch(InfrastructureAsyncGETThunk("school"));
     metroJSON();
@@ -307,16 +307,19 @@ export const Portal = () => {
           {component === DAMAGELOSS && (
             <GeoJSON data={jsonWard} style={styleFeature} />
           )}
+
+
+{component === DASHBOARD
+              ? datadisaster.map((event) => {
+                  return <Markers disaster={event} key={event.id} />;
+                })
+              : ""}
           <MarkerClusterGroup
             showCoverageOnHover={false}
             spiderfyDistanceMultiplier={2}
             iconCreateFunction={createClusterCustomIcon}
           >
-            {component === DASHBOARD
-              ? datadisaster.map((event) => {
-                  return <Markers disaster={event} key={event.id} />;
-                })
-              : ""}
+           
 
             {component === INCIDENT
               ? dataIncident.map((event) => {
@@ -375,7 +378,7 @@ export const Portal = () => {
             ""
           )}
 
-          {downloablebuildingarchive ? (
+          {downloablebuildingarchive && component=='Data'? (
             <DownloadWardGeoJSONRender data={downloablebuildingarchive} />
           ) : (
             ""

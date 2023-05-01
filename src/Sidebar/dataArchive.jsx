@@ -70,7 +70,7 @@ const handleend=(e)=>{
 }
 
   const [selectedwardbuilding,setWardb]=useState(null);
-  // console.log("seledted ward--------------",selectedwardbuilding)
+  console.log("seledted ward is          --                --------------",selectedwardbuilding)
 
 
   // const getWardJSONData = async () => {
@@ -86,6 +86,9 @@ const handleend=(e)=>{
   console.log(ddata)
   useEffect(() => {
    if (selectedwardbuilding) dispatch(getWarddownloadbuilding(selectedwardbuilding))
+ else{
+  dispatch(clearWard())
+ }
     
   }, [selectedwardbuilding]);
 
@@ -118,7 +121,7 @@ const handleend=(e)=>{
   return (
     <>
       <Header />
-      <div className=" p-3 text-sm bg-[#e35163] text-white"> Data Download Section</div>
+      {/* <div className=" p-3 text-sm bg-[#e35163] text-white"> Data Download Section</div> */}
       <div className="h-70 bg-gray-100">
        
         <label className="p-2 mt-5">Select Building data</label>
