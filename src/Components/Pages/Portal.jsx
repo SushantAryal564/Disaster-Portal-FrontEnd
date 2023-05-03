@@ -30,6 +30,7 @@ import L from "leaflet";
 import {
   DamageAndLossLegend,
   IncidentLegend,
+  NavigationLegend,
   RiskInfoLegend,
 } from "../Legends/Legend";
 import {
@@ -42,6 +43,7 @@ import {
   DATA,
   SITUATION,
   FEEDBACK,
+  ROUTE
 } from "./../../store/constant";
 import { ScaleControl } from "react-leaflet";
 import { DashboardLegend, RealTimeLegend } from "../Legends/Legend";
@@ -52,6 +54,10 @@ import CommonMarker from "../Common/Marker/CommonMarker";
 import { InfrastructureAsyncGETThunk } from "../../store/Slices/riskinfoSlice";
 import DownloadWardGeoJSONRender from "./DownloadWardgeojson";
 import getColor from "../Common/Choropleth";
+import FindRouteMap from "./FindRoute";
+import FindRoute from "../../Sidebar/Route";
+// import FractionalZoom from "./Fractionalzoom";
+
 export const Portal = () => {
   const dedata = useSelector((state) => state.selected.dateselectedevent);
   const selectedPanel = useSelector((state) => {
@@ -107,6 +113,8 @@ export const Portal = () => {
         return <Situation />;
       case FEEDBACK:
         return <Feedback />;
+      case ROUTE:
+        return <FindRoute/>
       default:
         return <Dashboard />;
     }
@@ -365,6 +373,9 @@ export const Portal = () => {
                 return <MarkersClone disaster={event.results} key={event.id} />;
               })
             : ""}
+            {component===ROUTE ?<FindRouteMap/>:"" }
+            {component===ROUTE ?<NavigationLegend/>:"" }
+           
           {component === REALTIME && <RealTimeLegend />}
           {component === RISKINFO && <RiskInfoLegend />}
           {component === INCIDENT && <IncidentLegend />}
