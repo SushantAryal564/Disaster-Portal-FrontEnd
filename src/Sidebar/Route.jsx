@@ -5,9 +5,11 @@ import { BiAlarm } from "react-icons/bi";
 import { disasterAsyncGETThunk } from "../store/Slices/disasterSlice";
 import { useDispatch } from "react-redux";
 import Header from "./Header";
+import { setStartLocation } from "../store/Slices/damageLegendSlice";
 
 function FindRoute({ reportActivated }) {
-  const dispatch = useDispatch();
+  
+ const dispatch = useDispatch();
   const status = useSelector((state) => state.disaster.status);
   useEffect(() => {
     // if (status === "idle") {
@@ -17,14 +19,21 @@ function FindRoute({ reportActivated }) {
   const disasterData = useSelector((state) => {
     return state.disaster.data;
   });
+
+  const startLocationfrompanel=useSelector(state=>state.damageLegend.startlocation)
+  const setStartLocationHandle=(startLocation)=>{
+
+    dispatch(setStartLocation(startLocation))
+  }
   return (
     <div className="scrollbar scrollbar-thumb-gray-300 scrollbar-track-gray-100 scrollbar-w-1 scrollbar-rounded-rounded-md">
       <Header />
       <div className="w-full max-w-screen-xl mx-auto px-4 h-[83vh] overflow-x-scroll scrollbar scrollbar-thumb-gray-300 scrollbar-track-gray-100 scrollbar-w-1 scrollbar-rounded-rounded-md">
         {disasterData.map((data) => {
+          
           console.log(data, "I am what you are looking for?");
           return (
-            <div className=" border-gray-200 border-b-2 p-1 hover:bg-gray-200 py-2  ">
+            <div className={startLocationfrompanel&& startLocationfrompanel[2]===data.id?" border-gray-200 border-b-2 p-1 bg-red-600 py-2 text-white ":" border-gray-200 border-b-2 p-1 hover:bg-gray-200 py-2 "} onClick={()=>setStartLocationHandle([data.lat,data.long,data.id])}>
               <div className="text-md font-medium flex flex-row ">
                 <div className="text-red-500 text-sm flex flex-col">
                   <span className="px-3">

@@ -9,10 +9,13 @@ import { GetRoute } from '../../store/Slices/damageLegendSlice';
 // import { dispatch } from 'd3';
 
   export default function FindRouteMap() {
-    const [start, setStart] = useState( [
-          
-          27.685233184361863,85.32350410406002,
-        ]);
+
+    const startLocationfrompanel=useSelector(state=>state.damageLegend.startlocation)
+    // let c=startLocationfrompanel[0]
+    // let d=startLocationfrompanel[0]
+
+    
+    const [start, setStart] = useState([27.66729881839521,85.32408208931736]);
     const [end, setEnd] = useState([
     
         
@@ -20,6 +23,11 @@ import { GetRoute } from '../../store/Slices/damageLegendSlice';
       ]);
       const dispatch=useDispatch()
     
+    useEffect(()=>{
+
+      if (startLocationfrompanel) setStart([startLocationfrompanel[0],startLocationfrompanel[1]])
+
+    },[startLocationfrompanel])
       const geojson= useSelector(state=>state.damageLegend.currentroute)
   
     // function fetchRoute() {
@@ -77,27 +85,26 @@ import { GetRoute } from '../../store/Slices/damageLegendSlice';
       )
     }
     console.log('okkkkkkkkkkkkkkkkkkk',geojson?.features[0]?.geometry?.coordinates)
-    const styleGEOJSON = (feature) => {
-        return {
-          fillColor: `red`,
-          opacity: 1,
-          weight: 0,
-          color: "red",
-          fillOpacity: 0.7,
-        };
-      };
+    const styleGEOJSON = {
+      radius: 8,
+      fillColor: "red",
+      color: "red",
+      weight: 7,
+      opacity: 1,
+      fillOpacity: 0.8
+  };
 const map=useMap()
 
 useEffect(()=>{
     // fetchRoute()
-    dispatch(GetRoute([start,end]))
+    if (start,end) dispatch(GetRoute([start,end]))
 },[start,end])
 useEffect(() => {
    
 console.log("RUNING USE effect")
-  if (geojson) {
+  if (geojson,start,end) {
     // Create the GeoJSON layer and add it to the map
-    let newLayer = new L.GeoJSON(geojson);
+    let newLayer = new L.GeoJSON(geojson,{style:styleGEOJSON});
     newLayer.addTo(map);
     return () => {
         map.removeLayer(newLayer);
@@ -105,7 +112,7 @@ console.log("RUNING USE effect")
     // Return a function to remove the layer when the component unmounts
 }
 
-}, [geojson]);
+}, [geojson,startLocationfrompanel]);
  ;
 
     return (

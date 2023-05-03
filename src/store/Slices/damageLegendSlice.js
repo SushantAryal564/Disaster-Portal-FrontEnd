@@ -21,8 +21,10 @@ export const GetRoute = createAsyncThunk("chartInfo", async (d) => {
 
 
 const initialState = {
-  legendItem: "incident",
-  currentroute:null
+    legendItem: "incident",
+    currentroute:null,
+    startlocation:null,
+    endlocation:null
 };
 
 
@@ -35,6 +37,12 @@ const DamageLegendSlice = createSlice({
     },
     setroute(state,action){
       state.currentroute=action.payload
+    },
+    setStartLocation(state,action){
+      state.startlocation=action.payload
+    },
+    setDestinationLocation(state,action){
+      state.startlocation=action.payload
     }
   },
   extraReducers(builder) {
@@ -52,5 +60,5 @@ const DamageLegendSlice = createSlice({
       });
   },
 });
-export const {slidebarAction,setroute} = DamageLegendSlice.actions;
+export const {slidebarAction,setroute,setStartLocation,setDestinationLocation} = DamageLegendSlice.actions;
 export default DamageLegendSlice.reducer;
