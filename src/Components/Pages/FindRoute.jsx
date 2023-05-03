@@ -39,6 +39,8 @@ import { GetRoute } from '../../store/Slices/damageLegendSlice';
     //         setGeojson(data)
        
     //     })
+
+    
         
     // }
   console.log("DATA",geojson)
@@ -53,6 +55,7 @@ import { GetRoute } from '../../store/Slices/damageLegendSlice';
     
         
       }
+     
   
       return (
         <Marker position={start} draggable icon={L.divIcon({
@@ -94,7 +97,9 @@ import { GetRoute } from '../../store/Slices/damageLegendSlice';
       fillOpacity: 0.8
   };
 const map=useMap()
-
+// useEffect(()=>{
+//   map.setBo
+// })
 useEffect(()=>{
     // fetchRoute()
     if (start,end) dispatch(GetRoute([start,end]))
@@ -106,6 +111,10 @@ console.log("RUNING USE effect")
     // Create the GeoJSON layer and add it to the map
     let newLayer = new L.GeoJSON(geojson,{style:styleGEOJSON});
     newLayer.addTo(map);
+   let c= newLayer.getBounds();
+   console.log("THis is the bounds",c)
+  // if (c)
+  map.fitBounds(newLayer.getBounds());
     return () => {
         map.removeLayer(newLayer);
       };
