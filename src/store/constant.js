@@ -7,3 +7,4 @@ export const REPORT = "Report";
 export const DATA = "Data";
 export const SITUATION = "Situation";
 export const FEEDBACK = "Feedback";
+export const ROUTE="Route"

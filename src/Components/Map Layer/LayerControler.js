@@ -103,7 +103,7 @@ function LayerControler({ disasterData, currenttab }) {
         </LayersControl>
       ) : null}
 
-      {disasterData &&
+      {disasterData && currenttab !== "manageData" &&
         disasterData.map((event) => {
           return <Markers disaster={event} key={event.id} />;
         })}

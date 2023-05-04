@@ -88,7 +88,7 @@ export default function AccordianDyn({ AllDisaster, latlngHandler }) {
           </div>
           <div className="flex">
             <div className="mt-2 p-2 ">
-              <Edit data={data} />
+              <Edit data={data} open= {open} setOpen={setOpen}/>
             </div>
           </div>
         </div>

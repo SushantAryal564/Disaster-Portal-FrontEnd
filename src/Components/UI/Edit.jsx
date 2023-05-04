@@ -8,7 +8,7 @@ import { useMap } from "react-leaflet";
 import { GeoJSON } from "react-leaflet";
 import { MapContainer, TileLayer, Marker, Popup } from "react-leaflet";
 
-function Edit({ data }) {
+function Edit({ data,open,setOpen }) {
   const [finance,setFinance]=useState(null)
   const [lives,setlives]=useState(null)
   const [infra,setinfra]=useState(null)
@@ -71,7 +71,7 @@ function Edit({ data }) {
     setPosition([event.target.getLatLng().lat, event.target.getLatLng().lng]);
   }
   const ReportSendToBackend = async (values) => {
-    console.log("valuess,---------------------------", values);
+    console.log("UPDATING REPORT>>>>>>>>>>>>")
     values={...values,is_verified:true}
     console.log( "http://127.0.0.1:8000/api/v1/disaster/updatedisaster/${data.id}"+ "HITTING THIS API NOW")
     const response = await fetch(
@@ -87,7 +87,31 @@ function Edit({ data }) {
     );
     const responseData = await response.json();
     console.log("PATCH-RESPONSE",responseData)
+    setOpen(0)
   };
+
+
+  const handleDelete = async () => {
+   
+    console.log("DELETE REPORT>>>>>>>>>>>>")
+  console.log( `http://127.0.0.1:8000/api/v1/disaster/deletedisaster/${data.id}/`+ "DELETING")
+    const response = await fetch(
+      `http://127.0.0.1:8000/api/v1/disaster/deletedisaster/${data.id}/`,
+      {
+        method: "DELETE",
+        headers: {
+          "Content-Type": "application/json",
+          "Authorization": "Bearer "+access_token
+        },
+  
+      }
+    );
+    const responseData = await response.json();
+    console.log("DELETE-RESPONSE",responseData,response)
+    setOpen(0)
+  };
+
+
 
 const date = new Date(date_event).toISOString().replace("Z", "");
   
@@ -117,7 +141,7 @@ const date = new Date(date_event).toISOString().replace("Z", "");
       longitude: Yup.number().required("Required"),
     }),
     onSubmit: (values) => {
-      console.log(values, "values");
+      console.log(values, "RUNNING DUBMIT__________________---");
       const disasterobject = disaster.find(
         (disaster) => disaster.title === values.hazard
       );
@@ -163,6 +187,25 @@ const date = new Date(date_event).toISOString().replace("Z", "");
       // //   setReportActivated(false);
     },
   });
+  const handleClose=async()=>{
+     console.log("HANDLE CLOSE RUNNING--------------------------------------------------------------------")
+    let values={is_closed:true}
+    console.log( "http://127.0.0.1:8000/api/v1/disaster/updatedisaster/${data.id}"+ "HITTING THIS API NOW")
+    const response = await fetch(
+      `http://127.0.0.1:8000/api/v1/disaster/updatedisaster/${data.id}/`,
+      {
+        method: "PATCH",
+        headers: {
+          "Content-Type": "application/json",
+          "Authorization": "Bearer "+access_token
+        },
+        body: JSON.stringify(values),
+      }
+    );
+    const responseData = await response.json();
+    console.log("PATCH-RESPONSE",responseData)
+    setOpen(0)
+  }
   let formIsValid = true;
   if (
     formik.errors.title &&
@@ -532,13 +575,26 @@ const date = new Date(date_event).toISOString().replace("Z", "");
               type="submit"
               className="inline-block rounded bg-success px-6 pt-2.5 pb-2 my-2 text-xs font-medium uppercase leading-normal text-white shadow-[0_4px_9px_-4px_#dc4c64] transition duration-150 ease-in-out hover:bg-danger-600 hover:shadow-[0_8px_9px_-4px_rgba(220,76,100,0.3),0_4px_18px_0_rgba(220,76,100,0.2)] focus:bg-danger-600 focus:shadow-[0_8px_9px_-4px_rgba(220,76,100,0.3),0_4px_18px_0_rgba(220,76,100,0.2)] focus:outline-none focus:ring-0 active:bg-danger-700 active:shadow-[0_8px_9px_-4px_rgba(220,76,100,0.3),0_4px_18px_0_rgba(220,76,100,0.2)]"
             >
-              Submit
+              Submit & Verify
             </button>
-            <button className="mx-2 inline-block rounded bg-danger px-6 pt-2.5 pb-2 my-2 text-xs font-medium uppercase leading-normal text-white shadow-[0_4px_9px_-4px_#dc4c64] transition duration-150 ease-in-out hover:bg-danger-600 hover:shadow-[0_8px_9px_-4px_rgba(220,76,100,0.3),0_4px_18px_0_rgba(220,76,100,0.2)] focus:bg-danger-600 focus:shadow-[0_8px_9px_-4px_rgba(220,76,100,0.3),0_4px_18px_0_rgba(220,76,100,0.2)] focus:outline-none focus:ring-0 active:bg-danger-700 active:shadow-[0_8px_9px_-4px_rgba(220,76,100,0.3),0_4px_18px_0_rgba(220,76,100,0.2)]">
-              Delete
+             
+
+            <button onClick={handleClose} className="mx-2 inline-block rounded bg-blue-500 px-6 pt-2.5 pb-2 my-2 text-[11px] font-medium uppercase leading-normal text-white shadow-[0_4px_9px_-4px_#dc4c64] transition duration-150 ease-in-out hover:bg-danger-600 hover:shadow-[0_8px_9px_-4px_rgba(220,76,100,0.3),0_4px_18px_0_rgba(220,76,100,0.2)] focus:bg-danger-600 focus:shadow-[0_8px_9px_-4px_rgba(220,76,100,0.3),0_4px_18px_0_rgba(220,76,100,0.2)] focus:outline-none focus:ring-0 active:bg-danger-700 active:shadow-[0_8px_9px_-4px_rgba(220,76,100,0.3),0_4px_18px_0_rgba(220,76,100,0.2)]">
+              Mark as Closed
             </button>
           </div>
         </form>
+        <center>Or</center>
+        <center className="pb-4">
+        <button onClick={handleDelete} className="mx-2 inline-block rounded bg-danger px-6 pt-2.5 pb-2 my-2 text-[11px] font-medium uppercase leading-normal text-white shadow-[0_4px_9px_-4px_#dc4c64] transition duration-150 ease-in-out hover:bg-danger-600 hover:shadow-[0_8px_9px_-4px_rgba(220,76,100,0.3),0_4px_18px_0_rgba(220,76,100,0.2)] focus:bg-danger-600 focus:shadow-[0_8px_9px_-4px_rgba(220,76,100,0.3),0_4px_18px_0_rgba(220,76,100,0.2)] focus:outline-none focus:ring-0 active:bg-danger-700 active:shadow-[0_8px_9px_-4px_rgba(220,76,100,0.3),0_4px_18px_0_rgba(220,76,100,0.2)]">
+              Delete this report
+            </button>
+      </center>
+      {/* <center>Or</center> */}
+      <center
+      >
+       
+      </center>
       </div>
 
       {/* <CloseIcon

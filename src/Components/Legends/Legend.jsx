@@ -406,3 +406,38 @@ export const ManageDataLegend = ({ changeDamagestate }) => {
     </div>
   );
 };
+
+
+
+
+
+
+export const NavigationLegend = ({  }) => {
+  const route =useSelector(state=>{
+    console.log(state)
+    return (state.damageLegend.currentroute)
+  })
+  console.log(route,"ROUTE----------->")
+  return (
+    <div>
+      <div
+        className="bg-[#ffffff]"
+        style={{
+          position: "absolute",
+          width: "400px",
+          top: "200px",
+          right: "20px",
+          zIndex: 9999,
+        }}
+      >
+        <div className="m-2  justify-between pb-1 items-start">
+           <div className="bg-blue-400 text-white py-2 px-1">Navigation Panel</div>
+         <div className="mt-2">
+          {route?.features[0]?.properties?.segments[0].steps?.map((data)=>{
+            return <div>{data.distance}m, {data.instruction} ,time:{data.duration}  </div>
+          })} </div>
+        </div>
+      </div>
+    </div>
+  );
+};

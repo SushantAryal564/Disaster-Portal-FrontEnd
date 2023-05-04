@@ -9,6 +9,7 @@ import ButtonDisaster from "../UI/ButtonDisaster";
 import LogoutIcon from "@mui/icons-material/Logout";
 import ArticleIcon from "@mui/icons-material/Article";
 import AssignmentIcon from "@mui/icons-material/Assignment";
+
 import FeedbackIcon from "@mui/icons-material/Feedback";
 import AccessTimeIcon from "@mui/icons-material/AccessTime";
 import SettingsApplicationsIcon from "@mui/icons-material/SettingsApplications";
@@ -26,6 +27,7 @@ import {
   DATA,
   SITUATION,
   FEEDBACK,
+  ROUTE,
 } from "./../../store/constant";
 import { removeToken } from "../../services/localStorageService";
 import { unSetUserToken } from "../../store/Slices/authSlice";
@@ -64,6 +66,9 @@ export const SideBar = ({ changeReportState }) => {
   const handletoggleDataFeedback = (event) => {
     dispatch(setComponent(FEEDBACK));
   };
+  const handletoggleFindRoute = (event) => {
+    dispatch(setComponent(ROUTE));
+  };
   useEffect(() => {}, [access_token]);
   const buttonInfo = [
     {
@@ -100,6 +105,11 @@ export const SideBar = ({ changeReportState }) => {
       name: SITUATION,
       icon: AssignmentIcon,
       handler: handletoggleSituation,
+    },
+    {
+      name: ROUTE,
+      icon: AssignmentIcon,
+      handler: handletoggleFindRoute,
     },
   ];
   return (
