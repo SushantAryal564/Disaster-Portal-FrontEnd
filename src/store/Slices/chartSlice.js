@@ -11,7 +11,7 @@ export const GetChartDashboardInfo = createAsyncThunk("chartInfo", async () => {
 const initialState = {
   data: [],
   status: "idle",
-  tab: "incident",
+  tab: "INCIDENT",
   error: null,
 };
 export const chartSlice = createSlice({

@@ -1,79 +1,164 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import { AiFillInfoCircle } from "react-icons/ai";
 import { BiAlarm } from "react-icons/bi";
 import { disasterAsyncGETThunk } from "../store/Slices/disasterSlice";
 import { useDispatch } from "react-redux";
 import Header from "./Header";
-import { setStartLocation } from "../store/Slices/damageLegendSlice";
+import {
+  setStartLocation,
+  setDestinationLocation,
+  PoliceStationGetAsyncThunk,
+  HospitalGetAsyncThunk,
+  FireStationGetAsyncThunk,
+} from "../store/Slices/damageLegendSlice";
+import Select from "react-select";
+import { NavigationLegend } from "../Components/Legends/Legend";
 
-function FindRoute({ reportActivated }) {
-  
- const dispatch = useDispatch();
-  const status = useSelector((state) => state.disaster.status);
+function FindRoute() {
+  const dispatch = useDispatch();
   useEffect(() => {
-    // if (status === "idle") {
     dispatch(disasterAsyncGETThunk());
-    // }
-  }, [reportActivated]);
+    dispatch(PoliceStationGetAsyncThunk());
+    dispatch(HospitalGetAsyncThunk());
+    dispatch(FireStationGetAsyncThunk());
+  }, []);
   const disasterData = useSelector((state) => {
     return state.disaster.data;
   });
-
-  const startLocationfrompanel=useSelector(state=>state.damageLegend.startlocation)
-  const setStartLocationHandle=(startLocation)=>{
-
-    dispatch(setStartLocation(startLocation))
-  }
+  console.log(disasterData, "I am disaster Data");
+  const startLocationfrompanel = useSelector(
+    (state) => state.damageLegend.startlocation
+  );
+  const hospitals = useSelector((state) => state.damageLegend.hospital);
+  const policeStation = useSelector(
+    (state) => state.damageLegend.policeStation
+  );
+  const fire_Station = useSelector((state) => state.damageLegend.fireStation);
+  const HospitalOptions = hospitals?.features.map((feature) => {
+    return {
+      label: feature.properties.name,
+      value: feature.geometry.coordinates,
+    };
+  });
+  const FireStationOptions = fire_Station?.features.map((feature) => {
+    return {
+      label: feature.properties.name,
+      value: feature.geometry.coordinates,
+    };
+  });
+  const PoliceStationOptions = policeStation?.features.map((feature) => {
+    return {
+      label: feature.properties.name,
+      value: feature.geometry.coordinates,
+    };
+  });
+  const disasterOptions = disasterData.map((data) => {
+    return {
+      label: data.name,
+      value: [data.long, data.lat],
+    };
+  });
+  const [selectedHospitalOption, setSelectedHospitalOption] = useState(null);
+  const [selectedPoliceStationOption, setSelectedPoliceStationOption] =
+    useState(null);
+  const [selectedFireStationOption, setSelectedFireStationOption] =
+    useState(null);
+  console.log(selectedHospitalOption, "selectedHospitalOption");
+  const handleHospitalOptionChange = (selectedOption1) => {
+    dispatch(
+      setDestinationLocation([
+        selectedOption1.value[1],
+        selectedOption1.value[0],
+      ])
+    );
+    setSelectedHospitalOption(selectedOption1);
+    setSelectedPoliceStationOption(null);
+    setSelectedFireStationOption(null);
+  };
+  const handlefireStationOptionChange = (selectedOption2) => {
+    dispatch(
+      setDestinationLocation([
+        selectedOption2.value[1],
+        selectedOption2.value[0],
+      ])
+    );
+    setSelectedFireStationOption(selectedOption2);
+    setSelectedHospitalOption(null);
+    setSelectedPoliceStationOption(null);
+  };
+  const handlepoliceStationOptionChange = (selectedOption3) => {
+    dispatch(
+      setDestinationLocation([
+        selectedOption3.value[1],
+        selectedOption3.value[0],
+      ])
+    );
+    setSelectedFireStationOption(null);
+    setSelectedHospitalOption(null);
+    setSelectedPoliceStationOption(selectedOption3);
+  };
+  const handleDisasterOptionChange = (selectedOption) => {
+    dispatch(
+      setStartLocation([selectedOption.value[1], selectedOption.value[0]])
+    );
+  };
+  const route = useSelector((state) => {
+    console.log(state);
+    return state.damageLegend.currentroute;
+  });
   return (
-    <div className="scrollbar scrollbar-thumb-gray-300 scrollbar-track-gray-100 scrollbar-w-1 scrollbar-rounded-rounded-md">
+    <div className=" h-full scrollbar scrollbar-thumb-gray-300 scrollbar-track-gray-100 scrollbar-w-1 scrollbar-rounded-rounded-md">
       <Header />
-      <div className="w-full max-w-screen-xl mx-auto px-4 h-[83vh] overflow-x-scroll scrollbar scrollbar-thumb-gray-300 scrollbar-track-gray-100 scrollbar-w-1 scrollbar-rounded-rounded-md">
-        {disasterData.map((data) => {
-          
-          console.log(data, "I am what you are looking for?");
-          return (
-            <div className={startLocationfrompanel&& startLocationfrompanel[2]===data.id?" border-gray-200 border-b-2 p-1 bg-red-600 py-2 text-white ":" border-gray-200 border-b-2 p-1 hover:bg-gray-200 py-2 "} onClick={()=>setStartLocationHandle([data.lat,data.long,data.id])}>
-              <div className="text-md font-medium flex flex-row ">
-                <div className="text-red-500 text-sm flex flex-col">
-                  <span className="px-3">
-                    {" "}
-                    <img
-                      className="w-9 h-6 pt-1 mt-1 text-red-500"
-                      src={`http://127.0.0.1:8000/${data?.type?.title}.svg`}
-                      alt={data}
-                    />
-                  </span>
-                  <p className="text-xs text-black mx-6 my-1">
-                    {data?.type?.title || "none"}
-                  </p>
-                </div>
-                <span className="font-normal ml-2 mt-1 pt-1 text-sm">
-                  <div className="font-semibold text-xs"> {data.name}</div>
-                  <div>
-                    <div className="text-xs text-gray-500 flex justify-start ">
-                      <div className="flex items-center my-1">
-                        <span>
-                          <BiAlarm />
-                        </span>
-                        <span className="mx-2">
-                          {data.date_event.slice(0, 10)}
-                        </span>
-                        <span className="ml-2">
-                          {data.date_event.slice(11, 16)}
-                        </span>
-                        <span className="ml-2">WARD-{data.Ward.ward}</span>
-                        <span className="ml-3">
-                          {data.address || "Dhapakhel,Gems School"}
-                        </span>
-                      </div>
-                    </div>
-                  </div>
-                </span>
-              </div>
+      <div className="px-4 flex flex-col gap-2">
+        <div className="flex flex-col gap-2 border p-2 mt-2">
+          <div>Select One among the Options:</div>
+          <div>Hospital</div>
+          <Select
+            value={selectedHospitalOption}
+            options={HospitalOptions}
+            onChange={handleHospitalOptionChange}
+          />
+          <div>Fire Station</div>
+          <Select
+            value={selectedFireStationOption}
+            options={FireStationOptions}
+            onChange={handlefireStationOptionChange}
+          />
+          <div>Police Station</div>
+          <Select
+            value={selectedPoliceStationOption}
+            options={PoliceStationOptions}
+            onChange={handlepoliceStationOptionChange}
+          />
+        </div>
+        <div className="border p-2 mt-2">
+          <div>Select Disaster Event</div>
+          <Select
+            defaultValue={"school"}
+            options={disasterOptions}
+            onChange={handleDisasterOptionChange}
+          />
+        </div>
+        <div>
+          <div className="m-2  justify-between pb-1 items-start">
+            <div className="bg-blue-400 text-white py-2 px-1">
+              Navigation Panel
             </div>
-          );
-        })}
+            <div className="mt-2">
+              {route?.features[0]?.properties?.segments[0].steps?.map(
+                (data) => {
+                  return (
+                    <div>
+                      After {data.duration} minutes in {data.distance} meter,{" "}
+                      {data.instruction}
+                    </div>
+                  );
+                }
+              )}{" "}
+            </div>
+          </div>
+        </div>
       </div>
     </div>
   );

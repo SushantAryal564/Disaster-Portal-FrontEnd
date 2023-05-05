@@ -9,7 +9,7 @@ import ButtonDisaster from "../UI/ButtonDisaster";
 import LogoutIcon from "@mui/icons-material/Logout";
 import ArticleIcon from "@mui/icons-material/Article";
 import AssignmentIcon from "@mui/icons-material/Assignment";
-
+import DirectionsBikeIcon from "@mui/icons-material/DirectionsBike";
 import FeedbackIcon from "@mui/icons-material/Feedback";
 import AccessTimeIcon from "@mui/icons-material/AccessTime";
 import SettingsApplicationsIcon from "@mui/icons-material/SettingsApplications";
@@ -108,7 +108,7 @@ export const SideBar = ({ changeReportState }) => {
     },
     {
       name: ROUTE,
-      icon: AssignmentIcon,
+      icon: DirectionsBikeIcon,
       handler: handletoggleFindRoute,
     },
   ];

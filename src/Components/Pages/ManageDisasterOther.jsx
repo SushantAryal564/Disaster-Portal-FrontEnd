@@ -17,6 +17,8 @@ import Headers from "./../../../src/Sidebar/Header";
 import WardjsonLoader from "../Map Layer/WardjsonLoader";
 import Markers from "../UI/Marker";
 import L from "leaflet";
+import DisasterAnalysis from "./../ManageDisasterComponent/DisasterAnalysis";
+import LayerControler from "../Map Layer/LayerControler";
 
 const ManageDisasterOther = () => {
   const isMunicipalityUser = useSelector((state) => state.auth.isMunicipality);
@@ -41,6 +43,7 @@ const ManageDisasterOther = () => {
     });
   };
   const [DisasterId, setDisasterID] = useState(0);
+  const [latlng, setlatlng] = useState();
   const { data: DisasterActivityLog, isLoading: activityIsLoading } =
     useGetActivityQuery(DisasterId);
   const DisasterActivityLogHandler = (id) => {
@@ -102,6 +105,7 @@ const ManageDisasterOther = () => {
   else creator = "Ward";
 
   const [updateActivity] = useUpdateActivityMutation(DisasterId);
+  const [currentTab, changeCurrentTab] = useState("ACTIVITY_LOG");
   const ActivityFormSubmitHandler = (e) => {
     e.preventDefault();
     let data = {
@@ -115,7 +119,9 @@ const ManageDisasterOther = () => {
     setDate();
     updateActivity(data);
   };
+  const [disasterData, setDisasterData] = useState([]);
   const DisasterEventLayout = disasterEvent?.map((data) => {
+    console.log(data, "I am what you are looking for??");
     return (
       <div className="px-4 border-2 mx-2">
         <Accordion
@@ -125,6 +131,7 @@ const ManageDisasterOther = () => {
           <AccordionHeader
             onClick={() => {
               handleOpen(data.id);
+              setlatlng([data.lat, data.long]);
             }}
           >
             <div
@@ -224,7 +231,7 @@ const ManageDisasterOther = () => {
     );
   });
 
-  if (isMunicipalityUser || isCluster) {
+  if (isCluster) {
     return (
       <div className="flex">
         <div
@@ -285,6 +292,103 @@ const ManageDisasterOther = () => {
             })}
           </MarkerClusterGroup>
         </MapContainer>
+      </div>
+    );
+  }
+  if (isMunicipalityUser) {
+    return (
+      <div>
+        <div className="flex">
+          <div
+            className={`${
+              slidebarState ? "w-1/2" : "w-0"
+            } duration-300 h-[100vh] relative overflow-x-hidden scrollbar scrollbar-thumb-gray-300 overflow-y-scroll scrollbar-track-gray-100 scrollbar-w-1 scrollbar-rounded-rounded-md`}
+          >
+            <div>
+              <Headers />
+              <div className="flex">
+                <button
+                  onClick={() => {
+                    changeCurrentTab("ACTIVITY_LOG");
+                  }}
+                  className="bg-[#418fde] text-white m-2 py-[3px] px-3 rounded-sm"
+                >
+                  Activity Log
+                </button>
+                <button
+                  onClick={() => {
+                    changeCurrentTab("ANALYSIS");
+                  }}
+                  className="bg-[#418fde] text-white m-2 py-[3px] px-3 rounded-sm"
+                >
+                  Analysis
+                </button>
+              </div>
+              {currentTab === "ACTIVITY_LOG" ? (
+                <>
+                  <div>
+                    <div className="text-lg px-4 text-[#e35163]">
+                      Disaster Response Activity
+                    </div>
+                    <div className="col-span-4">{DisasterEventLayout}</div>
+                  </div>
+                </>
+              ) : (
+                <DisasterAnalysis changeMarkerDataState={setDisasterData} />
+              )}
+            </div>
+            <NavigateNextIcon
+              style={{
+                maxWidth: "30px",
+                maxHeight: "50px",
+                minWidth: "30px",
+                minHeight: "50px",
+              }}
+              className={`
+              bg-white absolute cursor-pointer -right-[30px] top-1/2 w-7 border-2 z-20  ${
+                slidebarState ? "rotate-180 rounded-l-lg" : "rounded-r-lg"
+              }`}
+              onClick={() => setSlidebarState(!slidebarState)}
+            />
+          </div>
+          <MapContainer
+            center={[27.671704, 85.316118]}
+            zoom={14}
+            scrollWheelZoom={true}
+            className="mt-1 z-10"
+          >
+            {currentTab === "ACTIVITY_LOG" && (
+              <LayersControl position="topright">
+                <LayersControl.BaseLayer name="OSM Streets">
+                  <TileLayer url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png" />
+                </LayersControl.BaseLayer>
+                <LayersControl.BaseLayer name="World Imagery">
+                  <TileLayer url="https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}" />
+                </LayersControl.BaseLayer>
+                <LayersControl.BaseLayer checked name="Grey Imagery">
+                  <TileLayer url="https://tiles.stadiamaps.com/tiles/alidade_smooth/{z}/{x}/{y}{r}.png" />
+                </LayersControl.BaseLayer>
+              </LayersControl>
+            )}
+
+            {currentTab === "ANALYSIS" && (
+              <LayerControler currenttab="disasterAnalysis" />
+            )}
+
+            <WardjsonLoader />
+            <MarkerClusterGroup
+              showCoverageOnHover={false}
+              spiderfyDistanceMultiplier={2}
+              iconCreateFunction={createClusterCustomIcon}
+            >
+              {disasterEvent?.map((event) => {
+                return (
+                  <Markers disaster={event} key={event.id} setOpen={setOpen} />
+                );
+              })}
+            </MarkerClusterGroup>
+          </MapContainer>
+        </div>
       </div>
     );
   }

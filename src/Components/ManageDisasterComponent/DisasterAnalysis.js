@@ -15,23 +15,30 @@ import {
 import Accordian from "../UI/Accordian";
 
 function DisasterAnalysis({ changeMarkerDataState }) {
-  let now = new Date();
   let dispatch = useDispatch();
-  let today = now.toISOString().substr(0, 10);
   const [wardAllIncident, setWardAllIncident] = useState([]);
   const wardId = localStorage.getItem("WardId");
   const bufferd = useSelector((state) => {
     //  console.log(state.manageDisaster)
     return state.feature.bufferdistance;
   });
-  // console.log(bufferd,'---------------------------------------------------------------------------')
   const WardIncident = async () => {
-    let data = await fetch(
-      `http://127.0.0.1:8000/api/v1/disaster/disasterEventwithoutgeom/?name=&Ward=${wardId}`
-    );
-    let wardIncident = await data.json();
-    changeMarkerDataState(wardIncident);
-    setWardAllIncident(wardIncident);
+    if (wardId) {
+      let data = await fetch(
+        `http://127.0.0.1:8000/api/v1/disaster/disasterEventwithoutgeom/?name=&Ward=${wardId}`
+      );
+      let wardIncident = await data.json();
+      changeMarkerDataState(wardIncident);
+      setWardAllIncident(wardIncident);
+    } else {
+      let data = await fetch(
+        "http://127.0.0.1:8000/api/v1/disaster/disasterEventwithoutgeom/"
+      );
+      let wardIncident = await data.json();
+      changeMarkerDataState(wardIncident);
+      setWardAllIncident(wardIncident);
+      console.log("I am here");
+    }
   };
   const latlngHandler = (array) => {
     dispatch(setlatlng(array));

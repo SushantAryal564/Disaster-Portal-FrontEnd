@@ -27,8 +27,7 @@ function DamageLoss({ reportActivated }) {
   return (
     <>
       <Header />
-
-      <div className="border-2 p-2 text-xs">
+      <div className="border-2 p-2 text-xs  h-[85vh] overflow-x-scroll scrollbar scrollbar-thumb-gray-300 scrollbar-track-gray-100 scrollbar-w-1 scrollbar-rounded-rounded-md">
         <div className="flex justify-evenly">
           <button
             onClick={() => {
@@ -78,7 +77,9 @@ function DamageLoss({ reportActivated }) {
           )}
           {damageTab === "LIVES_LOST" && (
             <>
-              <h1 className="text-base">Total Incident in Each Ward</h1>
+              <h1 className="text-center text-base font-bold mt-3">
+                Total People Death in Each Ward
+              </h1>{" "}
               <CustomBarChart
                 data={chartData}
                 dataKey="total_people_death"
@@ -88,7 +89,9 @@ function DamageLoss({ reportActivated }) {
           )}
           {damageTab === "PROPERTY_LOSS" && (
             <>
-              <h1 className="text-base">Total Incident in Each Ward</h1>
+              <h1 className="text-center text-base font-bold mt-3">
+                Total Property Loss in Each Ward
+              </h1>{" "}
               <CustomBarChart
                 data={chartData}
                 dataKey="total_estimated_loss"
@@ -98,7 +101,9 @@ function DamageLoss({ reportActivated }) {
           )}
           {damageTab === "INFRASTRUCTURE_DAMAGE" && (
             <>
-              <h1 className="text-base">Total Incident in Each Ward</h1>
+              <h1 className="text-center text-base font-bold mt-3">
+                Total Infrastructure Damage in Each Ward
+              </h1>{" "}
               <CustomBarChart
                 data={chartData}
                 dataKey="total_infrastructure_damaged"

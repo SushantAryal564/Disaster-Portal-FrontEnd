@@ -55,11 +55,11 @@ export const Pollution = ({ data, selectedMarkerId }) => {
     <div>
       <div className="text-lg py-2 font-serif mx-2">Live Pollution Data</div>
       <p className="mx-2">
-        Real-time river flow data is collected using a variety of techniques,
-        including gauges that measure the water level and velocity, and acoustic
-        sensors that can estimate flow rates. This data can be used to monitor
-        water availability and quality, forecast flood events, and manage water
-        resources.
+        Real-time pollution data is typically collected using sensors that
+        measure parameters such as dissolved oxygen, pH, temperature, and the
+        levels of pollutants such as nitrogen and phosphorus. This data is then
+        transmitted to a central database, where it can be analyzed and used to
+        make management decisions
       </p>
       <div className="flex flex-col mt-0 mx-2">
         <div className="">
@@ -108,11 +108,11 @@ export const Water = ({ data2, selectedMarkerId }) => {
     <div className="mb-2">
       <div className=" mx-2 text-lg font-serif py-2">Live Riverflow Data</div>
       <p className="text-justify mx-2">
-        Real-time pollution data is typically collected using sensors that
-        measure parameters such as dissolved oxygen, pH, temperature, and the
-        levels of pollutants such as nitrogen and phosphorus. This data is then
-        transmitted to a central database, where it can be analyzed and used to
-        make management decisions
+        Real-time river flow data is collected using a variety of techniques,
+        including gauges that measure the water level and velocity, and acoustic
+        sensors that can estimate flow rates. This data can be used to monitor
+        water availability and quality, forecast flood events, and manage water
+        resources.
       </p>
       <div className="flex flex-col mt-0">
         <table className=" mx-2 border-collapse border border-slate-500	">

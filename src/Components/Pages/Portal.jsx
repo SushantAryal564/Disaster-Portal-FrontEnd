@@ -43,7 +43,7 @@ import {
   DATA,
   SITUATION,
   FEEDBACK,
-  ROUTE
+  ROUTE,
 } from "./../../store/constant";
 import { ScaleControl } from "react-leaflet";
 import { DashboardLegend, RealTimeLegend } from "../Legends/Legend";
@@ -56,6 +56,7 @@ import DownloadWardGeoJSONRender from "./DownloadWardgeojson";
 import getColor from "../Common/Choropleth";
 import FindRouteMap from "./FindRoute";
 import FindRoute from "../../Sidebar/Route";
+import RouteMarker from "../Common/Marker/RouteMarker";
 // import FractionalZoom from "./Fractionalzoom";
 
 export const Portal = () => {
@@ -114,7 +115,7 @@ export const Portal = () => {
       case FEEDBACK:
         return <Feedback />;
       case ROUTE:
-        return <FindRoute/>
+        return <FindRoute />;
       default:
         return <Dashboard />;
     }
@@ -136,10 +137,14 @@ export const Portal = () => {
     dispatch(slidebarAction.changeSlidebarState());
   };
   const infrastructure = useSelector((state) => state.riskinfo.data);
+  const selectedRouteInfrastructure = useSelector(
+    (state) => state.damageLegend.selectedInfrastructure
+  );
+  const routeInfrastructure = useSelector((state) => state.damageLegend.data);
   const downloablebuildingarchive = useSelector(
     (state) => state.selected.selectionDownloadWardbuilding
   );
- console.log("SECTION WAD DATA??-------------------",downloablebuildingarchive)
+  console.log(downloablebuildingarchive);
   useEffect(() => {
     dispatch(InfrastructureAsyncGETThunk("school"));
     metroJSON();
@@ -316,19 +321,16 @@ export const Portal = () => {
             <GeoJSON data={jsonWard} style={styleFeature} />
           )}
 
-
-{component === DASHBOARD
-              ? datadisaster.map((event) => {
-                  return <Markers disaster={event} key={event.id} />;
-                })
-              : ""}
+          {component === DASHBOARD
+            ? datadisaster.map((event) => {
+                return <Markers disaster={event} key={event.id} />;
+              })
+            : ""}
           <MarkerClusterGroup
             showCoverageOnHover={false}
             spiderfyDistanceMultiplier={2}
             iconCreateFunction={createClusterCustomIcon}
           >
-           
-
             {component === INCIDENT
               ? dataIncident.map((event) => {
                   return <Markers disaster={event} key={event.id} />;
@@ -344,7 +346,6 @@ export const Portal = () => {
 
           {component === "Data" && dedata
             ? dedata?.map((event) => {
-                console.log(event.lat, event.lat, "adssssssssssssssss");
                 return (
                   <CircleMarker
                     center={[event.lat, event.long]}
@@ -373,9 +374,7 @@ export const Portal = () => {
                 return <MarkersClone disaster={event.results} key={event.id} />;
               })
             : ""}
-            {component===ROUTE ?<FindRouteMap/>:"" }
-            {component===ROUTE ?<NavigationLegend/>:"" }
-           
+          {component === ROUTE ? <FindRouteMap /> : ""}
           {component === REALTIME && <RealTimeLegend />}
           {component === RISKINFO && <RiskInfoLegend />}
           {component === INCIDENT && <IncidentLegend />}
@@ -389,7 +388,7 @@ export const Portal = () => {
             ""
           )}
 
-          {downloablebuildingarchive && component=='Data'? (
+          {downloablebuildingarchive && component == "Data" ? (
             <DownloadWardGeoJSONRender data={downloablebuildingarchive} />
           ) : (
             ""

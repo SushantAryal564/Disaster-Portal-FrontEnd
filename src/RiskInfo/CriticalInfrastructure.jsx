@@ -22,6 +22,7 @@ export const CriticalInfrastructure = () => {
     { value: "university", label: "University" },
     { value: "hindu", label: "Temple" },
     { value: "college", label: "Collage" },
+    { value: "police", label: "Police Station" },
   ];
   const [selectedOption, setSelectedOption] = useState(null);
   const handleOptionChange = (selectedOption) => {

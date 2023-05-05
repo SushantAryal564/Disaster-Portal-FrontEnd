@@ -13,9 +13,9 @@ import { useSelector } from "react-redux";
 import { useMap } from "react-leaflet";
 import { GetColor } from "../UI/GetColor";
 
-import L from "leaflet";
 function LayerControler({ disasterData, currenttab }) {
   const leafletMap = useMap();
+  console.log("I am here where are you");
   const latlng = useSelector((state) => {
     return state.latlng;
   });
@@ -103,7 +103,8 @@ function LayerControler({ disasterData, currenttab }) {
         </LayersControl>
       ) : null}
 
-      {disasterData && currenttab !== "manageData" &&
+      {disasterData &&
+        currenttab !== "manageData" &&
         disasterData.map((event) => {
           return <Markers disaster={event} key={event.id} />;
         })}

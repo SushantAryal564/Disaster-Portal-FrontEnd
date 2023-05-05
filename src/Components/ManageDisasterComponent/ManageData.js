@@ -8,8 +8,6 @@ function ManageData({ polygonCoords, changeMarkerDataState }) {
   const buildingdata = useSelector((state) => {
     return state.buildings.selectedBuilding;
   });
-  const notify = () => toast("Data Updated!");
-  console.log("BUILDING DATA", buildingdata);
 
   async function postPolygonData(data) {
     if (polygonCoords === ![]) {

@@ -5,10 +5,7 @@ import MarkerClusterGroup from "react-leaflet-cluster";
 import { getMarker } from "../../utils/GetMarker";
 import L from "leaflet";
 
-const CommonMarker = ({ data }) => {
-  const infrastructure = useSelector(
-    (state) => state.riskinfo.criticalInfrastructure
-  );
+const RouteMarker = ({ data, infrastructure }) => {
   const createClusterCustomIcon = function (cluster) {
     return L.divIcon({
       html: `<span>${cluster.getChildCount()}</span>`,
@@ -29,6 +26,11 @@ const CommonMarker = ({ data }) => {
             feature.geometry.coordinates[0],
           ]}
           icon={getMarker(infrastructure)}
+          eventHandlers={{
+            click: (e) => {
+              console.log(e, "I am event");
+            },
+          }}
         >
           <Popup>
             <div className="font-bold">{feature.properties.name}</div>
@@ -39,4 +41,4 @@ const CommonMarker = ({ data }) => {
   );
 };
 
-export default CommonMarker;
+export default RouteMarker;

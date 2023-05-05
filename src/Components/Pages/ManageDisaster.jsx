@@ -242,7 +242,6 @@ const ManageDisaster = () => {
           ) : (
             ""
           )}
-
           {currenttab === "allincident" && disasterData.length > 0 ? (
             <ManageDisasterLegend
               currenttab="allincident"
@@ -259,15 +258,12 @@ const ManageDisaster = () => {
           ) : (
             ""
           )}
-
           {currenttab === "manageData" ? (
             <ManageDisasterLegend currenttab="manageData" />
           ) : (
             ""
           )}
-
           {currenttab === "manageData" ? <BuildingjsonLoader /> : null}
-
           {currenttab === "manageData" ? (
             <FeatureGroup ref={featureGroupRef}>
               <EditControl

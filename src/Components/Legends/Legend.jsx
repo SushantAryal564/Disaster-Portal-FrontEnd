@@ -173,27 +173,42 @@ export const RiskInfoLegend = () => {
 
 export const DamageAndLossLegend = ({ changeDamagestate }) => {
   const dispatch = useDispatch();
+  const currentDamageState = useSelector((state) => state.chart.tab);
   return (
     <div>
       <div
-        className="bg-[#ffffff]"
+        className="bg-[#ffffff] rounded-md"
         style={{
           position: "absolute",
-          width: "400px",
-          bottom: "20px",
-          left: "20px",
+          width: "387px",
+          top: "20px",
+          left: "30%",
           zIndex: 9999,
         }}
       >
-        <div className="m-2 flex justify-between pb-1 items-start">
-          <div onClick={() => dispatch(changeDamageAndLossTab("INCIDENT"))}>
+        <div className="font-bold flex items-start shadow">
+          <div
+            onClick={() => dispatch(changeDamageAndLossTab("INCIDENT"))}
+            className={`p-2 ${
+              currentDamageState == "INCIDENT" && "bg-[#fde38d]"
+            }`}
+          >
             Incident
           </div>
-          <div onClick={() => dispatch(changeDamageAndLossTab("LIVES_LOST"))}>
+          <div
+            onClick={() => dispatch(changeDamageAndLossTab("LIVES_LOST"))}
+            className={`border-l-2 h-[100%] p-2
+            ${currentDamageState == "LIVES_LOST" && "bg-[#fde38d]"}
+            }`}
+          >
             Lives Lost
           </div>
           <div
             onClick={() => dispatch(changeDamageAndLossTab("PROPERTY_LOSS"))}
+            className={`border-l-2 h-[100%] p-2  ${
+              currentDamageState == "PROPERTY_LOSS" && "bg-[#fde38d]"
+            }
+          }`}
           >
             Property loss
           </div>
@@ -201,9 +216,63 @@ export const DamageAndLossLegend = ({ changeDamagestate }) => {
             onClick={() =>
               dispatch(changeDamageAndLossTab("INFRASTRUCTURE_DAMAGE"))
             }
+            className={`border-l-2 h-[100%] p-2
+            ${currentDamageState == "INFRASTRUCTURE_DAMAGE" && "bg-[#fde38d]"}
+            `}
           >
             Infrastructure Damaged
           </div>
+        </div>
+      </div>
+      <div
+        className="bg-[#ffffff] p-2"
+        style={{
+          position: "absolute",
+          width: "100px",
+          bottom: "5px",
+          right: "5px",
+          zIndex: 9999,
+        }}
+      >
+        <div className="flex gap-2 justify-between items-center">
+          <div className="h-4 w-6 bg-[#800026]"></div>
+          <div> &gt;90</div>
+        </div>
+        <div className="flex gap-2 justify-between items-center">
+          <div className="h-4 w-6 bg-[#BD0026]"></div>
+          <div className="font-extralight">90 - 80</div>
+        </div>
+        <div className="flex gap-2 justify-between items-center">
+          <div className="h-4 w-6 bg-[#D73518]"></div>
+          <div>80 - 70</div>
+        </div>
+        <div className="flex gap-2 justify-between items-center">
+          <div className="h-4 w-6 bg-[#ED3730]"></div>
+          <div>70 - 60</div>
+        </div>
+        <div className="flex gap-2 justify-between items-center">
+          <div className="h-4 w-6 bg-[#FC4E2A]"></div>
+          <div>60 - 50</div>
+        </div>
+        <div className="flex gap-2 justify-between items-center">
+          <div className="h-4 w-6 bg-[#FD8D3C]"></div>
+          <div>50 - 40</div>
+        </div>
+        <div className="flex gap-2 justify-between items-center">
+          <div className="h-4 w-6 bg-[#FEB24C]"></div>
+          <div>40 - 30</div>
+        </div>
+        <div className="flex gap-2 justify-between items-center">
+          <div className="h-4 w-6 bg-[#FDE38D]"></div>
+          <div>30 - 20</div>
+        </div>
+        <div className="flex gap-2 justify-between items-center">
+          <div className="h-4 w-6 bg-[#FBCC8D]"></div>
+          <div>20 - 10</div>
+        </div>
+        <div className="flex gap-2 justify-between items-center">
+          <div className="h-4 w-6 bg-[#FDE6D8]"></div>
+          <div> &lt;10</div>
         </div>
       </div>
     </div>
@@ -401,41 +470,6 @@ export const ManageDataLegend = ({ changeDamagestate }) => {
             </span>
             Selected Building
           </div>
-        </div>
-      </div>
-    </div>
-  );
-};
-
-
-
-
-
-
-export const NavigationLegend = ({  }) => {
-  const route =useSelector(state=>{
-    console.log(state)
-    return (state.damageLegend.currentroute)
-  })
-  console.log(route,"ROUTE----------->")
-  return (
-    <div>
-      <div
-        className="bg-[#ffffff]"
-        style={{
-          position: "absolute",
-          width: "400px",
-          top: "200px",
-          right: "20px",
-          zIndex: 9999,
-        }}
-      >
-        <div className="m-2  justify-between pb-1 items-start">
-           <div className="bg-blue-400 text-white py-2 px-1">Navigation Panel</div>
-         <div className="mt-2">
-          {route?.features[0]?.properties?.segments[0].steps?.map((data)=>{
-            return <div>{data.distance}m, {data.instruction} ,time:{data.duration}  </div>
-          })} </div>
         </div>
       </div>
     </div>
