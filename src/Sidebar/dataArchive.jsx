@@ -1,114 +1,60 @@
 import React, { useEffect, useState } from "react";
 import Header from "./Header";
 import Select from "react-select";
-import { redirect } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import { clearWard, cleardData, getWarddownloadbuilding, getdateselectedEvents } from "../store/Slices/selecteddata";
-import { Sledding } from "@mui/icons-material";
+import {
+  clearWard,
+  cleardData,
+  getWarddownloadbuilding,
+  getdateselectedEvents,
+} from "../store/Slices/selecteddata";
 
 function DataArchieve() {
-
-  // let now = new Date();
-  // let oneMonthAgo = new Date(
-  //   now.getFullYear(),
-  //   now.getMonth() - 1,
-  //   now.getDate()
-  // );
-
-  // let today = now.toISOString().slice(0, 10);
-  // let lastMonth = oneMonthAgo.toISOString().slice(0, 10);
   const [startDate, setStartDate] = useState();
   const [endDate, setEndDate] = useState();
-  console.log(startDate, endDate, "DATES------------");
-
-
-    const options1 = [
-    { value: "1", label: "Ward1" },
-    { value: "2", label: "Ward2" },
-    { value: "3", label: "Ward3" },
-    { value: "4", label: "Ward4" },
-    { value: "5", label: "Ward5" },
-    { value: "6", label: "Ward6" },
-    { value: "7", label: "Ward7" },
-    { value: "8", label: "Ward8" },
-    { value: "9", label: "Ward9" },
-    { value: "10", label: "Ward10" },
-    { value: "11", label: "Ward11" },
-    { value: "12", label: "Ward12" },
-    { value: "13", label: "Ward13" },
-    { value: "14", label: "Ward14" },
-    { value: "15", label: "Ward15" },
-    { value: "16", label: "Ward16" },
-    { value: "17", label: "Ward17" },
-    { value: "18", label: "Ward18" },
-    { value: "19", label: "Ward19" },
-    { value: "20", label: "Ward20" },
-    { value: "21", label: "Ward21" },
-    { value: "22", label: "Ward22" },
-    { value: "23", label: "Ward23" },
-    { value: "24", label: "Ward24" },
-    { value: "25", label: "Ward25" },
-    { value: "26", label: "Ward26" },
-    { value: "27", label: "Ward27" },
-    { value: "28", label: "Ward28" },
-    { value: "29", label: "Ward29" }
-  ];
-const handlestart=(e)=>{
-
- 
-    console.log(e,"EEEEEEEEEEEEEEEEEEEEEE")
-    setStartDate(e.target.value)
-
-}
-
-const handleend=(e)=>{
-
- 
-  console.log(e,"EEEEEEEEEEEEEEEEEEEEEE")
-  setEndDate(e.target.value)
-
-}
-
-  const [selectedwardbuilding,setWardb]=useState(null);
-  console.log("seledted ward is          --                --------------",selectedwardbuilding)
-
-
-  // const getWardJSONData = async () => {
-  //   const data = await fetch(
-  //     `http://127.0.0.1:8000/api/v1/spatial/ward/${selectedwardbuilding}/`
-  //   );
-  //   const wardjson = await data.json();
-  //   setWardJSON(wardjson);
-  // };
-  // console.log(WardJSON)
-   const dispatch=useDispatch()
-   const [ddata,setddata]=useState(null)
-  console.log(ddata)
+  const [wards, setWard] = useState();
+  const wardJSON = async () => {
+    let data = await fetch("http://127.0.0.1:8000/api/v1/spatial/ward/");
+    let datajson = await data.json();
+    setWard(datajson);
+  };
   useEffect(() => {
-   if (selectedwardbuilding) dispatch(getWarddownloadbuilding(selectedwardbuilding))
- else{
-  dispatch(clearWard())
- }
-    
+    wardJSON();
+  }, []);
+  console.log(wards, "I am ward what are you");
+  const options1 = wards?.features?.map((ward) => {
+    return {
+      value: ward.id,
+      label: "Ward" + ward.properties.ward,
+    };
+  });
+  const handlestart = (e) => {
+    setStartDate(e.target.value);
+  };
+
+  const handleend = (e) => {
+    setEndDate(e.target.value);
+  };
+
+  const [selectedwardbuilding, setWardb] = useState(null);
+  const dispatch = useDispatch();
+  const [ddata, setddata] = useState(null);
+  console.log(ddata);
+  useEffect(() => {
+    if (selectedwardbuilding)
+      dispatch(getWarddownloadbuilding(selectedwardbuilding));
+    else {
+      dispatch(clearWard());
+    }
   }, [selectedwardbuilding]);
 
- 
-  // const getddata= async () => {
-  //   const response = await fetch(
-  //     `http://127.0.0.1:8000/api/v1/disaster/disasterEventwithoutgeom/?name=&type=&is_closed=false&startTime__gte=${startDate}T18%3A00%3A00Z&startTime__gt=&startTime=&startTime__lte=${endDate}T18%3A00%3A00Z`
-  //   );
-  //   const data = await response.json();
-  //   setddata(data)
-  // }
-
-  const dedata=useSelector(state=>state.selected.dateselectedevent)
-  useEffect(()=>{
-    if (startDate && endDate){
-      dispatch(getdateselectedEvents([startDate,endDate]))
+  const dedata = useSelector((state) => state.selected.dateselectedevent);
+  useEffect(() => {
+    if (startDate && endDate) {
+      dispatch(getdateselectedEvents([startDate, endDate]));
     }
-
-  },[startDate,endDate])
- console.log(dedata,'MILYO')
+  }, [startDate, endDate]);
+  console.log(dedata, "MILYO");
   const wardStyle = () => {
     return {
       fillColor: `none`,
@@ -118,104 +64,118 @@ const handleend=(e)=>{
       fillOpacity: 0.7,
     };
   };
+  const [selectedWard, changeSelectedWard] = useState(null);
   return (
     <>
       <Header />
-      {/* <div className=" p-3 text-sm bg-[#e35163] text-white"> Data Download Section</div> */}
-      <div className="h-70 bg-gray-100">
-       
-        <label className="p-2 mt-5">Select Building data</label>
-        <Select options={options1} className="p-2" onChange={(event)=>{
-          console.log(event)
-          setWardb(event.value)
-        }}
-           />
-          <center>
-           <button className="text-red-500 text-sm mt-4" onClick={()=>dispatch(clearWard())}>Clear selection</button>
-           </center>
-           <center>
-          <button 
-          onClick={() => {  
-            let downloadUrl='http://localhost:8000/api/v1/analysis/download_building/?ward='+selectedwardbuilding
-            console.log("dsa")
-            window.location.href = downloadUrl;
-          }}
-          className="bg-[#418fde] text-sm text-white m-2 py-[3px] px-3 rounded-sm mb-5"
-        >
-          Download Shapefile
-        </button>{" "}
-        </center>
-        
-      </div>
-
-      <div className="p-2 border-t-2 border-gray-100  pt-5  bg-gray-200">
-        <span className="text-md my-4 p"> Filter Disaster data</span><br/>
-       <div className="h-70">
-       <div className="flex  mt-3">
-      <div className="m-2"> <label
-                htmlFor="incidentOn1"
-                className="text-xs font-normal leading-tight text-blue-gray-500 transition-all after:absolute after:-bottom-2.5 after:block after:w-full after:scale-x-0 after:border-b-2 after:border-red-500 after:transition-transform after:duration-300 peer-placeholder-shown:leading-tight font-bold"
+      <div className="px-3">
+        <div className="text-center font-bold mt-3 text-lg">
+          Download Spatial Data
+        </div>
+        <div className="border rounded-sm shadow-md mt-2">
+          <div className="ml-2 mt-2 font-bold">Download Building data</div>
+          <div className="ml-2">Select Ward</div>
+          <Select
+            options={options1}
+            value={selectedWard}
+            className="p-2"
+            onChange={(event) => {
+              setWardb(event.value);
+              changeSelectedWard(event);
+            }}
+          />
+          <div className="flex">
+            <div>
+              <button
+                onClick={() => {
+                  let downloadUrl =
+                    "http://localhost:8000/api/v1/analysis/download_building/?ward=" +
+                    selectedwardbuilding;
+                  console.log("dsa");
+                  window.location.href = downloadUrl;
+                }}
+                className="bg-[#418fde] text-sm text-white m-2 py-[3px] px-3 rounded-sm mb-4"
               >
-                Start Date
-              </label>
-              <input
-                className=" peer h-8 w-full border-b border-blue-gray-200 bg-transparent  font-sans text-sm font-normal text-blue-gray-700 outline outline-0 transition-all focus:border-red-500 focus:outline-0 disabled:border-8 disabled:bg-blue-gray-50 hover:text-black "
-                id="incidentOn1"
-                name="incidentOn1"
-                type="date"
-                onChange={handlestart}
-                // onBlur={formik.handleBlur}
-                //  defaultValue={startDate}
-                value={startDate}
-              /></div>
-
-<div className="m-2">
-<label
-                htmlFor="incidentOn"
-                className="text-xs font-normal leading-tight text-blue-gray-500 transition-all after:absolute after:-bottom-2.5 after:block after:w-full after:scale-x-0 after:border-b-2 after:border-red-500 after:transition-transform after:duration-300 peer-placeholder-shown:leading-tight font-bold"
+                Download Shapefile
+              </button>
+            </div>
+            <div>
+              <button
+                className="bg-red-500 text-sm text-white m-2 py-[3px] px-3 rounded-sm mb-4"
+                onClick={() => {
+                  changeSelectedWard(null);
+                  dispatch(clearWard());
+                }}
               >
-                End Date
-              </label>
-              <input
-                className=" peer h-8 w-full border-b border-blue-gray-200 bg-transparent  font-sans text-sm font-normal text-blue-gray-700 outline outline-0 transition-all focus:border-red-500 focus:outline-0 disabled:border-8 disabled:bg-blue-gray-50 hover:text-black "
-                id="incidentOn"
-                name="incidentOn"
-                type="date"
-                onChange={handleend}
-                // onBlur={formik.handleBlur}
-                // value={formik.values.incidentOn}
-                // defaultValue={endDate}
-                value={endDate}
-              />
+                Clear selection
+              </button>
+            </div>
+          </div>
+        </div>
+        <div className="border rounded-sm shadow-md mt-4">
+          <div className="ml-2 font-bold">Download Disaster data</div>
+          <span className="text-md ml-2"> Filter Disaster data</span>
+          <div>
+            <div className="flex  mt-1">
+              <div className="m-2">
+                <label
+                  htmlFor="incidentOn1"
+                  className="text-xs leading-tight text-blue-gray-500 transition-all after:absolute after:-bottom-2.5 after:block after:w-full after:scale-x-0 after:border-b-2 after:border-red-500 after:transition-transform after:duration-300 peer-placeholder-shown:leading-tight font-bold"
+                >
+                  Start Date
+                </label>
+                <input
+                  className=" peer h-8 w-full border-b border-blue-gray-200 bg-transparent  font-sans text-sm font-normal text-blue-gray-700 outline outline-0 transition-all focus:border-red-500 focus:outline-0 disabled:border-8 disabled:bg-blue-gray-50 hover:text-black "
+                  id="incidentOn1"
+                  name="incidentOn1"
+                  type="date"
+                  onChange={handlestart}
+                  value={startDate}
+                />
+              </div>
 
-</div>
+              <div className="m-2">
+                <label
+                  htmlFor="incidentOn"
+                  className="text-xs font-normal leading-tight text-blue-gray-500 transition-all after:absolute after:-bottom-2.5 after:block after:w-full after:scale-x-0 after:border-b-2 after:border-red-500 after:transition-transform after:duration-300 peer-placeholder-shown:leading-tight font-bold"
+                >
+                  End Date
+                </label>
+                <input
+                  className=" peer h-8 w-full border-b border-blue-gray-200 bg-transparent  font-sans text-sm font-normal text-blue-gray-700 outline outline-0 transition-all focus:border-red-500 focus:outline-0 disabled:border-8 disabled:bg-blue-gray-50 hover:text-black "
+                  id="incidentOn"
+                  name="incidentOn"
+                  type="date"
+                  onChange={handleend}
+                  value={endDate}
+                />
+              </div>
+            </div>
 
-       </div>
-     
-       <div className="pb-8"> 
-       <center>
-      
-      {/* <div className="flex justify-center */}
-           <button className="text-red-500 text-sm mt-4" onClick={()=>dispatch(cleardData())
-          
-          }>Clear selection</button>
-
-   </center>
-    <center>      <button 
-          onClick={() => {  
-            let downloadUrl='http://localhost:8000/api/v1/analysis/download_disaster/?fromdate='+startDate+"&todate="+endDate
-             console.log(downloadUrl)
-            window.location.href = downloadUrl;
-          }}
-          className="bg-[#418fde] text-white m-2 py-[3px] px-3 rounded-sm text-sm"
-        >
-          Download Shapefile
-        </button>
-        </center>
-
-      </div>
-      </div>
-        
+            <div className="pb-8">
+              <button
+                onClick={() => {
+                  let downloadUrl =
+                    "http://localhost:8000/api/v1/analysis/download_disaster/?fromdate=" +
+                    startDate +
+                    "&todate=" +
+                    endDate;
+                  console.log(downloadUrl);
+                  window.location.href = downloadUrl;
+                }}
+                className="bg-[#418fde] text-white m-2 py-[3px] px-3 rounded-sm text-sm"
+              >
+                Download Shapefile
+              </button>
+              <button
+                className="bg-red-500 text-white m-2 py-[3px] px-3 rounded-sm text-sm"
+                onClick={() => dispatch(cleardData())}
+              >
+                Clear selection
+              </button>
+            </div>
+          </div>
+        </div>
       </div>
     </>
   );

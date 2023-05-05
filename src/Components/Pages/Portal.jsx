@@ -393,9 +393,6 @@ export const Portal = () => {
           ) : (
             ""
           )}
-
-          {/* download archive wardjson loader */}
-          {/* {downloablebuildingarchive?<GeoJSON style={wardstyle2} data={downloablebuildingarchive}></GeoJSON>:""}  */}
         </MapContainer>
         <SideBar changeReportState={changeReportState} />
         {reportActivated ? (

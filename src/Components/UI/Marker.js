@@ -1,7 +1,7 @@
 import L from "leaflet";
 import { Marker, Popup } from "react-leaflet";
-import { AiFillFire } from "react-icons/ai";
-import { BiAlarm } from "react-icons/bi";
+import CalendarMonthIcon from "@mui/icons-material/CalendarMonth";
+import WatchLaterIcon from "@mui/icons-material/WatchLater";
 var flood = L.icon({
   iconUrl: "http://127.0.0.1:8000/images/flood.svg",
   iconSize: [25, 41],
@@ -28,6 +28,7 @@ export const getIcon = (disastertype) => {
 };
 
 function Markers({ disaster: event, setOpen }) {
+  const [dateString, timeString] = event.startTime.split("T");
   return (
     <Marker
       key={`disaster-${event.id}`}
@@ -40,40 +41,27 @@ function Markers({ disaster: event, setOpen }) {
       }}
     >
       <Popup>
-        <div class="">
-          <div class="bg-indigo-700 text-white text-md border-gray-200 border-t-2 pt-3 ">
-            <center>
-              <h1>{event.name}</h1>
-            </center>
-            <br />
+        <div className="text-lg mb-2 border-gray-200 border-b-2">
+          {event.name}
+        </div>
+        <div>
+          <div className="font-semibold mb-1">
+            Address: <span className="font-normal">{event.address}</span>{" "}
           </div>
-
-          <div class="text-black-900 text-sm mt-3">
-            Fire in the forest of Godawari
-          </div>
-          <div className="border-gray-200 border-b-2 p-3 hover:bg-gray-200 py-4">
-            <div className="text-md font-medium flex flex-row  ">
-              <div className="text-red-700 text-sm flex flex-col  border-indigo-300 border-r-2 pr-4">
-                <span className="px-2">
-                  {" "}
-                  <AiFillFire size={30} />
-                </span>
-                <p className="text-xs pl-3">Fire</p>
-              </div>
-              <span className="font-normal ml-5 pt-1 text-sm">
-                <div className="font-semibold "> Kyonjan Municipality</div>
-                <div>
-                  <div className="text-xs  text-gray-500 flex justify-start ">
-                    <span className="">2023/1/23</span>
-                    <div className="flex items-center px-2">
-                      <span>
-                        <BiAlarm />
-                      </span>
-                      <span className="pl-1">4:55</span>
-                    </div>
-                  </div>
-                </div>
-              </span>
+          <div className="flex gap-2 items-center">
+            <div className="flex gap-1 items-center">
+              <CalendarMonthIcon
+                className="text-red-600"
+                style={{ width: "18px", height: "17px" }}
+              />
+              <div>{dateString}</div>
+            </div>
+            <div className="flex items-center">
+              <WatchLaterIcon
+                className="text-red-600"
+                style={{ width: "18px", height: "17px" }}
+              />
+              <div>{timeString}</div>
             </div>
           </div>
         </div>

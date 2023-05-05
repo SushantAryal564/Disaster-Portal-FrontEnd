@@ -24,84 +24,54 @@ function MarkersClone({ disaster: event }) {
         >
           <Popup maxWidth={400}>
             <div className=" pop-width w-96 p-2">
-              <div className="bg-teal-500 text-white text-md border-gray-200 border-t-2 pt-3 ">
-                <center>
-                  <h1>
-                    {event.name}
-                    {event.title}
-                  </h1>
-                </center>
-                <br />
-              </div>
-
-              {event.tags ? (
-                <div className="text-gray-700 text-xs mt-3 ">
+              <div className="text-lg font-bold">{event.name}</div>
+              {event.tags && (
+                <div className="text-gray-700 text-s mt-1">
                   {event.tags[0].name} {event.tags[0].description}
                 </div>
-              ) : (
-                ""
               )}
-              <div className="text-gray-700 text-xs mt-3">
-                <p className="text-red-500">{event.description}</p>
+              <div className="text-s mt-1">{event.description}</div>
+              <span
+                className={`text-xs font-bold ${
+                  event.status === "BELOW WARNING LEVEL"
+                    ? "text-green-500"
+                    : "text-red-500"
+                } `}
+              >
+                {event.status}
+              </span>
+              <span className="font-normal pt-1 text-sm  ">
+                <div className="text-xs ">
+                  <div className="mt-2 text-sm">Detail: </div>
+                  {event.waterLevelOn && (
+                    <div className="flex flex-col gap-1">
+                      <div className="">Water Level : {event.waterLevel}</div>
+                      <div className="">
+                        Warning Level: {event.warningLevel}
+                      </div>
+                      <div className="flex gap-2">
+                        <div>Updated on:</div>
+                        <div>{new Date(event.waterLevelOn).toDateString()}</div>
+                        <div>{new Date(event.waterLevelOn).toTimeString()}</div>
+                      </div>
+                    </div>
+                  )}
+                </div>
+              </span>
+              <div className="text-black-900 text-sm">
+                <span className="text-xs">Datasource- {event.dataSource}</span>
               </div>
-              <div className="text-black-900 text-sm mt-3">
-                <span className="text-xs text-gray-400">
-                  Datasource- {event.dataSource}
-                </span>
-              </div>
-              <span className="text-xs text-red-400">{event.status}</span>
-              <div className=" border-t-2">
-                <span className="font-normal pt-1 text-sm  ">
-                  {/* <div className="font-semibold text-xs ">{event.status}</div> */}
-                  <div className="text-xs text-gray-500  ">
-                    {event.waterLevelOn ? (
-                      <>
-                        <span className="">
-                          Water Level : {event.waterLevel}
-                        </span>
-                        <br />
-                        <span className="">
-                          Warning Level: {event.warningLevel}
-                        </span>
-                        <p className="">Updated on :</p>
-                        <span className="">{event.waterLevelOn}</span>
-                      </>
-                    ) : (
-                      ""
-                    )}
-                  </div>
-                </span>
-              </div>
-
               {event.images ? (
                 <div className="text-md font-medium   ">
-                  <div className="text-red-700 text-sm   border-indigo-300 border-r-2 pr-4">
-                    <span className="px-2">
-                      <img
-                        className="object-cover h-96 w-96"
-                        src={event.images[0]}
-                      ></img>
-                    </span>
-                  </div>
+                  <img className="object-cover" src={event.images[0]}></img>
                 </div>
               ) : (
                 ""
               )}
-              {event.image ? (
-                <div className="text-md font-medium   ">
-                  <div className="text-red-700 text-sm   border-indigo-300 border-r-2 pr-4">
-                    <span className="px-2">
-                      {event.image && (
-                        <img
-                          className="object-cover h-96 w-96"
-                          src={event.image || defaultimage}
-                        ></img>
-                      )}
-                    </span>
-                  </div>
+              {event.image && (
+                <div className="text-md font-medium mt-1">
+                  {event.image && <img src={event.image}></img>}
                 </div>
-              ) : (
-                ""
               )}
             </div>
           </Popup>

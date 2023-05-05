@@ -50,6 +50,7 @@ export const LiveData = () => {
   );
 };
 export const Pollution = ({ data, selectedMarkerId }) => {
+  console.log(data, "data2");
   const dispatch = useDispatch();
   return (
     <div>
@@ -77,10 +78,9 @@ export const Pollution = ({ data, selectedMarkerId }) => {
                   return (
                     <tr
                       className={
-                        instance.id == selectedMarkerId
-                          ? "border-gray-300 bg-[#418fde]"
-                          : `bg-[${instance.aqiColor}]`
+                        instance.id === selectedMarkerId && "bg-[#418fde]"
                       }
+                      style={{ backgroundColor: instance.aqiColor }}
                       onClick={() => dispatch(selectMarker(instance.id))}
                     >
                       <td className="py-1 px-1 border border-slate-600">
@@ -125,10 +125,10 @@ export const Water = ({ data2, selectedMarkerId }) => {
               <tr
                 className={
                   instance.id == selectedMarkerId
-                    ? "border-gray-300 bg-[#418fde]"
+                    ? "bg-[#418fde]"
                     : `${
                         instance.status === "BELOW WARNING LEVEL"
-                          ? "bg-green-600"
+                          ? "bg-[#00e400]"
                           : "bg-[#ff0000]"
                       }`
                 }

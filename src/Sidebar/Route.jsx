@@ -108,10 +108,14 @@ function FindRoute() {
     return state.damageLegend.currentroute;
   });
   return (
-    <div className=" h-full scrollbar scrollbar-thumb-gray-300 scrollbar-track-gray-100 scrollbar-w-1 scrollbar-rounded-rounded-md">
+    <div>
       <Header />
-      <div className="px-4 flex flex-col gap-2">
-        <div className="flex flex-col gap-2 border p-2 mt-2">
+
+      <div className="h-[84vh] scrollbar scrollbar-thumb-gray-300 scrollbar-track-gray-100 scrollbar-w-1 scrollbar-rounded-rounded-md px-4 flex flex-col gap-2 ">
+        <div className=" mt-2 text-base font-bold border-b-2">
+          Find the shortest Path between Disaster and critical Services
+        </div>
+        <div className="flex flex-col gap-2 border shadow-md rounded-md p-3 mt-2">
           <div>Select One among the Options:</div>
           <div>Hospital</div>
           <Select
@@ -132,30 +136,32 @@ function FindRoute() {
             onChange={handlepoliceStationOptionChange}
           />
         </div>
-        <div className="border p-2 mt-2">
-          <div>Select Disaster Event</div>
+        <div className="border p-2 mt-4 shadow-md rounded-md">
+          <div className="mb-2">Select Disaster Event</div>
           <Select
             defaultValue={"school"}
             options={disasterOptions}
             onChange={handleDisasterOptionChange}
           />
         </div>
-        <div>
-          <div className="m-2  justify-between pb-1 items-start">
+        <div className="my-3">
+          <div className="justify-between pb-1 items-start border rounded-md">
             <div className="bg-blue-400 text-white py-2 px-1">
               Navigation Panel
             </div>
             <div className="mt-2">
-              {route?.features[0]?.properties?.segments[0].steps?.map(
-                (data) => {
-                  return (
-                    <div>
-                      After {data.duration} minutes in {data.distance} meter,{" "}
-                      {data.instruction}
-                    </div>
-                  );
-                }
-              )}{" "}
+              <ul className="list-disc">
+                {route?.features[0]?.properties?.segments[0].steps?.map(
+                  (data) => {
+                    return (
+                      <li>
+                        After {data.duration} minutes in {data.distance} meter,{" "}
+                        {data.instruction}
+                      </li>
+                    );
+                  }
+                )}
+              </ul>
             </div>
           </div>
         </div>

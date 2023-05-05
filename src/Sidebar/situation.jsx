@@ -35,27 +35,25 @@ function Situation() {
               }}
             >
               <div className="flex flex-row items-center px-1">
-                <div>
+                <div className="flex flex-col items-center">
                   <img
                     src={incident.type.icon}
                     style={{ width: "40px", height: "40px" }}
                   />
-                  <div>{incident.type.title}</div>
+                  <div className="text-xs">{incident.type.title}</div>
                 </div>
               </div>
-              <div className="w-full">
+              <div className="w-full cursor-pointer">
                 <div className=" w-full flex justify-between">
-                  <div className="text-lg font-serif text-red-400 font-bold">
-                    {incident.name}
-                  </div>
+                  <div className="text-xl">{incident.name}</div>
                 </div>
                 <div>
-                  <b>Address:&nbsp;&nbsp;</b>
+                  <span>Address:&nbsp;&nbsp;</span>
                   {incident.address}
                 </div>
                 <div>
                   <div>
-                    <b>Start Time: &nbsp;&nbsp;</b>
+                    <span>Start Time: &nbsp;&nbsp;</span>
                     {new Date(incident.date_event).toLocaleString("en-US", {
                       timeZone: "UTC",
                     })}
@@ -66,7 +64,7 @@ function Situation() {
             {incident.id === selectedDisaster && (
               <div className="mt-3 px-2">
                 <div
-                  className="flex justify-center mt-2 font-bold text-red-600 items-center"
+                  className="flex justify-center mt-2 font-bold text-red-600 items-center cursor-pointer"
                   onClick={() => {
                     dispatch(setDisaster(null));
                   }}
