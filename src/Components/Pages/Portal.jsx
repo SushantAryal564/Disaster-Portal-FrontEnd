@@ -84,7 +84,6 @@ export const Portal = () => {
   const totalInfrastructureDamage = useSelector((state) => {
     return state.damageloss.totalInfrastructure;
   });
-  console.log(totalInfrastructureDamage, "I am infrastructure");
   const slidebarState = useSelector((state) => {
     return state.slidebar.slidebarState;
   });
@@ -144,48 +143,125 @@ export const Portal = () => {
   const downloablebuildingarchive = useSelector(
     (state) => state.selected.selectionDownloadWardbuilding
   );
-  console.log(downloablebuildingarchive);
+
+  const datadisaster = useSelector((state) => state.disaster.data);
+  const realtimedatawater = useSelector((state) => state.live.water);
+  const realtimepollution = useSelector((state) => state.live.pollution);
+  const dataIncident = useSelector((state) => state.disasterIncident.data);
   useEffect(() => {
     dispatch(InfrastructureAsyncGETThunk("school"));
     metroJSON();
     wardJSON();
   }, []);
-
-  //disaster selector
-  const datadisaster = useSelector((state) => state.disaster.data);
-  const realtimedatawater = useSelector((state) => state.live.water);
-  const realtimepollution = useSelector((state) => state.live.pollution);
-  const dataIncident = useSelector((state) => state.disasterIncident.data);
   const position = [27.65707, 85.3133];
   let disasterinDashboard = [
-    ...new Set(datadisaster.map((data) => data?.type?.title)),
+    ...new Set(
+      datadisaster.map((data) => {
+        return {
+          is_verified: data?.is_verified,
+          url: data?.type?.icon,
+          title: data?.type?.title,
+        };
+      })
+    ),
   ];
+  const DashboardLegendItem = disasterinDashboard.filter(
+    (obj, index, self) =>
+      index ===
+      self.findIndex(
+        (o) =>
+          o.url === obj.url &&
+          o.is_verified === obj.is_verified &&
+          o.title === obj.title
+      )
+  );
+  let disasterinIncident = [
+    ...new Set(
+      dataIncident.map((data) => {
+        return {
+          is_verified: data?.is_verified,
+          url: data?.type?.icon,
+          title: data?.type?.title,
+        };
+      })
+    ),
+  ];
+  const IncidentLegendItem = disasterinIncident.filter(
+    (obj, index, self) =>
+      index ===
+      self.findIndex(
+        (o) =>
+          o.url === obj.url &&
+          o.is_verified === obj.is_verified &&
+          o.title === obj.title
+      )
+  );
   const scrollWheelZoom = true;
+  const disasterClass = useSelector(
+    (state) => state.damageloss.disasterClasses
+  );
+  const lossClass = useSelector((state) => state.damageloss.LossClass);
+  const peopleDeathClass = useSelector(
+    (state) => state.damageloss.PeopleDeathClass
+  );
+  const infrastructureClass = useSelector(
+    (state) => state.damageloss.InfrastructureClass
+  );
+
   const styleFeature = (feature) => {
     let currentLegendItem = currentdamageindex;
     let data = 0;
     if (currentLegendItem === "INCIDENT") {
-      data = (feature.properties.number_of_disasters * 100) / totalIncident;
+      data = feature.properties.number_of_disasters;
+      return {
+        fillColor: getColor(data, disasterClass),
+        weight: 2,
+        opacity: 1,
+        color: "white",
+        dashArray: "3",
+        fillOpacity: 0.7,
+      };
     } else if (currentLegendItem === "LIVES_LOST") {
-      data = (feature.properties.total_people_death * 100) / totalPeopleDeath;
+      data = feature.properties.total_people_death;
+      return {
+        fillColor: getColor(data, peopleDeathClass),
+        weight: 2,
+        opacity: 1,
+        color: "white",
+        dashArray: "3",
+        fillOpacity: 0.7,
+      };
     } else if (currentLegendItem === "PROPERTY_LOSS") {
-      data =
-        (feature.properties.total_estimated_loss * 100) / totalEstimatedLoss;
+      data = feature.properties.total_estimated_loss;
+      return {
+        fillColor: getColor(data, lossClass),
+        weight: 2,
+        opacity: 1,
+        color: "white",
+        dashArray: "3",
+        fillOpacity: 0.7,
+      };
     } else if (currentLegendItem === "INFRASTRUCTURE_DAMAGE") {
-      data =
-        (feature.properties.total_infrastructure_damaged * 100) /
-        totalInfrastructureDamage;
+      data = feature.properties.total_infrastructure_damaged;
+      return {
+        fillColor: getColor(data, infrastructureClass),
+        weight: 2,
+        opacity: 1,
+        color: "white",
+        dashArray: "3",
+        fillOpacity: 0.7,
+      };
     } else {
       data = feature.properties.number_of_disasters;
+      return {
+        fillColor: getColor(data, currentdamageindex),
+        weight: 2,
+        opacity: 1,
+        color: "white",
+        dashArray: "3",
+        fillOpacity: 0.7,
+      };
     }
-    return {
-      fillColor: getColor(data),
-      weight: 2,
-      opacity: 1,
-      color: "white",
-      dashArray: "3",
-      fillOpacity: 0.7,
-    };
   };
 
   const createClusterCustomIcon = function (cluster) {
@@ -377,9 +453,11 @@ export const Portal = () => {
           {component === ROUTE ? <FindRouteMap /> : ""}
           {component === REALTIME && <RealTimeLegend />}
           {component === RISKINFO && <RiskInfoLegend />}
-          {component === INCIDENT && <IncidentLegend />}
+          {component === INCIDENT && (
+            <DashboardLegend legendItem={IncidentLegendItem} />
+          )}
           {component === DASHBOARD && (
-            <DashboardLegend legendItem={disasterinDashboard} />
+            <DashboardLegend legendItem={DashboardLegendItem} />
           )}
           {component === DAMAGELOSS && <DamageAndLossLegend />}
           {component == RISKINFO && selectedPanel === 3 ? (

@@ -8,13 +8,12 @@ import { useMap } from "react-leaflet";
 import { GeoJSON } from "react-leaflet";
 import { MapContainer, TileLayer, Marker, Popup } from "react-leaflet";
 
-function Edit({ data,open,setOpen }) {
-  const [finance,setFinance]=useState(null)
-  const [lives,setlives]=useState(null)
-  const [infra,setinfra]=useState(null)
+function Edit({ data, open, setOpen }) {
+  const [finance, setFinance] = useState(null);
+  const [lives, setlives] = useState(null);
+  const [infra, setinfra] = useState(null);
   const [statedata, setstatedata] = useState(data);
-  const access_token =  localStorage.getItem("access_token")
-  // console.log(access_token,"HEY I AMA TOKEN")
+  const access_token = localStorage.getItem("access_token");
   let {
     lat,
     long,
@@ -25,8 +24,9 @@ function Edit({ data,open,setOpen }) {
     registered_date,
     type,
     date_event,
-    InfrastructureDestroyed,estimatedLoss,
-    peopleDeath
+    InfrastructureDestroyed,
+    estimatedLoss,
+    peopleDeath,
   } = data;
 
   const [position, setPosition] = useState([lat, long]);
@@ -71,53 +71,40 @@ function Edit({ data,open,setOpen }) {
     setPosition([event.target.getLatLng().lat, event.target.getLatLng().lng]);
   }
   const ReportSendToBackend = async (values) => {
-    console.log("UPDATING REPORT>>>>>>>>>>>>")
-    values={...values,is_verified:true}
-    console.log( "http://127.0.0.1:8000/api/v1/disaster/updatedisaster/${data.id}"+ "HITTING THIS API NOW")
+    values = { ...values, is_verified: true };
+
     const response = await fetch(
       `http://127.0.0.1:8000/api/v1/disaster/updatedisaster/${data.id}/`,
       {
         method: "PATCH",
         headers: {
           "Content-Type": "application/json",
-          "Authorization": "Bearer "+access_token
+          Authorization: "Bearer " + access_token,
         },
         body: JSON.stringify(values),
       }
     );
     const responseData = await response.json();
-    console.log("PATCH-RESPONSE",responseData)
-    setOpen(0)
+    setOpen(0);
   };
 
-
   const handleDelete = async () => {
-   
-    console.log("DELETE REPORT>>>>>>>>>>>>")
-  console.log( `http://127.0.0.1:8000/api/v1/disaster/deletedisaster/${data.id}/`+ "DELETING")
     const response = await fetch(
       `http://127.0.0.1:8000/api/v1/disaster/deletedisaster/${data.id}/`,
       {
         method: "DELETE",
         headers: {
           "Content-Type": "application/json",
-          "Authorization": "Bearer "+access_token
+          Authorization: "Bearer " + access_token,
         },
-  
       }
     );
     const responseData = await response.json();
-    console.log("DELETE-RESPONSE",responseData,response)
-    setOpen(0)
+    setOpen(0);
   };
 
+  const date = new Date(date_event).toISOString().replace("Z", "");
 
-
-const date = new Date(date_event).toISOString().replace("Z", "");
-  
-// console.log(formattedDate);
-  //  formattedDate=new Date(formattedDate)
-  console.log(date, "FOORmATETED DATE");
   const formik = useFormik({
     initialValues: {
       title: name,
@@ -141,33 +128,15 @@ const date = new Date(date_event).toISOString().replace("Z", "");
       longitude: Yup.number().required("Required"),
     }),
     onSubmit: (values) => {
-      console.log(values, "RUNNING DUBMIT__________________---");
       const disasterobject = disaster.find(
         (disaster) => disaster.title === values.hazard
       );
-       console.log("DISASTEROBJECT",disasterobject)
-      const hazardid = disasterobject?.id
+      const hazardid = disasterobject?.id;
       const wardobject = Region.find(
         (ward) => ward.properties.ward == values.region
       );
       const wardid = wardobject.id;
-      if (infra,finance,lives){
-      const disasterData = {
-        description: values.title,
-        lat: values.latitude,
-        long: values.longitude,
-        type: hazardid,
-        Ward: wardid,
-        date_event: values.incidentOn,
-        name:disasterobject?.title||"Disaster Event "+ " in " + values.streetAddress,
-        address:values.streetAddress,
-        InfrastructureDestroyed:infra,
-        estimatedLoss:finance,
-        peopleDeath:lives,
-      };
-      ReportSendToBackend(disasterData);
-    }
-      else{
+      if ((infra, finance, lives)) {
         const disasterData = {
           description: values.title,
           lat: values.latitude,
@@ -175,37 +144,48 @@ const date = new Date(date_event).toISOString().replace("Z", "");
           type: hazardid,
           Ward: wardid,
           date_event: values.incidentOn,
-          name:disasterobject?.title||"Disaster Event "+ " in " + values.streetAddress,
-          address:values.streetAddress,
-
-        }
+          name:
+            disasterobject?.title ||
+            "Disaster Event " + " in " + values.streetAddress,
+          address: values.streetAddress,
+          InfrastructureDestroyed: infra,
+          estimatedLoss: finance,
+          peopleDeath: lives,
+        };
         ReportSendToBackend(disasterData);
-
+      } else {
+        const disasterData = {
+          description: values.title,
+          lat: values.latitude,
+          long: values.longitude,
+          type: hazardid,
+          Ward: wardid,
+          date_event: values.incidentOn,
+          name:
+            disasterobject?.title ||
+            "Disaster Event " + " in " + values.streetAddress,
+          address: values.streetAddress,
+        };
+        ReportSendToBackend(disasterData);
       }
-      // console.log("CALLING REPORT with",disasterData)
-      // ReportSendToBackend(disasterData);
-      // //   setReportActivated(false);
     },
   });
-  const handleClose=async()=>{
-     console.log("HANDLE CLOSE RUNNING--------------------------------------------------------------------")
-    let values={is_closed:true}
-    console.log( "http://127.0.0.1:8000/api/v1/disaster/updatedisaster/${data.id}"+ "HITTING THIS API NOW")
+  const handleClose = async () => {
+    let values = { is_closed: true };
     const response = await fetch(
       `http://127.0.0.1:8000/api/v1/disaster/updatedisaster/${data.id}/`,
       {
         method: "PATCH",
         headers: {
           "Content-Type": "application/json",
-          "Authorization": "Bearer "+access_token
+          Authorization: "Bearer " + access_token,
         },
         body: JSON.stringify(values),
       }
     );
     const responseData = await response.json();
-    console.log("PATCH-RESPONSE",responseData)
-    setOpen(0)
-  }
+    setOpen(0);
+  };
   let formIsValid = true;
   if (
     formik.errors.title &&
@@ -220,7 +200,6 @@ const date = new Date(date_event).toISOString().replace("Z", "");
   } else {
     formIsValid = true;
   }
-  console.log(formIsValid);
   const colourStyles = {
     control: (styles, state) => ({
       ...styles,
@@ -292,7 +271,10 @@ const date = new Date(date_event).toISOString().replace("Z", "");
                 }}
                 id="hazard"
                 name="hazard"
-                  defaultValue={{ label: type?.title||"NO TYPE REPORTED", value: type?.title||"NO" }}
+                defaultValue={{
+                  label: type?.title || "NO TYPE REPORTED",
+                  value: type?.title || "NO",
+                }}
                 // value={formik.values.hazard}
                 options={disasterTypeOptions}
               />
@@ -437,9 +419,6 @@ const date = new Date(date_event).toISOString().replace("Z", "");
                 </div>
               ) : null}
             </div>
-              
-
-
 
             <div className="pt-3 hover:text-red-500">
               <div className="after:">
@@ -447,7 +426,7 @@ const date = new Date(date_event).toISOString().replace("Z", "");
                   htmlFor="latitude"
                   className="text-xs font-normal leading-tight text-blue-gray-500 transition-all font-bold"
                 >
-                 Infrastructure Damage
+                  Infrastructure Damage
                 </label>
                 <input
                   id="latitude"
@@ -462,7 +441,6 @@ const date = new Date(date_event).toISOString().replace("Z", "");
                   // value={(formik.values.latitude = position[0].toFixed(5))}
                 ></input>
               </div>
-             
             </div>
             <div className="pt-3 hover:text-red-500">
               <div className="after:">
@@ -470,13 +448,13 @@ const date = new Date(date_event).toISOString().replace("Z", "");
                   htmlFor="latitude"
                   className="text-xs font-normal leading-tight text-blue-gray-500 transition-all font-bold"
                 >
-                 Financial Loss
+                  Financial Loss
                 </label>
                 <input
                   id="latitude"
                   name="latitude"
                   type="number"
-                  defaultValue={ estimatedLoss}
+                  defaultValue={estimatedLoss}
                   className="h-9 border rounded border-stone-300	w-40 hover:border-red-500 hover:text-black px-2"
                   onChange={(event) => {
                     setFinance(event.target.value);
@@ -485,9 +463,7 @@ const date = new Date(date_event).toISOString().replace("Z", "");
                   // value={(formik.values.latitude = position[0].toFixed(5))}
                 ></input>
               </div>
-             
             </div>
-
 
             <div className="pt-3 hover:text-red-500">
               <div className="after:">
@@ -495,7 +471,7 @@ const date = new Date(date_event).toISOString().replace("Z", "");
                   htmlFor="latitude"
                   className="text-xs font-normal leading-tight text-blue-gray-500 transition-all font-bold"
                 >
-                 Lives Lost
+                  Lives Lost
                 </label>
                 <input
                   id="latitude"
@@ -510,12 +486,7 @@ const date = new Date(date_event).toISOString().replace("Z", "");
                   // value={(formik.values.latitude = position[0].toFixed(5))}
                 ></input>
               </div>
-             
             </div>
-
-
-
-
           </div>
           <div style={{ height: "275px" }} className="mt-3">
             <MapContainer
@@ -566,9 +537,10 @@ const date = new Date(date_event).toISOString().replace("Z", "");
             >
               Verfify this Report
             </label>
-          
           </div>
-          <p className="text-red-600">By clicking submit you are verify this report</p>
+          <p className="text-red-600">
+            By clicking submit you are verify this report
+          </p>
           {/*  */}
           <div className="flex justify-center">
             <button
@@ -577,24 +549,26 @@ const date = new Date(date_event).toISOString().replace("Z", "");
             >
               Submit & Verify
             </button>
-             
 
-            <button onClick={handleClose} className="mx-2 inline-block rounded bg-blue-500 px-6 pt-2.5 pb-2 my-2 text-[11px] font-medium uppercase leading-normal text-white shadow-[0_4px_9px_-4px_#dc4c64] transition duration-150 ease-in-out hover:bg-danger-600 hover:shadow-[0_8px_9px_-4px_rgba(220,76,100,0.3),0_4px_18px_0_rgba(220,76,100,0.2)] focus:bg-danger-600 focus:shadow-[0_8px_9px_-4px_rgba(220,76,100,0.3),0_4px_18px_0_rgba(220,76,100,0.2)] focus:outline-none focus:ring-0 active:bg-danger-700 active:shadow-[0_8px_9px_-4px_rgba(220,76,100,0.3),0_4px_18px_0_rgba(220,76,100,0.2)]">
+            <button
+              onClick={handleClose}
+              className="mx-2 inline-block rounded bg-blue-500 px-6 pt-2.5 pb-2 my-2 text-[11px] font-medium uppercase leading-normal text-white shadow-[0_4px_9px_-4px_#dc4c64] transition duration-150 ease-in-out hover:bg-danger-600 hover:shadow-[0_8px_9px_-4px_rgba(220,76,100,0.3),0_4px_18px_0_rgba(220,76,100,0.2)] focus:bg-danger-600 focus:shadow-[0_8px_9px_-4px_rgba(220,76,100,0.3),0_4px_18px_0_rgba(220,76,100,0.2)] focus:outline-none focus:ring-0 active:bg-danger-700 active:shadow-[0_8px_9px_-4px_rgba(220,76,100,0.3),0_4px_18px_0_rgba(220,76,100,0.2)]"
+            >
               Mark as Closed
             </button>
           </div>
         </form>
         <center>Or</center>
         <center className="pb-4">
-        <button onClick={handleDelete} className="mx-2 inline-block rounded bg-danger px-6 pt-2.5 pb-2 my-2 text-[11px] font-medium uppercase leading-normal text-white shadow-[0_4px_9px_-4px_#dc4c64] transition duration-150 ease-in-out hover:bg-danger-600 hover:shadow-[0_8px_9px_-4px_rgba(220,76,100,0.3),0_4px_18px_0_rgba(220,76,100,0.2)] focus:bg-danger-600 focus:shadow-[0_8px_9px_-4px_rgba(220,76,100,0.3),0_4px_18px_0_rgba(220,76,100,0.2)] focus:outline-none focus:ring-0 active:bg-danger-700 active:shadow-[0_8px_9px_-4px_rgba(220,76,100,0.3),0_4px_18px_0_rgba(220,76,100,0.2)]">
-              Delete this report
-            </button>
-      </center>
-      {/* <center>Or</center> */}
-      <center
-      >
-       
-      </center>
+          <button
+            onClick={handleDelete}
+            className="mx-2 inline-block rounded bg-danger px-6 pt-2.5 pb-2 my-2 text-[11px] font-medium uppercase leading-normal text-white shadow-[0_4px_9px_-4px_#dc4c64] transition duration-150 ease-in-out hover:bg-danger-600 hover:shadow-[0_8px_9px_-4px_rgba(220,76,100,0.3),0_4px_18px_0_rgba(220,76,100,0.2)] focus:bg-danger-600 focus:shadow-[0_8px_9px_-4px_rgba(220,76,100,0.3),0_4px_18px_0_rgba(220,76,100,0.2)] focus:outline-none focus:ring-0 active:bg-danger-700 active:shadow-[0_8px_9px_-4px_rgba(220,76,100,0.3),0_4px_18px_0_rgba(220,76,100,0.2)]"
+          >
+            Delete this report
+          </button>
+        </center>
+        {/* <center>Or</center> */}
+        <center></center>
       </div>
 
       {/* <CloseIcon

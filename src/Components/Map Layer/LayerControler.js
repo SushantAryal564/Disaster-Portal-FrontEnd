@@ -15,11 +15,9 @@ import { GetColor } from "../UI/GetColor";
 
 function LayerControler({ disasterData, currenttab }) {
   const leafletMap = useMap();
-  console.log("I am here where are you");
   const latlng = useSelector((state) => {
     return state.latlng;
   });
-  console.log("I am lat long", latlng);
 
   const [json, setjson] = useState(null);
   const analysisResultAmenities = useSelector((state) => {

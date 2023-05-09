@@ -14,14 +14,12 @@ const authSlice = createSlice({
   initialState,
   reducers: {
     setUserToken: (state, action) => {
-      console.log(action.payload, "payload");
       state.access_token = action.payload.access_token;
     },
     unSetUserToken: (state, action) => {
       state.access_token = action.payload.access_token;
     },
     setUserInfo: (state, action) => {
-      console.log(action.payload, "I am not here");
       if (action.payload.IsWard) {
         state.wardId = action.payload.WardId;
         state.wardNumber = action.payload.wardNumber;

@@ -17,7 +17,11 @@ import ActiveManage from "../ManageDisasterComponent/activeManage";
 import ActivityLog from "../ManageDisasterComponent/ActivityLog";
 import AllIncident from "../ManageDisasterComponent/AllIncident";
 import DisasterAnalysis from "../ManageDisasterComponent/DisasterAnalysis";
-import { ManageDisasterLegend, ManageDataLegend } from "../Legends/Legend";
+import {
+  ManageDisasterLegend,
+  ManageDataLegend,
+  DashboardLegend,
+} from "../Legends/Legend";
 import NavigateNextIcon from "@mui/icons-material/NavigateNext";
 import WardjsonLoader from "../Map Layer/WardjsonLoader";
 import ManageData from "../ManageDisasterComponent/ManageData";
@@ -28,6 +32,7 @@ import "leaflet-draw/dist/leaflet.draw.css";
 import wk from "wellknown";
 import Header from "../../Sidebar/Header";
 import { setlatlng } from "../../store/Slices/latlng";
+import Dashboard from "../../Sidebar/dashboard";
 const ManageDisaster = () => {
   const featureGroupRef = useRef();
   const [polygonCoords, setPolygonCoords] = useState([]);
@@ -46,7 +51,27 @@ const ManageDisaster = () => {
   const wardId = useSelector((state) => {
     return state.auth.wardId;
   });
-
+  let disasterAllIncident = [
+    ...new Set(
+      disasterData.map((data) => {
+        return {
+          is_verified: data?.is_verified,
+          url: data?.type?.icon,
+          title: data?.type?.title,
+        };
+      })
+    ),
+  ];
+  const AllIncidentLegendItem = disasterAllIncident.filter(
+    (obj, index, self) =>
+      index ===
+      self.findIndex(
+        (o) =>
+          o.url === obj.url &&
+          o.is_verified === obj.is_verified &&
+          o.title === obj.title
+      )
+  );
   useEffect(() => {
     dispatch(GetManageDisasterWardShpGETThunk(wardId));
   }, [dispatch, wardId]);
@@ -243,18 +268,12 @@ const ManageDisaster = () => {
             ""
           )}
           {currenttab === "allincident" && disasterData.length > 0 ? (
-            <ManageDisasterLegend
-              currenttab="allincident"
-              disasterData={disasterData}
-            />
+            <DashboardLegend legendItem={AllIncidentLegendItem} />
           ) : (
             ""
           )}
           {currenttab === "activeManage" && disasterData.length > 0 ? (
-            <ManageDisasterLegend
-              currenttab="activeManage"
-              disasterData={disasterData}
-            />
+            <DashboardLegend legendItem={AllIncidentLegendItem} />
           ) : (
             ""
           )}
@@ -280,8 +299,6 @@ const ManageDisaster = () => {
               />
             </FeatureGroup>
           ) : null}
-          {/* conditionaly rendder this when current tab is manageData */}
-          {/* {currenttab === "manageData" ? <BuildingjsonLoader /> : ""} */}
         </MapContainer>
       </div>
     </Layout>

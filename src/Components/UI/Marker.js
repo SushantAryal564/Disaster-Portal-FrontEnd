@@ -2,28 +2,33 @@ import L from "leaflet";
 import { Marker, Popup } from "react-leaflet";
 import CalendarMonthIcon from "@mui/icons-material/CalendarMonth";
 import WatchLaterIcon from "@mui/icons-material/WatchLater";
-var flood = L.icon({
-  iconUrl: "http://127.0.0.1:8000/images/flood.svg",
-  iconSize: [25, 41],
-  iconAnchor: [12, 41],
-  popupAnchor: [1, -34],
-  shadowSize: [41, 41],
-});
 
-//return DIV ICON CASE FOR DIFFERENT DISASTER
-export const getIcon = (disastertype) => {
-  if (disastertype == "Fire") {
-    return new L.DivIcon({
-      className: "marker-fire",
-    });
-  }
-  if (disastertype == "Flood") {
-    return new L.DivIcon({
-      className: "marker-flood",
-    });
-  }
-  return new L.DivIcon({
-    className: "marker-fire",
+// export const getIcon = (disastertype) => {
+//   if (disastertype == "Fire") {
+//     return new L.DivIcon({
+//       className: "marker-fire",
+//     });
+//   }
+//   if (disastertype == "Flood") {
+//     return new L.DivIcon({
+//       className: "marker-flood",
+//     });
+//   }
+//   return new L.DivIcon({
+//     className: "marker-fire",
+//   });
+// };
+export const getIcon = (icon, verified) => {
+  return L.divIcon({
+    className: "marker-fire-two",
+    iconSize: [10, 10],
+    html: `<div
+    style="
+    border-radius: 50%;
+    background-color: ${verified ? "#fafd34" : "#ffb938"};
+    padding: 3px;
+    transform: translate(-35%,-40%);
+    width: 15px; height: 15px; display: flex; justify-content: center; align-items: center;"><img src=${icon} style="max-width: 80%; max-height: 80%;"></div>`,
   });
 };
 
@@ -33,7 +38,7 @@ function Markers({ disaster: event, setOpen }) {
     <Marker
       key={`disaster-${event.id}`}
       position={[event.lat || 83, event.long || 23]}
-      icon={getIcon(event?.type?.title)}
+      icon={getIcon(event?.type?.icon, event?.is_verified)}
       eventHandlers={{
         click: () => {
           setOpen(event.id);

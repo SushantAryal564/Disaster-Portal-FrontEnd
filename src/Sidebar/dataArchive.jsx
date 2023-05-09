@@ -21,7 +21,6 @@ function DataArchieve() {
   useEffect(() => {
     wardJSON();
   }, []);
-  console.log(wards, "I am ward what are you");
   const options1 = wards?.features?.map((ward) => {
     return {
       value: ward.id,
@@ -39,7 +38,6 @@ function DataArchieve() {
   const [selectedwardbuilding, setWardb] = useState(null);
   const dispatch = useDispatch();
   const [ddata, setddata] = useState(null);
-  console.log(ddata);
   useEffect(() => {
     if (selectedwardbuilding)
       dispatch(getWarddownloadbuilding(selectedwardbuilding));
@@ -54,7 +52,6 @@ function DataArchieve() {
       dispatch(getdateselectedEvents([startDate, endDate]));
     }
   }, [startDate, endDate]);
-  console.log(dedata, "MILYO");
   const wardStyle = () => {
     return {
       fillColor: `none`,
@@ -91,7 +88,6 @@ function DataArchieve() {
                   let downloadUrl =
                     "http://localhost:8000/api/v1/analysis/download_building/?ward=" +
                     selectedwardbuilding;
-                  console.log("dsa");
                   window.location.href = downloadUrl;
                 }}
                 className="bg-[#418fde] text-sm text-white m-2 py-[3px] px-3 rounded-sm mb-4"
@@ -160,7 +156,6 @@ function DataArchieve() {
                     startDate +
                     "&todate=" +
                     endDate;
-                  console.log(downloadUrl);
                   window.location.href = downloadUrl;
                 }}
                 className="bg-[#418fde] text-white m-2 py-[3px] px-3 rounded-sm text-sm"

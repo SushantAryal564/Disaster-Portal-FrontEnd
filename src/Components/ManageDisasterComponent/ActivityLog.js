@@ -17,7 +17,6 @@ function ActivityLog({ changeMarkerDataState }) {
   if (activity.trim() !== "" || date !== "") {
     formIsValid = true;
   }
-  console.log(DisasterId);
   const [WardDisasterData, setWardDisasterData] = useState([]);
   const [DisasterActivityLog, setDisasterActivityLog] = useState("");
   const wardId = localStorage.getItem("WardId");

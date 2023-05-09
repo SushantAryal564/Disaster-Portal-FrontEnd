@@ -105,6 +105,17 @@
   padding: 3px;
 }
 
+.marker-fire-two {
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  border: 2px solid black;
+  background: rgb(237, 12, 12);
+  animation: pulse 0.5s infinite;
+  box-shadow: 2px 2px 2px #333;
+  padding: 3px;
+}
+
 @keyframes pulse {
   0% {
     /* opacity: 0.2; */

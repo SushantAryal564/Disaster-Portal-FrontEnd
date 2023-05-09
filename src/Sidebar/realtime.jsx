@@ -50,7 +50,6 @@ export const LiveData = () => {
   );
 };
 export const Pollution = ({ data, selectedMarkerId }) => {
-  console.log(data, "data2");
   const dispatch = useDispatch();
   return (
     <div>
@@ -74,7 +73,6 @@ export const Pollution = ({ data, selectedMarkerId }) => {
                   </th>
                 </tr>
                 {data.map((instance) => {
-                  console.log(instance, "air quality instance");
                   return (
                     <tr
                       className={

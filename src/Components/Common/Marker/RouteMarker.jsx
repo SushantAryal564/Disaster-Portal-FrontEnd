@@ -27,9 +27,7 @@ const RouteMarker = ({ data, infrastructure }) => {
           ]}
           icon={getMarker(infrastructure)}
           eventHandlers={{
-            click: (e) => {
-              console.log(e, "I am event");
-            },
+            click: (e) => {},
           }}
         >
           <Popup>

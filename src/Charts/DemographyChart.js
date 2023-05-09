@@ -56,7 +56,6 @@ function DemographyChart() {
       .attr("y", (d) => y(d.Value))
       .attr("height", (d) => height - y(d.Value))
       .delay((d, i) => {
-        console.log(i);
         return i * 100;
       });
   });

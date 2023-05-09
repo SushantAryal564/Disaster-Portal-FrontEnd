@@ -38,7 +38,6 @@ export default function Accordian({ AllDisaster, latlngHandler }) {
   });
   const triggerAlert = async function sendAnalysisEmail(id) {
     const url = "http://127.0.0.1:8000/api/v1/analysis/email/";
-    console.log(latlng, "your lat alANF", latlng[0], latlng[1], id, message);
     const data = {
       lat: latlng[0], // replace with the latitude value
       lng: latlng[1], // replace with the longitude value
@@ -46,7 +45,6 @@ export default function Accordian({ AllDisaster, latlngHandler }) {
       buf: buf,
       disaster_id: id,
     };
-    console.log("o data", data);
     const response = await fetch(url, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
@@ -54,14 +52,11 @@ export default function Accordian({ AllDisaster, latlngHandler }) {
     });
 
     const responseData = await response.json();
-
-    console.log(responseData);
   };
   const dispatch = useDispatch();
   const [open, setOpen] = useState(0);
   // barchat data
   const bufferd = useSelector((state) => {
-    //  console.log(state.manageDisaster)
     return state.feature.bufferdistance;
   });
 
@@ -173,7 +168,6 @@ export default function Accordian({ AllDisaster, latlngHandler }) {
                     </tr>
                     {Object.keys(classCounts).map((className) => {
                       let colorRGB = GetColor(className);
-                      console.log(colorRGB, "color");
                       return (
                         <tr>
                           <td

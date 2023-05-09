@@ -26,7 +26,6 @@ function FindRoute() {
   const disasterData = useSelector((state) => {
     return state.disaster.data;
   });
-  console.log(disasterData, "I am disaster Data");
   const startLocationfrompanel = useSelector(
     (state) => state.damageLegend.startlocation
   );
@@ -64,7 +63,6 @@ function FindRoute() {
     useState(null);
   const [selectedFireStationOption, setSelectedFireStationOption] =
     useState(null);
-  console.log(selectedHospitalOption, "selectedHospitalOption");
   const handleHospitalOptionChange = (selectedOption1) => {
     dispatch(
       setDestinationLocation([
@@ -104,7 +102,6 @@ function FindRoute() {
     );
   };
   const route = useSelector((state) => {
-    console.log(state);
     return state.damageLegend.currentroute;
   });
   return (
@@ -151,12 +148,12 @@ function FindRoute() {
             </div>
             <div className="mt-2">
               <ul className="list-disc">
-                {route?.features[0]?.properties?.segments[0].steps?.map(
+                {route?.features?.[0]?.properties?.segments?.[0].steps?.map(
                   (data) => {
                     return (
                       <li>
-                        After {data.duration} minutes in {data.distance} meter,{" "}
-                        {data.instruction}
+                        After {data?.duration} minutes in {data?.distance}{" "}
+                        meter, {data?.instruction}
                       </li>
                     );
                   }

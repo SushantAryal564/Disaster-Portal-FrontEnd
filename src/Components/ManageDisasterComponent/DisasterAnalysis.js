@@ -19,7 +19,6 @@ function DisasterAnalysis({ changeMarkerDataState }) {
   const [wardAllIncident, setWardAllIncident] = useState([]);
   const wardId = localStorage.getItem("WardId");
   const bufferd = useSelector((state) => {
-    //  console.log(state.manageDisaster)
     return state.feature.bufferdistance;
   });
   const WardIncident = async () => {
@@ -37,7 +36,6 @@ function DisasterAnalysis({ changeMarkerDataState }) {
       let wardIncident = await data.json();
       changeMarkerDataState(wardIncident);
       setWardAllIncident(wardIncident);
-      console.log("I am here");
     }
   };
   const latlngHandler = (array) => {

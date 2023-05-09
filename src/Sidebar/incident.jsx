@@ -16,7 +16,6 @@ function Incident({ reportActivated }) {
   let lastMonth = oneMonthAgo.toISOString().slice(0, 10);
   const [startDate, setStartDate] = useState(lastMonth);
   const [endDate, setEndDate] = useState(today);
-  console.log(startDate, endDate);
 
   const dispatch = useDispatch();
   useEffect(() => {
@@ -26,7 +25,6 @@ function Incident({ reportActivated }) {
     (state) => state.disasterIncident.data
   );
 
-  console.log("DATE STAATES---------------", startDate, endDate);
   const handlestart = (e) => {
     setStartDate(e.target.value);
   };
@@ -40,7 +38,6 @@ function Incident({ reportActivated }) {
       <div className=" h-[83vh] overflow-x-scroll scrollbar scrollbar-thumb-gray-300 scrollbar-track-gray-100 scrollbar-w-1 scrollbar-rounded-rounded-md">
         <div className="flex justify-evenly pt-3 ">
           <div className="m-2">
-            {" "}
             <label
               htmlFor="incidentOn1"
               className="text-xs font-normal leading-tight text-blue-gray-500 transition-all after:absolute after:-bottom-2.5 after:block after:w-full after:scale-x-0 after:border-b-2 after:border-red-500 after:transition-transform after:duration-300 peer-placeholder-shown:leading-tight font-bold"
@@ -80,7 +77,7 @@ function Incident({ reportActivated }) {
             return (
               <div className="border-gray-200 border-b-2 hover:bg-gray-200 mt-2">
                 <div className="text-md font-medium flex flex-row ">
-                  <div className="text-blue-500 text-sm flex flex-col justify-center items-center">
+                  <div className="text-blue-500 text-sm w-24 flex flex-col items-center">
                     <img
                       className="w-9 h-6"
                       src={`http://127.0.0.1:8000/${data?.type?.title}.svg`}
@@ -93,12 +90,6 @@ function Incident({ reportActivated }) {
                     <div>
                       <div className="text-xs  text-gray-500 flex justify-start ">
                         <span className="">{data.date}</span>
-                        <div className="flex items-center px-2">
-                          <span>
-                            <BiAlarm />
-                          </span>
-                          <span className="pl-1">{data.time || "none"}</span>
-                        </div>
                       </div>
                     </div>
                   </span>

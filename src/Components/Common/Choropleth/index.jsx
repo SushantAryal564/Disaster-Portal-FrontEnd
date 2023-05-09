@@ -1,24 +1,18 @@
-const getColor = (d) => {
-  return d > 90
-    ? "#800026"
-    : d > 80
-    ? "#BD0026"
-    : d > 70
-    ? "#D73518"
-    : d > 60
-    ? "#ED3730"
-    : d > 50
-    ? "#FC4E2A"
-    : d > 40
-    ? "#FD8D3C"
-    : d > 30
-    ? "#FEB24C"
-    : d > 20
-    ? "#FDE38D"
-    : d > 10
-    ? "#FBCC8D"
-    : d > 5
-    ? "#FDE6D8"
-    : "#FDE6D8";
+import React, { useState } from "react";
+import { quantile } from "simple-statistics";
+
+const GetColor = (value, data) => {
+  console.log(value, data, "Index");
+  if (value >= data[0].min && value <= data[0].max) {
+    return "#fdcc8a";
+  } else if (value >= data[1].min && value <= data[1].max) {
+    return "#fc8d59";
+  } else if (value >= data[2].min && value <= data[2].max) {
+    return "#e34a33";
+  } else if (value >= data[3].min && value <= data[3].max) {
+    return "#b30000";
+  } else {
+    return "#fdcc8a";
+  }
 };
-export default getColor;
+export default GetColor;

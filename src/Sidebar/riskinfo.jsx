@@ -12,7 +12,6 @@ function RiskInfo() {
   const currentPanel = useSelector((state) => state.riskinfo.currentpanel);
   const dispatch = useDispatch();
 
-  console.log(currentPanel);
   const IncreaseClickHandler = () => {
     if (currentPanel == 3) {
       dispatch(setpanel(1));

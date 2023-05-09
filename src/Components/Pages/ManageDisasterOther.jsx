@@ -121,7 +121,6 @@ const ManageDisasterOther = () => {
   };
   const [disasterData, setDisasterData] = useState([]);
   const DisasterEventLayout = disasterEvent?.map((data) => {
-    console.log(data, "I am what you are looking for??");
     return (
       <div className="px-4 border-2 mx-2">
         <Accordion

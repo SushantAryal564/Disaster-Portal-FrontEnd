@@ -29,7 +29,6 @@ function ManageData({ polygonCoords, changeMarkerDataState }) {
       } catch (error) {}
     } else {
       try {
-        console.log("Data:", JSON.stringify(data));
         const response = await fetch(
           "http://127.0.0.1:8000/api/v1/analysis/patchbuilding/",
           {
@@ -41,7 +40,6 @@ function ManageData({ polygonCoords, changeMarkerDataState }) {
           }
         );
         const result = await response.json();
-        console.log("Result:", result);
         toast.success("Data updated successfully!", {
           position: toast.POSITION.TOP_RIGHT,
           autoClose: 3000,
@@ -63,7 +61,6 @@ function ManageData({ polygonCoords, changeMarkerDataState }) {
       address,
     } = buildingdata;
   }
-  // console.log("MANAGE DATA--->selected building", buildingdata);
   const [savedValue, setsavedValue] = useState(null);
   var initialValues = {
     osm_id: "",
@@ -76,7 +73,6 @@ function ManageData({ polygonCoords, changeMarkerDataState }) {
     address: "",
   };
   useEffect(() => {
-    console.log("builidng daata changed");
     setsavedValue({
       osm_id: osm_id || "",
       phone_number_1: phone_number_1 || "",
@@ -89,7 +85,6 @@ function ManageData({ polygonCoords, changeMarkerDataState }) {
     });
   }, [buildingdata]);
 
-  console.log("managed data rendere", "Saved Valued----", savedValue);
   const formik = useFormik({
     initialValues: savedValue || initialValues,
     enableReinitialize: true,
@@ -108,10 +103,6 @@ function ManageData({ polygonCoords, changeMarkerDataState }) {
       email: Yup.string().email("Invalid email address"),
     }),
     onSubmit: (values) => {
-      console.log(
-        values,
-        "hjkl------------------------------------------------------------___>"
-      );
       postPolygonData(values);
     },
   });

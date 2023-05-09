@@ -10,7 +10,6 @@ function DamageLoss({ reportActivated }) {
   const dispatch = useDispatch();
   const [startDate, setStartDate] = useState(null);
   const [endDate, setEndDate] = useState(null);
-  console.log(startDate, endDate, "in damageLoss");
   const handleSubmit = (event) => {
     event.preventDefault();
     dispatch(DamageLossAsyncGETThunk([startDate, endDate]));
