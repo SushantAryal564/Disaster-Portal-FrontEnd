@@ -7,19 +7,14 @@ import { changeDamageAndLossTab } from "../store/Slices/chartSlice";
 
 import Header from "./Header";
 function DamageLoss({ reportActivated }) {
+  console.log(reportActivated, "I am report");
   const dispatch = useDispatch();
   const [startDate, setStartDate] = useState(null);
   const [endDate, setEndDate] = useState(null);
-  const handleSubmit = (event) => {
-    event.preventDefault();
-    dispatch(DamageLossAsyncGETThunk([startDate, endDate]));
-  };
   const state = useSelector((state) => state.chart.status);
   useEffect(() => {
     dispatch(DamageLossAsyncGETThunk());
-    if (state == "idle") {
-      dispatch(GetChartDashboardInfo());
-    }
+    dispatch(GetChartDashboardInfo());
   }, [reportActivated]);
   let chartData = useSelector((state) => state.chart.data);
   const damageTab = useSelector((state) => state.chart.tab);

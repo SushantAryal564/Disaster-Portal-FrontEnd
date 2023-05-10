@@ -18,8 +18,8 @@ const ButtonDisaster = ({ name, Icon, handler, sidebarSelected }) => {
   };
   return (
     <button
-      className={`py-1 bg-[#ffffff] border w-full text-center text-xs self-center h-[10%] font-semibold  text-slate-600 cursor-pointer hover:text-[#e35163] ${
-        sidebarSelected == name ? "bg-[#e35163" : ""
+      className={`py-1 bg-[#ffffff] border w-full text-center text-xs self-center h-[10%] font-semibold cursor-pointer hover:text-[#e35163] ${
+        sidebarSelected == name && "text-[#e35163"
       }`}
       onClick={changeSlidebarState}
     >

@@ -15,14 +15,14 @@ import {
 import Select from "react-select";
 import { NavigationLegend } from "../Components/Legends/Legend";
 
-function FindRoute() {
+function FindRoute({ reportActivated }) {
   const dispatch = useDispatch();
   useEffect(() => {
     dispatch(disasterAsyncGETThunk());
     dispatch(PoliceStationGetAsyncThunk());
     dispatch(HospitalGetAsyncThunk());
     dispatch(FireStationGetAsyncThunk());
-  }, []);
+  }, [reportActivated]);
   const disasterData = useSelector((state) => {
     return state.disaster.data;
   });

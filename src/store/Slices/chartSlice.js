@@ -29,7 +29,7 @@ export const chartSlice = createSlice({
       })
       .addCase(GetChartDashboardInfo.fulfilled, (state, action) => {
         state.status = "succeeded";
-        state.data = state.data.concat(action.payload);
+        state.data = action.payload;
       })
       .addCase(GetChartDashboardInfo.rejected, (state, action) => {
         state.status = "failed";

@@ -9,12 +9,12 @@ import {
 import { setPanel, setDisaster } from "../store/Slices/situationSlice";
 import ArrowDropUpIcon from "@mui/icons-material/ArrowDropUp";
 
-function Situation() {
+function Situation({ reportActivated }) {
   const dispatch = useDispatch();
   useEffect(() => {
     dispatch(AllDisasterGETAsyncThunk());
     dispatch(ActiveDisasterGETAsyncThunk());
-  }, []);
+  }, [reportActivated]);
   const currenttab = useSelector((state) => state.situation.selectedPanel);
   const activeIncident = useSelector((state) => state.situation.activeIncident);
   const allIncident = useSelector((state) => state.situation.allIncident);
@@ -101,7 +101,7 @@ function Situation() {
   return (
     <div>
       <Header />
-      <div className="flex justify-around mt-2">
+      <div className="flex justify-around mt-2 ">
         <div
           onClick={() => {
             dispatch(setPanel("activeIncident"));
@@ -129,7 +129,7 @@ function Situation() {
           All Incident
         </div>
       </div>
-      <div className="scrollbar">
+      <div className=" h-[78vh] scrollbar scrollbar-thumb-gray-300 scrollbar-track-gray-100 scrollbar-w-1 scrollbar-rounded-rounded-md ">
         {currenttab === "activeIncident"
           ? getIncident(activeIncident)
           : getIncident(allIncident)}

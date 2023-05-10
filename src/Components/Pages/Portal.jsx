@@ -108,13 +108,13 @@ export const Portal = () => {
       case REPORT:
         return <ReportAnAncident />;
       case DATA:
-        return <DataArchieve />;
+        return <DataArchieve reportActivated={reportActivated} />;
       case SITUATION:
-        return <Situation />;
+        return <Situation reportActivated={reportActivated} />;
       case FEEDBACK:
         return <Feedback />;
       case ROUTE:
-        return <FindRoute />;
+        return <FindRoute reportActivated={reportActivated} />;
       default:
         return <Dashboard />;
     }

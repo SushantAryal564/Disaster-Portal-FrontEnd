@@ -9,7 +9,7 @@ import {
   getdateselectedEvents,
 } from "../store/Slices/selecteddata";
 
-function DataArchieve() {
+function DataArchieve({ reportActivated }) {
   const [startDate, setStartDate] = useState();
   const [endDate, setEndDate] = useState();
   const [wards, setWard] = useState();
@@ -20,7 +20,7 @@ function DataArchieve() {
   };
   useEffect(() => {
     wardJSON();
-  }, []);
+  }, [reportActivated]);
   const options1 = wards?.features?.map((ward) => {
     return {
       value: ward.id,
